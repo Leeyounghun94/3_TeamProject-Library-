@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- xml를 활용한 공통코드 -->
+
+<mapper namespace="kr.co.librarylyh.mapper.bookReservationMapper">
+
+
+
+
+<insert id="rsInsert">
+
+<![CDATA[
+insert into reservation_tbl (r_bookname, u_id, r_bookprice, r_phone, r_start, r_end)
+values (#{r_bookname}, #{u_id}, #{r_bookprice}, #{r_phone}, #{r_start}, #{r_end})
+]]>
+</insert> <!-- 날짜형식을 todate   -->
+
+<select id="rsList" resultType="kr.co.librarylyh.domain.bookReservationVO">
+
+<![CDATA[
+select * from reservation_tbl
+]]>
+
+</select>
+
+
+<select id="rsRead" resultType="kr.co.librarylyh.domain.bookReservationVO">
+
+<![CDATA[
+select * from reservation_tbl where u_id = #{u_id}
+]]>
+
+</select> 
+
+
+<update id="rsUpdate">
+
+<![CDATA[
+update reservation_tbl set 
+r_bookname= #{r_bookname},
+r_bookprice = #{r_bookprice},
+r_phone = #{r_phone},
+r_start = #{r_start}, 
+r_end = #{r_end}
+where u_id = #{u_id}
+	
+]]>
+</update>
+
+<delete id="rsDelete">
+delete from reservation_tbl where u_id = #{u_id}
+</delete>
+
+</mapper>
