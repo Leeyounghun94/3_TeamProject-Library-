@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.librarylyh.mapper.CategoryMapper">
+    <!-- 특정 카테고리의 전체 경로를 조회하여 트리를 구성하는 쿼리 -->
+    <select id="getCategoryPath" parameterType="string" resultType="kr.co.librarylyh.domain.CategoryVO">
+        <![CDATA[
+        WITH CategoryPath AS (
+            SELECT
+                categoryId,
+                categoryName,
+                parentId
+            FROM
+                category_tbl
+            START WITH categoryId = #{categoryId}
+            CONNECT BY PRIOR parentId = categoryId
+            ORDER SIBLINGS BY categoryId
+        )
+        SELECT * FROM CategoryPath
+        ORDER BY LEVEL DESC
+        ]]>
+    </select>
+
+    <!-- 최상위부터 모든 카테고리 목록 조회 -->
+    <select id="getAllCategories" resultType="kr.co.librarylyh.domain.CategoryVO">
+        <![CDATA[
+        SELECT
+            categoryId,
+            categoryName,
+            parentId
+        FROM
+            category_tbl
+        ORDER BY categoryId
+        ]]>
+    </select>
+
+
+
+</mapper>
