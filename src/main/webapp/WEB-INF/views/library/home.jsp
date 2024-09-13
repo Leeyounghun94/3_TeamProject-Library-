@@ -77,10 +77,10 @@
 
 					<div class="col-lg-4 hero_box_col">
 						<div class="hero_box d-flex flex-row align-items-center justify-content-start">
-							<img src="/resources/images/member.png" class="svg" alt="">
+							<img src="/resources/images/reservation.png">
 							<div class="hero_box_content">
-								<h2 class="hero_box_title">도서 대출</h2>
-								<a href="teachers.html" class="hero_box_link">view more</a>
+								<h2 class="hero_box_title">도서 대출 | 예약</h2>
+								<a href="<c:url value='/library/ReservationMain' />" class="hero_box_link">view more</a>
 							</div>
 						</div>
 					</div>

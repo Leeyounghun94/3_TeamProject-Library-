@@ -5,32 +5,44 @@
 <!-- xml를 활용한 공통코드 -->
 <!-- Mapper 인터페이스의 SQL 처리용 -->
 <mapper namespace="kr.co.librarylyh.mapper.UserMapper">
-	<insert id="insertSelectUid">
+	
+	<insert id="join"> <!-- 회원가입 메서드 -->
 	<selectKey keyProperty="u_id" order="BEFORE" resultType="String">
-		select dbms_random.String('X',10)u_id from dual 
+		select dbms_random.String('X',10) u_id from dual 
 	</selectKey>	
 		<![CDATA[
 			insert into member_tbl(u_id, name, birth, phone, email, id, pw, nickName) values(#{u_id}, #{name}, #{birth}, #{phone}, #{email}, #{id}, #{pw}, #{nickName} )
 		]]>
 	</insert>
 	
+	<!-- 중복 아이디 체크 -->
+	<select id="idCheck" resultType="int">
+		<![CDATA[
+			select count(*) from member_tbl where id = #{id}
+		]]>
+	</select>
+	
+	<!-- 중복 닉네임 체크 -->
+	<select id="nickNameCheck" resultType="int">
+		<![CDATA[
+			select count(*) from member_tbl where nickName = #{nickName}
+		]]>
+	</select>
+	
+	<!-- 로그인 체크 -->
+	<select id="login" resultType="kr.co.librarylyh.domain.UserVO" >
+		<![CDATA[
+			select u_id, name, birth, phone, email, id, pw, nickName from member_tbl where id = #{id} and pw = #{pw}
+		]]>
+	</select>
+	
 	<select id="read" resultType="kr.co.librarylyh.domain.UserVO" >
 		<![CDATA[
-			select * from member_tbl where u_id = #{u_id}
+			select * from member_tbl where id = #{id}
 		]]>
 	</select>
 	
-	<select id="findId" resultType="kr.co.librarylyh.domain.UserVO" >
-		<![CDATA[
-			select id from member_tbl where id = #{id}
-		]]>
-	</select>
 	
-	<select id="findPassword" resultType="kr.co.librarylyh.domain.UserVO" >
-		<![CDATA[
-			select * from member_tbl where id = #{id} and phone = #{phone}
-		]]>
-	</select>
 	
 	<update id="update">
 		<![CDATA[
@@ -44,9 +56,5 @@
 		]]>	
 	</delete>
 	
-	<select id="login" resultType="kr.co.librarylyh.domain.UserVO">
-		<![CDATA[
-			select * from member_tbl where id = #{id} and pw = #{pw}
-		]]>
-	</select>
+	
 </mapper>

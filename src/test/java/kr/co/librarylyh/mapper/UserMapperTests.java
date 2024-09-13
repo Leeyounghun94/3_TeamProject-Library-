@@ -21,18 +21,18 @@ public class UserMapperTests {
 	private UserMapper mapper;
 	
 	@Test
-	public void testInsertSelectUid() {
+	public void testJoin() {
 		UserVO user = new UserVO();
 		
-		user.setName("mapper");
-		user.setBirth("990201");
-		user.setPhone("010-9876-5432");
-		user.setEmail("library1@naver.com");
-		user.setId("mapper");
-		user.setPw("mapper123");
-		user.setNickName("mapperTest");
+		user.setName("두두두");
+		user.setBirth("990913");
+		user.setPhone("010-9877-5522");
+		user.setEmail("library123@naver.com");
+		user.setId("dududu123");
+		user.setPw("dududu123");
+		user.setNickName("듀듀듀");
 		
-		mapper.insertSelectUid(user);
+		mapper.join(user);
 		
 		log.info("결과 : " + user);
 		//  INFO  kr.co.librarylyh.mapper.UserMapperTests(testInsertSelectUid37) - 결과 : UserVO(u_id=M6P9FTCP6U, name=mapper, birth=990201, phone=010-9876-5432, email=library1@naver.com, id=mapper, pw=mapper123, nickName=mapperTest)
@@ -70,13 +70,15 @@ public class UserMapperTests {
 		// INFO  kr.co.librarylyh.mapper.UserMapperTests(testDelete69) - 삭제 테스트 : 1
 	}
 	
+	
 	@Test
 	public void testLogin() {
 		UserVO user = new UserVO();
-		user.setId("test333");
-		user.setPw("test333");
+		user.setId("test555");
+		user.setPw("test55");
 		
 		user = mapper.login(user);
+		
 		log.info(user);
 		log.info(user.getName()+ "로그인 성공");
 		// INFO  kr.co.librarylyh.mapper.UserMapperTests(testLogin80) - UserVO(u_id=u_id, name=테스트3, birth=990103, phone=010-1234-9876, email=mbc3@naver.com, id=test333, pw=test333, nickName=tester3)
@@ -84,18 +86,22 @@ public class UserMapperTests {
 	}
 	
 	@Test
-	public void testFindId() {
-		mapper.findId("test333");
+	public void testIdCheck() {
+		
+		String id1 = "test555"; // 1
+		String id2 = "idCheck"; // 0
+		
+		mapper.idCheck(id1); // 존재하는 아이디
+		mapper.idCheck(id2); // 존재하지 않는 아이디
 	}
 	
 	@Test
-	public void testFindPassword() {
-		UserVO user = new UserVO();
+	public void testNickNameCheck() {
+		String nick1 = "controller"; // 존재하는 닉네임
+		String nick2 = "abc"; // 존재하지 않는 닉네임
 		
-		user.setId("test333");
-		user.setPhone("010-1234-9876");
-		user = mapper.findPassword(user);
-		log.info(user);
+		mapper.nickNameCheck(nick1); // 1
+		mapper.nickNameCheck(nick2); // 0
 	}
 	
 }

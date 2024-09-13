@@ -38,11 +38,12 @@
 			<nav class="main_nav_container">
 				<div class="main_nav">
 					<ul class="main_nav_list">
+						<li class="main_nav_item"><a href="/library/home">HOME</a></li>
 						<li class="main_nav_item"><a href="#">국내도서</a></li>
 						<li class="main_nav_item"><a href="courses.html">베스트</a></li>
 						<li class="main_nav_item"><a href="elements.html">신상품</a></li>
 						<li class="main_nav_item"><a href="news.html">도서대여</a></li>
-						<li class="main_nav_item"><a href="/library/list.jsp">게시판</a></li>
+						<li class="main_nav_item"><a href="/library/list">게시판</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -50,14 +51,22 @@
 		<div class="header_side d-flex flex-row justify-content-center align-items-center">
 			<!-- <img src="/resources/images/profile.svg"> -->
 		<span>
-			<c:choose>
-				<c:when test="${cookie.loginUser.value eq null}" >
-					<a href="<c:url value='/library/login' />">로그인</a>
-				</c:when>
-				<c:otherwise>
-					<a href="<c:url value='/library/logoutForm'/>" >로그아웃</a>
-				</c:otherwise>
-			</c:choose>
+			<!-- 로그인 하지 않은 상태 -->
+			<c:if test = "${user == null }">
+			<a href= "/library/login">로그인</a> 
+			</c:if>
+			<!-- 로그인 한 상태 -->
+			<c:if test="${user != null }">
+				<div class="login_success_area">
+					<span><a href="/library/mypage">${user.nickName }</a></span>
+				</div>
+				<div class ="logout_button" >
+					<a href="/library/logout" id="logout_button">로그아웃</a>
+				</div>
+			</c:if>
+			<c:if test="${user.birth == 123451 }">
+				<a href="/library/admin/main">관리자페이지</a>
+			</c:if>	
 		</span>
 		</div>
 
@@ -106,3 +115,15 @@
 		</div>
 
 	</div>
+<script type="text/javascript">
+/* $("#logout_button").click(function(){
+	$.ajax({
+		type:"post",
+		url:"/library/logout",
+		success:function(data){
+			alert("로그아웃 성공");
+			document.location.reload();
+		}
+	}); // ajax
+}); */
+</script>	

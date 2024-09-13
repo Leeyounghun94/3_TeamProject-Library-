@@ -65,7 +65,8 @@ body
 	font-size: 14px;
 	font-weight: 400;
 	background: #FFFFFF;
-	color: #a5a5a5;
+	color: #000000;
+	overflow: auto;
 }
 div
 {
@@ -75,10 +76,10 @@ div
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-ul
-{
-	list-style: none;
-	margin-bottom: 0px;
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 p
 {
@@ -1358,6 +1359,7 @@ input:last-of-type
 	width: 100%;
 	padding-top: 86px;
 	background: #1a1a1a;
+	color: #a5a5a5;
 }
 .footer .section_title h1
 {
