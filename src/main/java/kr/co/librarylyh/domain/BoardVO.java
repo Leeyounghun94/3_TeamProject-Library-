@@ -17,6 +17,7 @@ public class BoardVO {
   private String nickName;
   
   private int replyCnt; // 댓글 수
+  private Long viewNum; // 게시글 조회수
   
   
   private List<BoardAttachVO> attachList;

@@ -85,7 +85,9 @@ public class ReplyServiceImpl implements ReplyService{
 	public ReplyPageDTO getListPage(Criteria cri, Long bno) {
 		log.info("ReplyServiceImpl.getListPage() 메서드 실행, 댓글이 해당하는 게시물 번호: " + bno);
 		return new ReplyPageDTO(mapper.getCountByBno(bno), mapper.getListWithPaging(cri, bno));
-	} 
+	}
+
+
 
 	
 }// ReplyService의 구현 클래스

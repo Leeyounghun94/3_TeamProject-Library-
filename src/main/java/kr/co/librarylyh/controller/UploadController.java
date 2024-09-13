@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.librarylyh.domain.AttachFileDTO;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
 
@@ -37,11 +35,11 @@ import net.coobird.thumbnailator.Thumbnailator;
 @Log4j2
 public class UploadController {
 
-	@GetMapping("/uploadForm")
+	/*@GetMapping("/uploadForm")
 	public void uploadForm() {
 
 		log.info("upload form");
-	}
+	}*/
 
 	// @PostMapping("/uploadFormAction")
 	// public void uploadFormPost(MultipartFile[] uploadFile, Model model) {
@@ -55,7 +53,7 @@ public class UploadController {
 	// }
 	// }
 
-	@PostMapping("/uploadFormAction")
+	/*@PostMapping("/uploadFormAction")
 	public void uploadFormPost(MultipartFile[] uploadFile, Model model) {
 
 		String uploadFolder = "C:\\upload";
@@ -75,13 +73,13 @@ public class UploadController {
 			} // end catch
 		} // end for
 
-	}
+	}*/
 
-	@GetMapping("/uploadAjax")
+	/*@GetMapping("/uploadAjax")
 	public void uploadAjax() {
 
 		log.info("upload ajax");
-	}
+	}*/
 
 	// @PostMapping("/uploadAjaxAction")
 	// public void uploadAjaxPost(MultipartFile[] uploadFile) {
@@ -488,7 +486,7 @@ public class UploadController {
 	@ResponseBody
 	public ResponseEntity<Resource> downloadFile(@RequestHeader("User-Agent") String userAgent, String fileName) {
 
-		Resource resource = new FileSystemResource("c:\\upload\\" + fileName);
+		Resource resource = new FileSystemResource("D:\\upload\\" + fileName);
 
 		if (resource.exists() == false) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -553,10 +551,10 @@ public class UploadController {
 
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 정상 처리 되지 않았을 때 나타남.
 		}
 
-		return new ResponseEntity<String>("deleted", HttpStatus.OK);
+		return new ResponseEntity<String>("deleted", HttpStatus.OK); // "deleted" 정상 처리되었다는 문구로서 출력 됨
 
 	}
 	

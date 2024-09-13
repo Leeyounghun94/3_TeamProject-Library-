@@ -58,7 +58,7 @@ body
 	font-size: 14px;
 	font-weight: 400;
 	background: #FFFFFF;
-	color: #a5a5a5;
+	/* color: #a5a5a5; */
 }
 div
 {
@@ -71,8 +71,10 @@ div
 ul
 {
 	list-style: none;
-	margin-bottom: 0px;
+	margin-bottom: 20px;
+
 }
+
 p
 {
 	font-family: 'Roboto', sans-serif;
@@ -102,6 +104,8 @@ a, a:hover, a:visited, a:active, a:link
 	-webkit-font-smoothing: antialiased;
 	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
 	text-shadow: rgba(0,0,0,.01) 0 0 1px;
+	
+	
 }
 p a:active
 {
@@ -271,7 +275,7 @@ section
 3. Header
 *********************************/
 
-.header
+/* .header
 {
 	position: fixed;
 	top: 45px;
@@ -315,7 +319,7 @@ section
 	content: '';
 	box-shadow: 0px 20px 49px rgba(0,0,0,0.67);
 	z-index: -1;
-}
+} */
 
 /*********************************
 3.1 Logo
@@ -871,14 +875,25 @@ section
 /*********************************
 9.1 News Page Nav
 *********************************/
+.news_page_nav {
+	display:flex;
+	float: left;
+	width: 90%;
+	margin: 0 auto;
+	text-align: center;
+	align-items:center;
+	
+}
 
 .news_page_nav ul li
 {
-	display: inline-block;
+	/* display: inline-block; */
 	width: 43px;
 	height: 43px;
-	background: #d2d2d2;
-	margin-right: 3px;
+	background: #ffb606;
+	margin-right: 5px;
+	align-items:center;
+
 }
 .news_page_nav ul li.active
 {
@@ -887,6 +902,7 @@ section
 .news_page_nav ul li:hover
 {
 	background: #ffb606;
+	
 }
 .news_page_nav ul li a
 {
@@ -895,6 +911,7 @@ section
 	font-weight: 500;
 	color: #FFFFFF;
 	line-height: 43px;
+	align-items:center;
 }
 
 /*********************************

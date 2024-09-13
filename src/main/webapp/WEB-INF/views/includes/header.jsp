@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +17,9 @@
 <link rel="stylesheet" type="text/css" href="/resources/plugins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" type="text/css" href="/resources/styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="/resources/styles/responsive.css">
-<link rel="stylesheet" type="text/css" href="/resources/styles/news_responsive.css">
 </head>
 <body>
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
 <div class="super_container">
 
 <!-- Header -->
@@ -29,7 +30,7 @@
 			<div class="logo_container">
 				<div class="logo">
 					<img src="/resources/images/book_log.png">
-					<span>Booklipse</span>
+					<span><a href="/library/home" >Booklipse</a></span>
 				</div>
 			</div>
 
@@ -37,19 +38,22 @@
 			<nav class="main_nav_container">
 				<div class="main_nav">
 					<ul class="main_nav_list">
-						<li class="main_nav_item"><a href="#">전체 카테고리</a></li>
+						<li class="main_nav_item"><a href="/library/home">HOME</a></li>
 						<li class="main_nav_item"><a href="#">국내도서</a></li>
 						<li class="main_nav_item"><a href="courses.html">베스트</a></li>
 						<li class="main_nav_item"><a href="elements.html">신상품</a></li>
 						<li class="main_nav_item"><a href="news.html">도서대여</a></li>
-						<li class="main_nav_item"><a href="/board/list.jsp">게시판</a></li>
+						<li class="main_nav_item"><a href="/library/list">게시판</a></li>
 					</ul>
 				</div>
 			</nav>
 		</div>
 		<div class="header_side d-flex flex-row justify-content-center align-items-center">
 			<!-- <img src="/resources/images/profile.svg"> -->
-			<span>로그인</span>
+		<span>
+					<a href="<c:url value='/library/login' />">로그인</a>
+
+		</span>
 		</div>
 
 		<!-- Hamburger -->

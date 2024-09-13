@@ -1,3 +1,14 @@
+--------------------------------------------- 좋아요 구현 10차 시기
+create table tbl_like (
+	bno number(10,0),
+	userId varchar2(200)
+)
+
+
+
+
+
+
 --------------------------------------------- 첨부파일
 create table tbl_attach (
 	uuid varchar2(100) not null,
@@ -28,6 +39,7 @@ create table tbl_board (
 );
 alter table tbl_board add (replycnt number default 0);
 
+alter table tbl_board add (viewNum number default 0); -- 게시글 조회수
 
 alter table tbl_board add constraint pk_board 
 primary key (bno);
@@ -88,9 +100,10 @@ select rno, bno, reply, replyer, replyDate, updateDate from tbl_reply
 
 ---- 기능
 SELECT * FROM USER_SEQUENCES; -- 전체 시퀀스 조회
+
 -- 삭제
 drop table tbl_board -- 보드 테이블 삭제
 drop table tbl_reply -- 댓글 테이블 삭제
-drop sequence seq_board; -- 보드_시퀀스 삭제
+drop sequence tbl_like_seq; -- 보드_시퀀스 삭제
 
 
