@@ -15,7 +15,7 @@ public interface BookReservationService {
 	
 	public bookReservationVO rsRead(Long rsNum);// 예약 가져오기
 	
-	public bookReservationVO rsModify(Long rsNum, Long isbn13);
+	public boolean rsModify(Long rsNum, Long isbn13);
 	
 	public boolean rsRemove(Long rsNum);// 예약 삭제하기
 	

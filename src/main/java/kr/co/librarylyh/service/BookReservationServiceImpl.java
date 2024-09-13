@@ -40,13 +40,6 @@ public class BookReservationServiceImpl implements BookReservationService {
 		return rsMapper.rsList();
 	} 
 
-/*
-	@Override
-	public boolean rsRemove(UserVO rsNum) {
-		log.info("BookReservationServiceImpl.rsRemove 메서드 실행");
-		return rsMapper.rsDelete(rsNum) == 1 ;
-	}*/
-
 	
 	@Override
 	public bookReservationVO rsRead(Long rsNum) {
@@ -54,16 +47,18 @@ public class BookReservationServiceImpl implements BookReservationService {
 		return rsMapper.rsRead(rsNum);
 	}
 
-	@Override
-	public bookReservationVO rsModify(Long rsNum, Long isbn13) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public boolean rsRemove(Long rsNum) {
-		// TODO Auto-generated method stub
-		return false;
+		log.info("BookReservationServiceImpl.rsRemove 메서드 실행");
+		return rsMapper.rsDelete(rsNum) == 1;
+	}
+
+	
+	@Override
+	public boolean rsModify(Long rsNum, Long isbn13) {
+		log.info("BookReservationServiceImpl.rsModify 메서드 실행");
+		return rsMapper.rsUpdate(rsNum, isbn13) == 1;
 	}
 
 

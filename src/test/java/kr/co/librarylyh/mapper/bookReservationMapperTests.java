@@ -1,7 +1,5 @@
 package kr.co.librarylyh.mapper;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +77,7 @@ public class bookReservationMapperTests {
 	public void testUpdate() {
 		
 		bookReservationVO vo = new bookReservationVO();
+		
 		vo.setU_id("www");
 		vo.setRsNum(29L);
 		vo.setIsbn13(789789789L);			
@@ -93,8 +92,6 @@ public class bookReservationMapperTests {
  *  					rsStartDay=2024-09-09, rsEndDay=2024-09-10, rsNum=29)		- 2 try
  */
 	
-		
-		
 		
 	}
 	
