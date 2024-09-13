@@ -67,8 +67,7 @@ public class bookReservationServiceTests {
 	public void testGetList() {
 		
 		
-		List<bookReservationVO> list = service.rsList();
-		list.forEach(rs -> log.info(rs));
+		service.rsList().forEach(library -> log.info(library));
 			
 	}
 	
@@ -89,26 +88,39 @@ public class bookReservationServiceTests {
 	@Test
 	public void testModify() {
 	
+		bookReservationVO vo = service.rsRead(36L);
+		
+		if(vo == null ) {
+			log.info("찾는 객체가 없습니다.");
+			
+		}else {
+			vo.setU_id("섭스 수정 ID");
+			vo.setRsNum(91L);
+			vo.setIsbn13(11111L);
+			vo.setRsStartDay("2024-09-13");
+			vo.setRsEndDay("2024-09-16");
+			
+			log.info("섭스에서 수정한 결과 : " + vo);
+			
+	/*		섭스에서 수정한 결과 : bookReservationVO(Date=null, u_id=섭스 수정 ID, isbn13=11111, 
+													rsStartDay=2024-09-13, rsEndDay=2024-09-16, rsNum=91) */
+		}
+	
 	}
 
-	
-	
-	
-	
-	
-	
 	
 	@Test
 	public void testRemove() {
-
-		//bookReservationVO vo = service.rsRead("QQQ");		
-		// vo.setU_id("QQQ");
-		// int count = service.rsRemove(vo);
-		 
-	//	 log.info("삭제 결과 : " + service.rsRemove("QQQ"));
-		 // 삭제 결과 : 1
 		
+		log.info("삭제한 결과 : " + service.rsRemove(40L));
+		
+		// 삭제한 결과 : true
+	
+	
 	}
+	
+	
+
 }
 
 
