@@ -12,8 +12,8 @@
 <insert id="rsInsert">
 
 <![CDATA[
-insert into reservation_tbl (r_bookname, u_id, r_bookprice, r_phone, r_start, r_end)
-values (#{r_bookname}, #{u_id}, #{r_bookprice}, #{r_phone}, #{r_start}, #{r_end})
+insert into reservation_tbl (rsNum, u_id, isbn13, rsStartDay, rsEndDay)
+values (seq_reservation.nextval, #{u_id}, #{isbn13}, #{rsStartDay}, #{rsEndDay})
 ]]>
 </insert> <!-- 날짜형식을 todate   -->
 
@@ -29,28 +29,29 @@ select * from reservation_tbl
 <select id="rsRead" resultType="kr.co.librarylyh.domain.bookReservationVO">
 
 <![CDATA[
-select * from reservation_tbl where u_id = #{u_id}
+select * from reservation_tbl where rsNum = #{rsNum}
 ]]>
 
 </select> 
-
 
 <update id="rsUpdate">
 
 <![CDATA[
 update reservation_tbl set 
-r_bookname= #{r_bookname},
-r_bookprice = #{r_bookprice},
-r_phone = #{r_phone},
-r_start = #{r_start}, 
-r_end = #{r_end}
-where u_id = #{u_id}
-	
+u_id = #{u_id},
+isbn13 = #{isbn13},
+rsNum = #{rsNum},
+rsStartDay = #{rsStartDay}, 
+rsEndDay = #{rsEndDay}
+where rsNum = #{rsNum} and isbn13 = #{isbn13}	
 ]]>
+
 </update>
 
 <delete id="rsDelete">
-delete from reservation_tbl where u_id = #{u_id}
+<![CDATA[
+delete from reservation_tbl where rsNum = #{rsNum}
+]]>
 </delete>
 
 </mapper>

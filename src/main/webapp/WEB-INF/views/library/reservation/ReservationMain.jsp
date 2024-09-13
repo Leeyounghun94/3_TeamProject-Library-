@@ -34,22 +34,22 @@
 					
 	<!-- 도서 예약  -->	
 	<div class="col-md-5" style="border:1px solid white; float:left; margin-right:100px;">
-					<img class="card-img-top" src="/resources/images/will.jpg" alt="https://unsplash.com/@kellybrito">
+					<img class="card-img-top" src="/resources/images/Book.png" alt="https://unsplash.com/@kellybrito">
                        <div class="section_title text-center">                         
                             <div class="featurs-content text-center" style="border:1px gray; color:gray;">
-                               <a href="#" onclick="location.href='BookReservation'"><h1>도서 예약하기</h1></a>
+                               <a href="#" onclick="location.href='BookReservation'"><h1>도서 예약/대출</h1></a>
                             </div>
                         </div>
-                    </div><!-- 도서 예약 end -->
+                    </div><!-- 도서 예약/대출 end -->
                     
                     
       <!--  열람실 예약 -->                                
 	<div class="col-md-5" style="border:1px solid white; float:left;">
-					<img class="card-img-top" src="/resources/images/will.jpg" alt="https://unsplash.com/@kellybrito">					
+					<img class="card-img-top" src="/resources/images/Study.png" alt="https://unsplash.com/@kellybrito">					
                         <div class="section_title text-center">                          
                             <div class="featurs-content text-center">
                                 
-                                <a href="#" onclick="location.href='StudyReservation'"><h1>열람실 예약하기</h1></a>
+                                <a href="#" onclick="location.href='StudyReservation'"><h1>열람실 예약</h1></a>
                             </div>
                         </div>
                     </div><!-- 열람실 예약 end -->

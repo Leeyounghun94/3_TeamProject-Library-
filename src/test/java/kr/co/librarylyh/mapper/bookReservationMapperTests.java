@@ -28,93 +28,83 @@ public class bookReservationMapperTests {
 		
 		bookReservationVO vo = new bookReservationVO();
 		
-		vo.setR_bookname("테스트 북 네임");
-		vo.setU_id("테스 유 아디77");
-		vo.setR_bookprice(1000);
-		vo.setR_phone("010-00-00");
-		vo.setR_start("2024-09-01");
-		vo.setR_end("2024-09-03");
-		
+		vo.setIsbn13(01010101010L);
+		vo.setU_id("아임매퍼");
+		vo.setRsStartDay("2024-08-01");
+		vo.setRsEndDay("2024-08-03");
 		
 		mapper.rsInsert(vo);
 		
 		log.info("입력된 객체 : " + vo);
-		
-	}
+/* 입력된 객체 : bookReservationVO(Date=null, u_id=아이엠아디, isbn13=558482096648, 
+ * 				 rsStartDay=2024-09-01, rsEndDay=2024-09-03, rsNum=null)		
+ */
+	} 
 
 	@Test
-	public void testSelect() {
+	public void testList() {
 		
-		List<bookReservationVO> vo = mapper.rsList();
+		mapper.rsList().forEach(library -> log.info(library));
+
 		
-		log.info(vo);
-		log.info("select 결과 : " + vo);
-		
-		/*  |-----------|----------|------------|------------|--------------------|--------------------|
-			|r_bookname |u_id      |r_bookprice |r_phone     |r_start             |r_end               |
-			|-----------|----------|------------|------------|--------------------|--------------------|
-			|yyy        |hhh       |1000        |010-111-111 |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
-			|테스트 북 네임   |테스 유 아디77 |1000        |010-00-00   |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
-			|yyy        |QQQ       |1000        |010-111-111 |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
-			|yyy        |www       |1000        |010-111-111 |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
-			|yyy        |eee       |1000        |010-111-111 |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
-			|-----------|----------|------------|------------|--------------------|--------------------| */
-		
+/*		|---------|--------------|------|--------------------|--------------------|
+		|u_id     |isbn13        |rsnum |rsstartday          |rsendday            |
+		|---------|--------------|------|--------------------|--------------------|
+		|ZR2411C  |4567894567894 |27    |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
+		|QQQ123   |123123123     |28    |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
+		|qwer789  |789789789     |29    |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
+		|q1w2e3r  |9517534682    |30    |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
+		|k4k5k6k7 |9876543210    |31    |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
+		|w8w8w8w  |10203040      |32    |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
+		|아이엠아디    |558482096648  |33    |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
+		|---------|--------------|------|--------------------|--------------------| */
 	}
 	
-	
-	@Test
-	public void testRsInsertSelectKey() {
-		
-		bookReservationVO vo = new bookReservationVO();
-		vo.setU_id("www");
-		
-		mapper.RsInsertSelectKey(vo);
-		
-		log.info(vo);
-	}
 	
 	@Test
 	public void testRead() {
 		
-		bookReservationVO vo = mapper.rsRead("www");
+		bookReservationVO vo = mapper.rsRead(30L);
 		
-		log.info("메퍼에서 읽어온 결과 : " + vo);
-		/* 메퍼에서 읽어온 결과 : bookReservationVO(r_bookname=수정제목, 
-							u_id=www, r_bookprice=5000, 
-							r_phone=010-777, r_start=2001-10-02 00:00:00, 
-							r_end=2001-10-07 00:00:00) */		
+		log.info("Read 한 값 : " + vo);
+		
+	/*	|--------|-----------|------|--------------------|--------------------|
+		|u_id    |isbn13     |rsnum |rsstartday          |rsendday            |
+		|--------|-----------|------|--------------------|--------------------|
+		|q1w2e3r |9517534682 |30    |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
+		|--------|-----------|------|--------------------|--------------------| */
 	}
-	
 	
 	@Test
 	public void testUpdate() {
 		
 		bookReservationVO vo = new bookReservationVO();
+		vo.setU_id("www");
+		vo.setRsNum(29L);
+		vo.setIsbn13(789789789L);			
+		vo.setRsStartDay("2024-09-09");
+		vo.setRsEndDay("2024-09-10");
 		
-		vo.setU_id("QQQ");
-		vo.setR_bookname("정수정책");
-		vo.setR_bookprice(1000);
-		vo.setR_phone("010-789-788");
-		vo.setR_start("2001/10/05");
-		vo.setR_end("2001/10/14");
-			
-		int count = mapper.rsUpdate(vo);
-		log.info(count + " : 수정 완료");
-		//  1 : 수정 완료
+		log.info("수정된 결과 뭐임 ?" + vo);
+/*  수정된 결과 뭐임 ?  bookReservationVO(Date=null, u_id=null, isbn13=789789789, 
+ * 						rsStartDay=2024-09-09, rsEndDay=2024-09-10, rsNum=29)		- 1 try
+ * 
+ *  수정된 결과 뭐임 ?	bookReservationVO(Date=null, u_id=www, isbn13=789789789,
+ *  					rsStartDay=2024-09-09, rsEndDay=2024-09-10, rsNum=29)		- 2 try
+ */
+	
+		
+		
+		
 	}
-	
-	
 	
 	@Test
 	public void testDelete() {
-		
-		//bookReservationVO vo = new bookReservationVO();		
-		//vo.setU_id("eee");
-		//int count = mapper.rsDelete("eee");
-		
-		log.info("삭제한 결과 : " + mapper.rsDelete("eee"));
-		//삭제한 결과 : 1
+			
+		log.info("삭제한 결과 : " + mapper.rsDelete(34L));
+		/* 삭제한 결과 : 1 (33L) - 1 try
+		 * 삭제한 결과 : 1 (34L) - 2 try
+											*/
 	}
 	
 	

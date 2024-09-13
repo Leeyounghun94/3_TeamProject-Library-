@@ -30,7 +30,7 @@ public class bookReservationServiceTests {
 	}
 
 	
-	@Test
+/*	@Test
 	public void testRsRegister () {
 		
 		bookReservationVO vo = new bookReservationVO();
@@ -48,15 +48,15 @@ public class bookReservationServiceTests {
 		/*	서비스에서 만든 객체 : bookReservationVO(r_bookname=테스트 북 네임, 
 														u_id=테스 유 아디, r_bookprice=1000, 
 														r_phone=010-00-00, r_start=2024-09-01, 
-														r_end=2024-09-03) */		
-	}
+														r_end=2024-09-03) 		
+	} */
 	
 	@Test
 	public void testRsRead() {
 		
-		bookReservationVO vo = service.rsRead("www");
+	//	bookReservationVO vo = service.rsRead("www");
 		
-		log.info("서비스에서 읽어온 결과 : " + vo);
+	//	log.info("서비스에서 읽어온 결과 : " + vo);
 		/* 서비스에서 읽어온 결과 : bookReservationVO(r_bookname=수정제목, 
 		 * u_id=www, r_bookprice=5000, r_phone=010-777,
 		 *  r_start=2001-10-02 00:00:00, r_end=2001-10-07 00:00:00)
@@ -87,35 +87,13 @@ public class bookReservationServiceTests {
 	
 	
 	@Test
-	public void testUpdate() {
-		
-		bookReservationVO vo = service.rsRead("QQQ");
-	
-		if(vo == null) {
-			log.info("정보를 찾을 수 없습니다.");
-		}
-		vo.setU_id("QQQ");
-		vo.setR_bookname("섭스");
-		vo.setR_bookprice(50000);
-		vo.setR_phone("010-111-111");
-		vo.setR_start("2014-11-01");
-		vo.setR_end("2014-11-11");
-				
-		log.info("섭스 -완-" + service.rsModify(vo));
-		
-		
-	}
-	
-	
-	
-	@Test
 	public void testDelete() {
 
 		//bookReservationVO vo = service.rsRead("QQQ");		
 		// vo.setU_id("QQQ");
 		// int count = service.rsRemove(vo);
 		 
-		 log.info("삭제 결과 : " + service.rsRemove("QQQ"));
+	//	 log.info("삭제 결과 : " + service.rsRemove("QQQ"));
 		 // 삭제 결과 : 1
 		
 	}

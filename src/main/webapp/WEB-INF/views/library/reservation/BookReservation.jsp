@@ -40,7 +40,7 @@
 					<br>
 					<br>
 					<div class="section_title text-center">
-						<h1>도서 예약 리스트</h1>
+						<h1>도서 예약/대출</h1>
 					</div>
 				</div>
 			</div>
@@ -61,10 +61,56 @@
   						<path
 								d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"></path>
 					</svg>
-						본 페이지는 도서 예약 입니다.
+						본 페이지는 도서 예약/대출 입니다.
 					</div>
 				</div>
 				<br>
+
+
+<div class="tblWrap">
+<table class="tbl">
+	<caption>예약안내</caption>
+	<colgroup>
+		<col style="width: 15%;">
+		<col>
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">구분</th>
+			<th scope="col">내용</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th scope="row">도서예약</th>
+			<td class="ta_l">
+			<ul class="dash-list">
+				<li>본인이 대출하려는 도서가 다른 회원이 대출 중일 경우, 예약하여 해당 도서 반납 시 우선 대출하는 서비스입니다.</li>
+				<li>1인 5권까지 예약가능하며, 1권의 도서에 대하여 3명까지 예약 가능합니다.</li>
+				<li>예약하신 도서가 반납되면 입력되어 있는 회원정보를 토대로 대출안내 SMS가 발송되며, 공지 드린 해당 일까지 대출하지 않은&nbsp;책은 예약이 자동 취소됩니다.</li>
+				<li>예약도서는 회원증 지참 후 해당 자료실에서 대출 가능 합니다.</li>
+				<li>SMS통보를 받은 후 대출안내에 명시된 기간 내(3일 이내)에 예약자 본인의 회원증을 지참 후 도서관에 방문하시어 대출하십시오.</li>
+				<li>SMS 통보 후 3일 이내에 대출을 하지 않을 경우 예약이 자동 취소됩니다.<br>
+				(자료가 필요하시지 않을 경우 홈페이지에서 예약 취소를 하실 수 있습니다.)</li>
+				<li>
+				<p>※ <span style="color:#3498db;">예약도서 수령 문자를 받은 후, 예약도서를 빌리실 때는 회원증 지참 후 해당 자료실에서 대출 가능합니다.
+				</span>
+				</p>
+				</li>
+			</ul>
+			</td>
+		</tr>
+		
+	</tbody>
+</table>
+</div>
+
+
+
+
+
+
+
 
 				<div class="fs-4 mb-3">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star-fill" viewBox="0 0 16 16">
@@ -126,6 +172,16 @@
 				<br>
 				<br>
 
+		<tr>
+			<th> scope="row">예약방법</th>
+			<td class="ta_l">
+			<ul class="decimal-list">
+				<li>본인의 아이디와 패스워드로 도서관 홈페이지에 로그인 합니다.</li>
+				<li>예약하고자 하는 도서를 검색합니다.</li>
+				<li>검색결과에서 예약하고자 하는 자료의 '도서예약신청' 버튼을 클릭합니다.</li>
+			</ul>
+			</td>
+		</tr>
 
 
 
@@ -178,18 +234,7 @@
 										</tr>
 									</thead>
 
-									<c:forEach items="${list}" var="library">
-										<tr>
-											<td><c:out value="${library.r_bookName}"></c:out></td>
-											<td><c:out value="${library.u_id}"></c:out></td>
-											<td><c:out value="${library.r_bookPrice}"></c:out></td>
-											<td><c:out value="${library.r_Phone}"></c:out></td>
-											<td><fmt:formatDate pattern="yyyy-MM-dd"
-													value="${library.r_Start}" /></td>
-											<td><fmt:formatDate pattern="yyyy-MM-dd"
-													value="${library.r_End}" /></td>
-										</tr>
-									</c:forEach>
+									
 
 								</table>
 								<br>
@@ -211,7 +256,7 @@
 						</div>
 						<div style="text-align: right;">
 							<a href="RsCreate" class="btn btn-outline-warning btn"
-								type="button">예약하기</a>
+								type="button">신청하기</a>
 						</div>
 					</div>
 				</div>
@@ -219,27 +264,6 @@
 		</div>
 	</div>
 
-<!-- Modal 추가 -> 요즘 트렌트는 alert 대신 modal을 쓴다 ! -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">알립니다.</h4>
-			</div>
-			<div class="modal-body">처리가 완료 되었습니다.</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-				<button type="button" class="btn btn-primary">저장</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
 
 
 
@@ -247,37 +271,8 @@
 
 
 
-<script type="text/javascript">
-		/* 자바 스크립트   */
-		$(document).ready(function() { // 문서의 준비단계에서 실행
 
-			var result = '<c:out value="${result}"/>'; /* controller에서 flashAttribute를 통해 1회용으로 넘어오는 값  */
 
-			checkModal(result);
-			
-			history.replaceState({}, null, null);
-			
-			function checkModal(result) {
-												
-				if (result == '' || history.state ) {
-					retrun;
-				}
-				
-				if (parseInt(result) > 0) {
-					$(".modal-body").html(
-							"예약" + parseInt(result) + " 이 등록 되었습니다.");
-					
-				}
-				
-				$("#myModal").modal("show");
-			}
-			
-			$("#regBtn").on("click", function(){
-				
-				self.location ="/reservation/RsCreate";
-			})
-		});
-	</script>
 
 	<%@ include file="../../includes/footer.jsp"%>
 </body>

@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.librarylyh.domain.UserVO;
 import kr.co.librarylyh.domain.bookReservationVO;
+import kr.co.librarylyh.mapper.BookMapper;
+import kr.co.librarylyh.mapper.UserMapper;
 import kr.co.librarylyh.mapper.bookReservationMapper;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -20,38 +23,50 @@ public class BookReservationServiceImpl implements BookReservationService {
 	
 	
 	@Setter(onMethod_ = @Autowired)
-	private bookReservationMapper mapper;
+	private bookReservationMapper rsMapper;
+		
 	
 	@Override
 	public void rsRegister(bookReservationVO vo) {
 		log.info("BookReservationServiceImpl.rsRegister 메서드 실행");
-		mapper.rsInsert(vo);
+		rsMapper.rsInsert(vo);
+		
 		
 	}
 
 	@Override
 	public List<bookReservationVO> rsList() {
 		log.info("BookReservationServiceImpl.rsList 메서드 실행");
-		return mapper.rsList();
-	}
+		return rsMapper.rsList();
+	} 
 
+/*
 	@Override
-	public boolean rsModify(bookReservationVO vo) {
-		log.info("BookReservationServiceImpl.rsModify 메서드 실행");
-		return mapper.rsUpdate(vo) == 1 ;
-	}
-
-	@Override
-	public boolean rsRemove(String u_id) {
+	public boolean rsRemove(UserVO rsNum) {
 		log.info("BookReservationServiceImpl.rsRemove 메서드 실행");
-		return mapper.rsDelete(u_id) == 1 ;
+		return rsMapper.rsDelete(rsNum) == 1 ;
+	}*/
+
+	
+	@Override
+	public bookReservationVO rsRead(Long rsNum) {
+		log.info("BookReservationServiceImpl.rsRead 메서드 실행");
+		return rsMapper.rsRead(rsNum);
 	}
 
 	@Override
-	public bookReservationVO rsRead(String u_id) {
-		log.info("BookReservationServiceImpl.rsRead 메서드 실행");
-		return mapper.rsRead(u_id);
+	public bookReservationVO rsModify(Long rsNum, Long isbn13) {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	@Override
+	public boolean rsRemove(Long rsNum) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
 
 
 }

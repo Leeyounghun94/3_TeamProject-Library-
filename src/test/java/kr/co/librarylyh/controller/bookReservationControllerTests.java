@@ -38,32 +38,44 @@ public class bookReservationControllerTests {
 	public void testList() throws Exception {
 		
 		log.info(
-				mockMvc.perform(MockMvcRequestBuilders.get("/reservation/list"))
+				mockMvc.perform(MockMvcRequestBuilders.get("/library/reservation/BookReservation"))
 				.andReturn()
 				.getModelAndView()
 				.getModelMap());		
 			
 	}
+/*	|-----------|----------|------------|----------|--------------------|--------------------|
+|r_bookname |u_id      |r_bookprice |r_phone   |r_start             |r_end               |
+|-----------|----------|------------|----------|--------------------|--------------------|
+|수정제목       |hhh       |5000        |010-777   |2001-10-02 00:00:00 |2001-10-07 00:00:00 |
+|수정제목       |테스 유 아디77 |5000        |010-777   |2001-10-02 00:00:00 |2001-10-07 00:00:00 |
+|수정제목       |www       |5000        |010-777   |2001-10-02 00:00:00 |2001-10-07 00:00:00 |
+|테스트 북 네임   |테스 유 아디   |1000        |010-00-00 |2024-09-01 00:00:00 |2024-09-03 00:00:00 |
+|-----------|----------|------------|----------|--------------------|--------------------| */	
 		
 	
 	@Test
 	public void testRegister() throws Exception {
 		
-		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/reservation/register")
-				.param("bookname", "컨.트.롤.")
-				.param("bookprice", "10000"))
+		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/library/reservation/RsCreate")
+				.param("r_bookname", "컨.트.롤.")
+				.param("u_id", "개새")
+				.param("r_bookprice", "10000")
+				.param("r_phone", "456-789-123")
+				.param("r_start", "1999-10-01")
+				.param("r_end", "2010-10-01"))
 				.andReturn()
 				.getModelAndView()
 				.getViewName();
 		log.info("결과 어떰? " + resultPage);
-		
+	/* 결과 어떰? redirect:/reservation/BookReservation */	
 	}
 	
 	@Test
 	public void testRead() throws Exception {
 		
-		log.info(mockMvc.perform(MockMvcRequestBuilders.get("/reservation/read")
-				.param("u_id", "QQQ"))
+		log.info(mockMvc.perform(MockMvcRequestBuilders.get("/library/reservation/read")
+				.param("u_id", "시발"))
 				.andReturn()
 				.getModelAndView()
 				.getModelMap());
@@ -71,7 +83,7 @@ public class bookReservationControllerTests {
 	}
 	
 	
-	@Test
+/*	@Test
 	public void testModify() throws Exception {
 		
 		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/reservation/modify")
@@ -81,14 +93,14 @@ public class bookReservationControllerTests {
 				.getViewName();
 		
 		log.info("삭제 결과? " + resultPage);
-	}
+	} */
 	
 	
 	@Test
 	public void testRemove() throws Exception {
 		
-		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/reservation/remove")
-				.param("u_id", "QQQ"))
+		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/library/reservation/BookReservation")
+				.param("u_id", "테스 유 아디"))
 				.andReturn()
 				.getModelAndView()
 				.getViewName();

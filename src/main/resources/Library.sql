@@ -48,25 +48,29 @@ values ('테스트제목1', '테스트카테', '테스트내용', '1', '2020-01-
 
 -- BOOK 테이블 생성
 create table book_tbl(
-	photo varchar2(50) not null,
-	book varchar2(20) not null,
-	author varchar2(20) not null,
-	publisher varchar2(20) not null,
-	price number(10,0),
-	category varchar2(20) not null,
-	summary varchar2(1000) not null,
-	b_count number(10,0),
-	ISBN_13 number(30,0)
+
+	isbn13 varchar2(13) primary key,
+	book varchar2(100),
+	author varchar2(100),
+	publisher varchar2(50),
+	price number(10,2),
+	photo varchar2(100)
 
 );
 
-insert into book_tbl(photo, book, author, publisher, price, category, summary, b_count, ISBN_13)
-values ('고생', '고생2', '고생작가', 'mbc출판', '1000', '문학', '프로젝트기간', '1000', '1111');
 
-INSERT INTO book_tbl (photo, book, author, publisher, price, genre, summary, b_count, isbn_13, isbn_10, publicationDate)
-VALUES ('사진링크', '책제목', '저자', '브랜드(출판사)', 10000, '장르', '대충 개쩌는 줄거리', 3, 1234567890123, 1000000000, TO_DATE('2024-09-03', 'YYYY-MM-DD'));
+insert into book_tbl(isbn13, book, author, publisher, price, photo) values
+('4567894567894', '마도서', '작가님', '넥슨', '5000', '사진1');
+insert into book_tbl(isbn13, book, author, publisher, price, photo) values
+('4561231234564', '책이라는것은', '머저리1', '넥슨', '6000', '사진2');
+insert into book_tbl(isbn13, book, author, publisher, price, photo) values
+('7894561231113', '남괴', '작가님', '힝힝', '5000', '사진4');
+insert into book_tbl(isbn13, book, author, publisher, price, photo) values
+('7777789456114', '이걸책이라고만듦?', '작가아님', '넥슨', '7000', '사진5');
 
 select * from book_tbl;
+
+drop table book_tbl;
 
 -- Cart 테이블 생성
 
@@ -82,28 +86,31 @@ create table cart_tbl(
 );
 
 
-
 -- reservation 테이블 생성
 
 create table reservation_tbl(
-
-	r_bookName varchar2(100) not null, --테이블 수정하기
-	u_id varchar2(20) not null unique,
-	r_bookPrice number(10),
-	r_Phone varchar2(30) not null,
-	r_Start date default sysdate, 
-	r_End date default sysdate
+	u_id varchar2(20),
+	isbn13 number(13),
+	rsNum number(10,0)  primary key,
+	rsStartDay date default sysdate, 
+	rsEndDay date default sysdate
 );
 
-insert into reservation_tbl (r_bookName, u_id, r_bookPrice, r_Phone, r_Start, r_End)
-values('yyy', 'hhh', '1000', '010-111-111', '2024/09/01', '2024/09/03'); --더미데이터 삽입
+insert into reservation_tbl (rsNum, u_id, isbn13, rsStartDay, rsEndDay)
+values(seq_reservation.nextval, 'ZR2411C', '4567894567894', '2024/09/01', '2024/09/03'); --더미데이터 삽입
 
-insert into reservation_tbl (r_bookName, u_id, r_bookPrice, r_Phone, r_Start, r_End)
-values('yyy', 'QQQ', '1000', '010-111-111', '2024/09/01', '2024/09/03'); 
-insert into reservation_tbl (r_bookName, u_id, r_bookPrice, r_Phone, r_Start, r_End)
-values('yyy', 'www', '1000', '010-111-111', '2024/09/01', '2024/09/03'); 
-insert into reservation_tbl (r_bookName, u_id, r_bookPrice, r_Phone, r_Start, r_End)
-values('yyy', 'eee', '1000', '010-111-111', '2024/09/01', '2024/09/03'); 
+insert into reservation_tbl (rsNum, u_id, isbn13, rsStartDay, rsEndDay)
+values(seq_reservation.nextval, 'QQQ123', '123123123', '2024/09/01', '2024/09/03');
+insert into reservation_tbl (rsNum, u_id, isbn13, rsStartDay, rsEndDay)
+values(seq_reservation.nextval, 'qwer789', '789789789', '2024/09/01', '2024/09/03');
+insert into reservation_tbl (rsNum, u_id, isbn13, rsStartDay, rsEndDay)
+values(seq_reservation.nextval, 'q1w2e3r', '9517534682', '2024/09/01', '2024/09/03');
+insert into reservation_tbl (rsNum, u_id, isbn13, rsStartDay, rsEndDay)
+values(seq_reservation.nextval, 'k4k5k6k7', '9876543210', '2024/09/01', '2024/09/03');
+insert into reservation_tbl (rsNum, u_id, isbn13, rsStartDay, rsEndDay)
+values(seq_reservation.nextval, 'w8w8w8w', '010203040', '2024/09/01', '2024/09/03');
+
+create sequence seq_reservation; -- 예약 테이블 자동 번호 객체 생성
 
 select * from reservation_tbl;
 
