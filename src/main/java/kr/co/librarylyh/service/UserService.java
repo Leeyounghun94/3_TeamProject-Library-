@@ -18,9 +18,17 @@ public interface UserService {
 	// 회원 탈퇴
 	public boolean remove(String u_id);
 	
+	// 회원 가입
 	public void join(UserVO user);
-
-    public UserVO login(String id, String pw);
+	
+	// 회원 로그인
+    public UserVO login(UserVO user);
+    
+    // 중복 아이디 체크
+	public int idCheck(String id);
+	
+	// 중복 닉네임 체크
+	public int nickNameCheck(String nickName);
 	
 	
 
