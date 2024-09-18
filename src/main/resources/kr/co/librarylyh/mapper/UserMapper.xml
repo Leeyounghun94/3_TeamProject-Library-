@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- xml를 활용한 공통코드 -->
+
+<mapper namespace="kr.co.librarylyh.mapper.UserMapper">
+
+
+
+<insert id="insertSelectUid">
+<selectKey keyProperty="u_id" order="BEFORE" resultType="String">
+		select dbms_random.String('X',10)u_id from dual 
+</selectKey>	
+<![CDATA[
+insert into member_tbl(u_id, name, birth, phone, email, id, pw, nickName) values(#{u_id}, #{name}, #{birth}, #{phone}, #{email}, #{id}, #{pw}, #{nickName} )
+]]>
+</insert>
+
+<select id="read" resultType="kr.co.librarylyh.domain.UserVO" >
+		<![CDATA[
+			select * from member_tbl where u_id = #{u_id}
+		]]>
+</select>
+
+<select id="findId" resultType="kr.co.librarylyh.domain.UserVO" >
+		<![CDATA[
+			select id from member_tbl where id = #{id}
+		]]>
+</select>
+
+<select id="findPassword" resultType="kr.co.librarylyh.domain.UserVO" >
+		<![CDATA[
+			select * from member_tbl where id = #{id} and phone = #{phone}
+		]]>
+</select>
+
+<update id="update">
+		<![CDATA[
+			update member_tbl set name = #{name}, phone = #{phone}, email = #{email}, pw = #{pw} where u_id = #{u_id}
+		]]>
+</update>
+
+<delete id="delete">
+		<![CDATA[
+			delete member_tbl where u_id = #{u_id}
+		]]>	
+</delete>
+
+	<select id="login" resultType="kr.co.librarylyh.domain.UserVO">
+		<![CDATA[
+			select * from member_tbl where id = #{id} and pw = #{pw}
+		]]>
+	</select>
+</mapper>
