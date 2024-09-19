@@ -53,19 +53,19 @@
 		<span>
 			<!-- 로그인 하지 않은 상태 -->
 			<c:if test = "${user == null }">
-			<a href= "/library/login">로그인</a> 
+			<a href= "/library/login.do">로그인</a> 
 			</c:if>
 			<!-- 로그인 한 상태 -->
 			<c:if test="${user != null }">
 				<div class="login_success_area">
-					<span><a href="/library/mypage">${user.nickName }</a></span>
+					<span><a href="/library/myPage">${user.nickName }</a></span>
 				</div>
 				<div class ="logout_button" >
 					<a href="/library/logout" id="logout_button">로그아웃</a>
 				</div>
 			</c:if>
-			<c:if test="${user.birth == 123451 }">
-				<a href="/library/admin/main">관리자페이지</a>
+			<c:if test="${user.authority == 1 }">
+				<a href="/library/admin/main">어드민페이지</a>
 			</c:if>	
 		</span>
 		</div>

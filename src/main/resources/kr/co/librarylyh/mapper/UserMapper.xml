@@ -36,12 +36,31 @@
 		]]>
 	</select>
 	
+	<!-- 어드민 리스트 -->
+	<select id="getAdminList" resultType="kr.co.librarylyh.domain.UserVO">
+		<![CDATA[
+			select * from member_tbl where authority > 0
+		]]>
+	</select>
+	
+	<!--  유저 리스트 
+	<select id="getUserList" resultType="kr.co.librarylyh.domain.UserVO">
+		<![CDATA[
+			select * from member_tbl where authority = 0
+		]]>
+	</select> -->
+	
 	<select id="read" resultType="kr.co.librarylyh.domain.UserVO" >
 		<![CDATA[
 			select * from member_tbl where id = #{id}
 		]]>
 	</select>
 	
+	<insert id="admin">
+		<![CDATA[
+			insert into member_tbl (name, birth, phone, email, id, pw, authority) values(#{name}, #{birth}, #{phone}, #{email}, #{id}, #{pw}, #{authority})
+		]]>
+	</insert>
 	
 	
 	<update id="update">

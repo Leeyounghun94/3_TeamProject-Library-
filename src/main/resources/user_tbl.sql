@@ -9,6 +9,9 @@ create table member_tbl(
 	nickName varchar2(20) not null unique
 )
 
+alter table member_tbl add authority number(10);
+alter table member_tbl modify authority number(10) default '0';
+
 select dbms_random.String('X',10) u_id from dual; -- 임시테이블에 랜덤 번호 생성 (u_id)
 
 insert into member_tbl(u_id, name, birth, phone, email, id, pw, nickName) values ('ZRBQCC081C','테스트', '990101', '010-1234-1234', 'mbc@naver.com', 'test123', 'test123', 'tester');
@@ -22,3 +25,6 @@ select * from MEMBER_TBL;
 select * from member_tbl where id = 'test555' and pw = 'test55';
 
 select u_id, name, birth, phone, email, id, pw, nickName from member_tbl where id = 'test555' and pw = 'test55';
+
+update MEMBER_TBL set authority = 0 where id ='test222';
+select * from member_tbl where authority>0;

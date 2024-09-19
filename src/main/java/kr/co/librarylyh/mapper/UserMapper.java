@@ -1,6 +1,8 @@
 package kr.co.librarylyh.mapper;
 
 
+import java.util.List;
+
 import kr.co.librarylyh.domain.UserVO;
 
 // DB와 영속성을 가진 패키지
@@ -32,4 +34,13 @@ public interface UserMapper {
 	
 	// 회원 로그인
 	public UserVO login(UserVO user);
+	
+	// 어드민 리스트 
+	public List<UserVO> getAdminList(); 
+	
+	// 회원 리스트
+//	public List<UserVO> getUserList();
+	
+	// 어드민 등록
+	public void admin(UserVO user);
 }	

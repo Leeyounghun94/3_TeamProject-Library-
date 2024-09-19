@@ -57,6 +57,7 @@ public class UserControllerTests {
 		log.info(result);
 	}
 	
+	
 	@Test
 	public void testNickName() throws Exception {
 		String result = mockMvc.perform(MockMvcRequestBuilders.post("/library/nickNameCheck")

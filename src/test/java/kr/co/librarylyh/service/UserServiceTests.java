@@ -105,4 +105,10 @@ public class UserServiceTests {
 		service.nickNameCheck(nick1); // 1
 		service.nickNameCheck(nick2); // 0
 	}
+	
+	@Test
+	public void testAdmin() {
+		
+		service.getUserList().forEach(user -> log.info(user));
+	}
 }

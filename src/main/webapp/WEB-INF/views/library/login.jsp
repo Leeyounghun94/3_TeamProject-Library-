@@ -48,7 +48,7 @@ crossorigin="anonymous"></script>
 <script type="text/javascript">
 $(".login_button").click(function(){
 	/* alert("로그인"); */
-	$("#login_form").attr("action", "/library/login");
+	$("#login_form").attr("action", "/library/login.do");
 	$("#login_form").submit();
 });
 

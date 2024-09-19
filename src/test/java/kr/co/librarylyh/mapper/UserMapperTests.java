@@ -104,4 +104,25 @@ public class UserMapperTests {
 		mapper.nickNameCheck(nick2); // 0
 	}
 	
+	@Test
+	public void testgetList() {
+		mapper.getAdminList().forEach(user -> log.info(user));
+	}
+	
+	@Test
+	public void testAdminRegister() {
+		UserVO user = new UserVO();
+		
+		user.setName("관리자");
+		user.setBirth("020103");
+		user.setEmail("admin123@gmail.com");
+		user.setId("admin111");
+		user.setPw("admin111");
+		user.setPhone("010-1234-0987");
+		user.setAuthority(1);
+		
+		mapper.admin(user);
+		log.info(user);
+	}
+	
 }

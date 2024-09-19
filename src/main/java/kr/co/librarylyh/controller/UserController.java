@@ -117,6 +117,9 @@ public class UserController {
     	
     	return "redirect:/library/home";
     }
+    
+    @GetMapping("/myPage")
+    public void myPage() {}
 
     
     @GetMapping("/modify")
