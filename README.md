@@ -62,4 +62,6 @@ Spring FrameWork를 이용하여 도서 관리 시스템 서버를 구축하였�
 
 #### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) 책 반납
 
-#### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) 책 연장
+#### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) 도서 예약 일자 연장
+
+#### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) 열람실 예약 
