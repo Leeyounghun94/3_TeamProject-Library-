@@ -17,7 +17,7 @@
 					<div class="hero_slide_background" style="background-image:url(/resources/images/slider_background.jpg)"></div>
 					<div class="hero_slide_container d-flex flex-column align-items-center justify-content-center">
 						<div class="hero_slide_content text-center">
-							<h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">좋은<span>하루</span>되세요!</h1>
+							<h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">Get your <span>Education</span> today!</h1>
 						</div>
 					</div>
 				</div>
@@ -27,7 +27,7 @@
 					<div class="hero_slide_background" style="background-image:url(/resources/images/slider_background.jpg)"></div>
 					<div class="hero_slide_container d-flex flex-column align-items-center justify-content-center">
 						<div class="hero_slide_content text-center">
-							<h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut"> 좋은 <span> 하루 </span> 되세요! </h1>
+							<h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">Get your <span>Education</span> today!</h1>
 						</div>
 					</div>
 				</div>
@@ -37,15 +37,15 @@
 					<div class="hero_slide_background" style="background-image:url(/resources/images/slider_background.jpg)"></div>
 					<div class="hero_slide_container d-flex flex-column align-items-center justify-content-center">
 						<div class="hero_slide_content text-center">
-							<h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut"> 좋은 <span> 하루 </span> 되세요! </h1>
+							<h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">Get your <span>Education</span> today!</h1>
 						</div>
 					</div>
 				</div>
 
 			</div>
 
-			<div class="hero_slider_left hero_slider_nav trans_200"><span class="trans_200">이전</span></div>
-			<div class="hero_slider_right hero_slider_nav trans_200"><span class="trans_200">다음</span></div>
+			<div class="hero_slider_left hero_slider_nav trans_200"><span class="trans_200"> <- </span></div>
+			<div class="hero_slider_right hero_slider_nav trans_200"><span class="trans_200"> -> </span></div>
 		</div>
 
 	</div>
@@ -77,10 +77,10 @@
 
 					<div class="col-lg-4 hero_box_col">
 						<div class="hero_box d-flex flex-row align-items-center justify-content-start">
-							<img src="/resources/images/professor.svg" class="svg" alt="">
+							<img src="/resources/images/reservation.png">
 							<div class="hero_box_content">
-								<h2 class="hero_box_title">Our Teachers</h2>
-								<a href="teachers.html" class="hero_box_link">view more</a>
+								<h2 class="hero_box_title">도서 대출 | 예약</h2>
+								<a href="<c:url value='/library/reservation/ReservationMain' />" class="hero_box_link">view more</a>
 							</div>
 						</div>
 					</div>
@@ -97,7 +97,7 @@
 			<div class="row">
 				<div class="col">
 					<div class="section_title text-center">
-						<h1>Popular Courses</h1>
+						<img class="bestseller" src="/resources/images/bestseller.png"><h1>Best-Seller</h1>
 					</div>
 				</div>
 			</div>

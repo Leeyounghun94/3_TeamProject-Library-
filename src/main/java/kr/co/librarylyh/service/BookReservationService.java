@@ -2,7 +2,8 @@ package kr.co.librarylyh.service;
 
 import java.util.List;
 
-import kr.co.librarylyh.domain.BookVO;
+import org.apache.ibatis.annotations.Param;
+
 import kr.co.librarylyh.domain.bookReservationVO;
 
 public interface BookReservationService {
@@ -15,7 +16,7 @@ public interface BookReservationService {
 	
 	public bookReservationVO rsRead(Long rsNum);// 예약 가져오기
 	
-	public boolean rsModify(Long rsNum, Long isbn13);
+	public boolean rsModify(@Param("rsNum") Long rsNum, @Param("isbn13") Long isbn13);	// 예약 수정하기
 	
 	public boolean rsRemove(Long rsNum);// 예약 삭제하기
 	

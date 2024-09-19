@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import kr.co.librarylyh.domain.BookVO;
-import kr.co.librarylyh.domain.UserVO;
+
+
 import kr.co.librarylyh.domain.bookReservationVO;
 
 public interface bookReservationMapper {

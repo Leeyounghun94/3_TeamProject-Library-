@@ -21,9 +21,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserVO login(String id, String pw) {
+    public UserVO login(UserVO user) {
 
-        UserVO loginUser = mapper.login(id, pw);
+        UserVO loginUser = mapper.login(user);
 
         return loginUser;
     }
@@ -44,5 +44,17 @@ public class UserServiceImpl implements UserService{
 	public boolean remove(String u_id) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public int idCheck(String id) {
+		// 회원 아이디 중복체크
+		return mapper.idCheck(id);
+	}
+
+	@Override
+	public int nickNameCheck(String nickName) {
+		// 회원 닉네임 중복체크
+		return mapper.nickNameCheck(nickName);
 	}
 }

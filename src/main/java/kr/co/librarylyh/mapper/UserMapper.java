@@ -1,7 +1,5 @@
 package kr.co.librarylyh.mapper;
 
-import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.librarylyh.domain.UserVO;
 
@@ -21,11 +19,17 @@ public interface UserMapper {
 	
 	public int delete(String u_id); // 회원 탈퇴
 	
-	public UserVO login(@Param("id") String id, @Param("pw") String pw); // 회원 로그인 
+	  
 	
-	public void join(UserVO user);
+	// 회원가입 
+	public void join(UserVO user); 
 	
-	public boolean findId(String id); // 회원 아이디 찾기
+	// 중복 아이디 체크
+	public int idCheck(String id); 
 	
-	public UserVO findPassword(UserVO user); // 비밀번호 찾기
-}
+	// 중복 닉네임 체크
+	public int nickNameCheck(String nickName);
+	
+	// 회원 로그인
+	public UserVO login(UserVO user);
+}	

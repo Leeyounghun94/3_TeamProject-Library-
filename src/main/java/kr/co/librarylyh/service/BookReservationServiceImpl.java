@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import kr.co.librarylyh.domain.UserVO;
 import kr.co.librarylyh.domain.bookReservationVO;
-import kr.co.librarylyh.mapper.BookMapper;
 import kr.co.librarylyh.mapper.UserMapper;
 import kr.co.librarylyh.mapper.bookReservationMapper;
 import lombok.AllArgsConstructor;

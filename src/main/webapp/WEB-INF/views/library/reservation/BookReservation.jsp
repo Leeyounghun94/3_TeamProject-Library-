@@ -21,8 +21,17 @@
 
 .fs-2 {
 	font-size: calc(1.325rem + .75vw) !important;
-}
-<!--본 페이지는~ ->글자사이즈 CSS -->
+}<!--본 페이지는~ ->글자사이즈 CSS -->
+
+
+.col-md-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    color: black;
+}<!-- 본문(Body) 글자색 지정-->
+
+
 </style>
 
 <meta charset="UTF-8">
@@ -185,15 +194,26 @@
 								<table class="table" style="margin: auto; text-align: center;">
 									<thead>
 										<tr>
+											<th>번호</th>
 											<th>도서명</th>
 											<th>저자</th>
 											<th>출판사</th>
 											<th>가격</th>
 											<th>예약</th>
-
 										</tr>
 									</thead>
 									
+									<c:forEach var="vo" items="${list}">
+										
+										<tr>
+											<td>${vo.isbn13}</td>
+											<td>${vo.book}</td>
+										 	<td>${vo.author}</td>
+										 	<td>${vo.publisher}</td>
+										 	<td>${vo.price}</td>
+										</tr>
+									
+									</c:forEach>
 
 								</table>
 								<br>
