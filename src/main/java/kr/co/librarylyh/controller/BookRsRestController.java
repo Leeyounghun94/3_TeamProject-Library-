@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @RestController// rest 방식으로 응답하며, view-jsp 가 아닌 json과 xml 로 나타난다.
-@RequestMapping("/library/*")//	 http://localhost:80/replies/????
+@RequestMapping("/library/*")//	 
 @Log4j2
 @AllArgsConstructor// 생성자 구현 -> new ReplyController(ReplyService);
 
@@ -31,6 +32,9 @@ public class BookRsRestController {
 	
 	
 	private final BookReservationService rsService ;
+	
+	
+	
 	
 	
 	
@@ -59,16 +63,13 @@ public class BookRsRestController {
 			
 			log.info("bookReservationController.remove 메서드 실행");
 			
-			if (rsService.rsRemove(rsNum)) {
+			if(rsService.rsRemove(rsNum)) {
 				
-				return new ResponseEntity<>("success", HttpStatus.OK)
-						
-			}else {
+				return new ResponseEntity<>("success", HttpStatus.OK);
 				
-	
-			
-			return "redirect:/reservation/BookReservation";
-					
+			} else {
+				
+				return new ResponseEntity<>("fail", HttpStatus.BAD_REQUEST);
 			}
 	
 		}

@@ -58,6 +58,13 @@ public class bookReservationController {
 	*/
 	
 	
+	@GetMapping("/reservation/RsUpdate")
+	public void RsUpdate( ) {
+			
+		
+	}
+	
+	
 	
 	
 	// 예약 신청하기

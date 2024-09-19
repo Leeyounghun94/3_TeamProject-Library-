@@ -17,8 +17,9 @@
 
 
 </style>
+
 <meta charset="UTF-8">
-<title>도서 예약 신청</title>
+<title>나의 예약 정보</title>
 </head>
 <body>
 <!-- Popular -->
@@ -28,13 +29,12 @@
 				<div class="col">
 				<br><br><br><br>		
 					<div class="section_title text-center">					
-						<h1>도서 예약 신청</h1>
+						<h1>나의 예약 정보</h1>
 					</div>
 				</div>
 			</div>
 		</div><!-- <div class="container"> -->
 	</div><!-- <div class="popular page_section"> -->
-
 
 <div class="container-fluid">
 	<div class="row">
@@ -65,14 +65,14 @@
 				</div>
 				<div class="form-group">					 
 					<label for="RsStart-day">예약 시작 일자</label>
-					<input type="date" class="form-control" id="" />
+					<input type="text" class="form-control" id="" />
 				</div>
 				<div class="form-group">					 
 					<label for="RsEnd-day">예약 종료 일자</label>
-					<input type="date" class="form-control" id="" />
+					<input type="text" class="form-control" id="" />
 				</div>			 
 				
-				<div style="text-align: right;"><a href="RsCreate" class="btn btn-outline-warning btn" type="button" >신청하기</a></div>	
+				<div style="text-align: center;"><a href="RsCreate" class="btn btn-outline-warning btn" type="button" >신청하기</a></div>	
 				
 				</form>
 		</div>
@@ -81,10 +81,6 @@
 		</div>
 	</div>
 </div>
-
-
-
-
 
 
 <%@ include file="../../includes/footer.jsp" %>

@@ -44,6 +44,7 @@
 						<li class="main_nav_item"><a href="news.html">도서대여</a></li>
 						<li class="main_nav_item"><a href="/library/board/list">게시판</a></li>
 						<li class="main_nav_item"><a href="/library/reservation/ReservationMain">예약</a></li>
+						<li class="main_nav_item"><a href="/library/reservation/RsUpdate">예약 수정 (임시)</a></li>
 					</ul>
 				</div>
 			</nav>
