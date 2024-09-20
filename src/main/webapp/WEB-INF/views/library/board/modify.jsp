@@ -3,17 +3,41 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../../includes/header.jsp"%>
+<link rel="stylesheet" type="text/css"
+	href="/resources/styles/news_styles.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/styles/news_responsive.css">
 
 
-<div class="row">
-  <div class="col-lg-12">
-    <h1 class="page-header">Board Modify</h1>
-  </div>
-  <!-- /.col-lg-12 -->
+
+<div class="home">
+	<div class="home_background_container prlx_parent">
+		<div class="home_background prlx"
+			style="background-image: url(/resources/images/news_background.jpg)"></div>
+	</div>
+	<div class="home_content">
+		<h1>게시글 수정</h1>
+	</div>
 </div>
-<!-- /.row -->
+	
+	
 
-<div class="row">
+	
+	<!-- Popular -->
+
+	<div class="popular page_section">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="section_title text-center">
+						<h1>게시글 수정</h1>
+					</div>
+				</div>
+			</div>
+		</div><!-- <div class="container"> -->
+	</div><!-- <div class="popular page_section"> -->
+
+<div class="row-context">
   <div class="col-lg-12">
     <div class="panel panel-default">
 
@@ -97,6 +121,18 @@
 
 
 <style>
+.row-context{
+  	height: 700px;
+	width: 600px;
+	margin-left: 550px;
+}
+
+.row-file{
+  	height: 200px;
+	width: 600px;
+	margin-left: 550px;
+}
+
 .uploadResult {
   width:100%;
   background-color: gray;
@@ -146,7 +182,7 @@
 
 
 
-<div class="row">
+<div class="row-file">
   <div class="col-lg-12">
     <div class="panel panel-default">
 

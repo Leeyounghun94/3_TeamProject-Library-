@@ -1,11 +1,12 @@
 --------------------------------------------- 좋아요 구현 10차 시기
 create table tbl_like (
-	bno number(10,0),
+	bno number(10,0) default 0,
 	userId varchar2(200)
 )
 
+drop table tbl_like
 
-
+select * from tbl_like
 
 
 
@@ -37,6 +38,18 @@ create table tbl_board (
   nickName varchar2(50),
   replycnt number default 0
 );
+
+alter table tbl_board add (uuid varchar2(100) default 'X');
+alter table tbl_board add (uploadPath varchar2(200) default 'X' );
+alter table tbl_board add (fileName varchar2(100) default '.no' );
+alter table tbl_board add (filetype char(1) default 'I');
+
+
+ALTER TABLE tbl_board DROP COLUMN fileName; -- 칼럼 삭제
+
+
+alter table tbl_board add (likeNum number default 0); -- 게시물 좋아요 수
+
 alter table tbl_board add (replycnt number default 0);
 
 alter table tbl_board add (viewNum number default 0); -- 게시글 조회수

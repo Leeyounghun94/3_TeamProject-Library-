@@ -111,11 +111,6 @@
       <div class="panel-heading">게시글을 작성 합니다. 귀하의 소중한 의견을 공유해 주세요.</div><br>
       <!-- /.panel-heading -->
       <div class="panel-body">
-      
-      	<% /* 로그인 객체가 세션으로 들어오면 nickName 만 받아오기 위함. 아래 내용은 수정 되어야함 */
-    		String nickName = (String) session.getAttribute("nickName");
-		%>
-		
 
 		
         <form role="form" action="/library/board/register" method="post">
@@ -138,7 +133,6 @@
             <label>내용</label>
             <textarea class="form-control" rows="3" name='content' placeholder="내용을 입력해주세요."></textarea>
           </div>
-    
         </form>
 
       </div>
@@ -162,7 +156,7 @@
  			<input type="file" class="form-control" name='uploadFile' multiple>
 		</div>
         
-        <div class='uploadResult'> 
+        <div class='uploadResult'> <!-- 새 게시글 등록에서 이미지 첨부 했을 때 나오는 곳 -->
           <ul>
           </ul>
         </div>
@@ -207,18 +201,6 @@
 <script>
 
 $(document).ready(function(e){
-
-	/* 
-  var formObj = $("form[role='form']");
-  
-  $("button[type='submit']").on("click", function(e){
-    
-    e.preventDefault();
-    
-    console.log("submit clicked");
-    
-  }); */
-
   
   var formObj = $("form[role='form']"); // 파일업로드는 별도의 업로드 버튼 없이 <input type='file'>의 내용이 변경되는 것을 감지
   
@@ -230,7 +212,7 @@ $(document).ready(function(e){
     
     var str = "";
     
-    $(".uploadResult ul li").each(function(i, obj){
+    $(".uploadResult ul li").each(function(i, obj){ //업로드된 파일 리스트에서 정보를 추출해 숨겨진 input으로 추
       
       var jobj = $(obj);
       
@@ -248,7 +230,9 @@ $(document).ready(function(e){
     
     console.log(str);
     
-    formObj.append(str).submit();
+    formObj.append(str).submit(); // 폼을 제출
+    
+    
     
   });
 
@@ -311,28 +295,6 @@ $(document).ready(function(e){
     var str ="";
     
     $(uploadResultArr).each(function(i, obj){
-    
-        /* //image type
-        if(obj.image){
-          var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
-          str += "<li><div>";
-          str += "<span> "+ obj.fileName+"</span>";
-          str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
-          str += "<img src='/display?fileName="+fileCallPath+"'>";
-          str += "</div>";
-          str +"</li>";
-        }else{
-          var fileCallPath =  encodeURIComponent( obj.uploadPath+"/"+ obj.uuid +"_"+obj.fileName);            
-            var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
-              
-          str += "<li><div>";
-          str += "<span> "+ obj.fileName+"</span>";
-          str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
-          str += "<img src='/resources/img/attach.png'></a>";
-          str += "</div>";
-          str +"</li>";
-        } */
-		//image type
 		
 		if(obj.image){ // 이미지 파일일 경우
 			var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
@@ -364,7 +326,7 @@ $(document).ready(function(e){
     uploadUL.append(str);
   }
 
-  $(".uploadResult").on("click", "button", function(e){ // 게시글 작성하고 파일 업로드라면 버튼 생기는데 그 버튼임 
+  $(".uploadResult").on("click", "button", function(e){ // 게시글 작성하고 파일 업로드하면 버튼 생기는데 그 버튼임 
 	    
     console.log("delete file");
       

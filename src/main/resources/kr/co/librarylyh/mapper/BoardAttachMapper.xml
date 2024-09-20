@@ -10,6 +10,14 @@
 		values (#{uuid}, #{uploadPath}, #{fileName},
 		#{fileType}, #{bno} )
 	</insert>
+	
+<update id="insertBoard">
+    update tbl_board
+    set uuid = #{uuid}, 
+        uploadPath = #{uploadPath}, 
+        fileName = #{fileName}
+    where bno = #{bno}
+</update>
 
 	<delete id="delete">
 
@@ -34,5 +42,6 @@
 		select * from tbl_attach where uploadpath = to_char(sysdate -1 ,'yyyy\mm\dd')
 
 	</select>
+	
 
 </mapper>

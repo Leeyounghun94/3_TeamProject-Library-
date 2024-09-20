@@ -2,7 +2,60 @@
   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@include file="../includes/header.jsp"%>
+<%@ include file="../includes/header.jsp"%>
+<link rel="stylesheet" type="text/css" href="/resources/styles/news_styles.css">
+
+
+<style>
+  .home2{
+      width : 100%;
+      height : 50vh;
+   }
+ .panel-body{
+ 	/* background-color:black; */
+ 	width:90%;
+ 	
+ }
+ .text{
+    width: 250px;
+    height: 32px;
+    font-size: 15px;
+    border: 0;
+    border-radius: 15px;
+    outline: none;
+    padding-left: 10px;
+    background-color: rgb(233,233,233);
+}
+</style>
+
+
+
+   <div class="home2">
+      <div class="home_background_container prlx_parent">
+         <div class="home_background prlx" style="background-image:url(/resources/images/courses_background.jpg)"></div>
+      </div>
+      <div class="home_content">
+         <h1><b>게시판</b></h1>
+      </div>
+   </div>
+	
+	
+
+	
+	<!-- Popular -->
+
+	<div class="popular page_section">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="section_title text-center">
+						<h1>게시판</h1>
+					</div>
+				</div>
+			</div>
+		</div><!-- <div class="container"> -->
+	</div><!-- <div class="popular page_section"> -->
+   
 
 
 <div class="row">
@@ -12,6 +65,7 @@
   <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
+
 
 <div class="row">
   <div class="col-lg-12">
@@ -27,7 +81,6 @@
         <input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
 	    <input type='hidden' name='type' value='<c:out value="${cri.type}"/>'>
 		<input type='hidden' name='keyword' value='<c:out value="${cri.keyword}"/>'>
-      
  
 <div class="form-group">
   <label>Bno</label> 

@@ -16,6 +16,7 @@ public interface BoardAttachMapper {
 	
 	public List<BoardAttachVO> getOldFiles(); // 잘못된 파일 찾기
 	
+	public void insertBoard(BoardAttachVO vo);
 	
 
 }

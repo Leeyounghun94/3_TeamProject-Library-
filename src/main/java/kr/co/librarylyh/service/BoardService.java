@@ -10,32 +10,32 @@ import kr.co.librarylyh.domain.LikeVO;
 // 컨트롤러랑 직접적인 거래하는 애임. 서비스에서 impl이랑 중개해줌.
 public interface BoardService {
 
-	public void register(BoardVO board);
+	public void register(BoardVO board); // 게시글 등록
 
 	// public BoardVO get(Long bno);
 	public BoardVO get(Long bno) throws Exception; // 게시물 조회수
 
-	public boolean modify(BoardVO board);
+	public boolean modify(BoardVO board); // 게시글 수정
 
-	public boolean remove(Long bno);
+	public boolean remove(Long bno); // 게시글 삭제
 
 	// public List<BoardVO> getList();
 
-	public List<BoardVO> getList(Criteria cri);
+	public List<BoardVO> getList(Criteria cri); // 게시글 페이징 처리
 
-	//추가
-	public int getTotal(Criteria cri);
+	
+	public int getTotal(Criteria cri); // 게시글 수 카운트
 	
 	public List<BoardAttachVO> getAttachList(Long bno);
 	
 	//게시글 좋아요 여부
+	
 	public LikeVO serviceCheckLike(Long bno); // 게시글 좋아요 여부 판단 
 	
-	public void serviceInsertLike(String userId, Long bno); // 게시글 좋아요 (좋아요)
+	public void serviceInsertLike(String likeUserId, Long bno) throws Exception; // 게시글 좋아요 (좋아요)
 	
-	public int serviceDeleteLike(LikeVO likeVO); // 게시글 좋아요 한번더 (좋아요 취소)
+	public int serviceDeleteLike(String likeUserId, Long bno) throws Exception; // 게시글 좋아요 한번더 (좋아요 취소)
 	
-	public int serviceCountLike(Long bno); // 좋아요 갯수가 몇개인지
 	
 	
 

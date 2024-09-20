@@ -93,10 +93,9 @@
 .heart-container {
   --heart-color: rgb(255, 91, 137);
   position: relative;
-  width: 35px;
-  height: 35px;
+  width: 50px;
+  height: 50px;
   transition: .3s;
-  margin-left: 350px;
 }
 
 .heart-container .checkbox {
@@ -223,9 +222,6 @@
 										<h1>
 											<c:out value="${board.title }" />
 										</h1>
-										
-	
-        					
 									</div>
 									<div class="news_post_meta">
 										<span class="news_post_comments">작성자</span> <span>|</span> <span
@@ -237,6 +233,7 @@
 												value="${board.viewNum}" /></span> <span>|</span> <span
 											class="news_post_comments">좋아요 : <c:out 
 												value="${board.likeNum}" /> </span>
+
 									</div>
 								</div>
 							</div>
@@ -245,11 +242,26 @@
 									<c:out value="${board.content}" />
 								</p>
 							</div>
+							<!-- 좋아요 이미지 출력되는 칸 -->
+							<div class="likeResult"> 
+								<ul>
+
+								</ul>
+							</div>
 							
-							<!-- 좋아요 -->
+							
+							<!-- 좋아요 테스트  -->
 							<div class="heart-container" title="Like">
             					<input type="checkbox" class="checkbox" id="Give-It-An-Id">
            							<div class="svg-container">
+                						<svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg"> <!-- 하트 빈거 나옴 -->
+                    						<path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+                    						</path>
+                						</svg>
+                						<svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg"><!-- 찬 하트 -->
+                    						<path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+                    						</path>
+                						</svg>
 							                <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
 							                    <polygon points="10,10 20,20"></polygon>
 							                    <polygon points="10,50 20,50"></polygon>
@@ -262,31 +274,53 @@
         					</div> <!-- class="heart-container" title="Like" -->
 							
 							
+							
+							
+							
+							
+							<button data-oper='likeBtn' class="likeBtn btn-default">좋아요</button>
+								 session id : ${userId} <c:out value="${userId}" />
+								 <c:out value="${userId}" />
+
+							<button data-oper='modify' class="btn btn-default">글수정</button>
+							<button data-oper='list' class="btn btn-info">목록</button>
+
 							<div class='row'>
+
 								<div class="col-lg-12">
+
 									<!-- /.panel -->
 									<div class="panel panel-default">
+										<!--       <div class="panel-heading">
+        <i class="fa fa-comments fa-fw"></i> Reply
+      </div> -->
+
 										<div class="panel-heading">
-											<i class="fa fa-comments fa-fw"></i> 댓글
+											<i class="fa fa-comments fa-fw"></i> Reply
 											<button id='addReplyBtn'
-												class='btn btn-primary btn-xs pull-right'>댓글 작성</button>
-											<button data-oper='modify' class="btn btn-default">글수정</button>
-											<button data-oper='list' class="btn btn-info">목록</button>
+												class='btn btn-primary btn-xs pull-right'>New Reply</button>
 										</div>
+
 
 										<!-- /.panel-heading -->
 										<div class="panel-body">
+
 											<ul class="chat">
+
 											</ul>
 											<!-- ./ end ul -->
 										</div>
 										<!-- /.panel .chat-panel -->
 
 										<div class="panel-footer"></div>
+
+
 									</div>
 								</div>
 								<!-- ./ end row -->
 							</div>
+
+
 						</div>
 
 					</div>
@@ -439,28 +473,16 @@
 							console.log("아이디 체크 DB" + likeChk);
 							console.log("아이디 체크 세션 " + likeSessionUserId);
 							
-							var likeImg = $(".svg-container");
+							var likeImg = $(".likeResult");
 							var str = ""; // 함수 호출시 마다 초기화
 
 							if (likeChk === likeSessionUserId && likeChk != undefined) { // DB의 아이디와 세션의 아이디를 비교 하여 해당게시글 좋아요 여부 판단.
 								
-								//str = "<li><img src='../../resources/images/heart_full.JPG'></li>";
-								
-						        // 찬 하트
-						        str = "<svg viewBox='0 0 24 24' class='svg-filled' xmlns='http://www.w3.org/2000/svg'>";
-						        str += "<path d='M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z'></path>";
-						        str += "</svg>";
-
+								str = "<li><img src='../../resources/images/heart_full.JPG'></li>";
 							
 							} else { // 그렇지 않을 경우 좋아요를 누르지 않았다 판정 -> 빈하트
 								
-								//str = "<li><img src='../../resources/images/heart_empty.JPG'></li>";
-								
-						        // 빈 하트
-						        str = "<svg viewBox='0 0 24 24' class='svg-outline' xmlns='http://www.w3.org/2000/svg'>";
-						        str += "<path d='M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z'></path>";
-						        str += "</svg>";
-								
+								str = "<li><img src='../../resources/images/heart_empty.JPG'></li>";
 								
 							}
 							
@@ -468,7 +490,7 @@
 						} //end likeCheck()
 						
 							
-						$(".heart-container").on("click", function(e){ // 좋아요 버튼을 누르면 LikeVO 테이블에 bno와 userId가 저장됨.
+						$("button[data-oper='likeBtn']").on("click", function(e){ // 좋아요 버튼을 누르면 LikeVO 테이블에 bno와 userId가 저장됨.
 		
 							var likeSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
 							var likeBno = '<c:out value="${board.bno}"/>';
@@ -567,10 +589,38 @@
 							showList(pageNum);
 						});
 
+
+						/*     function showList(page){
+						
+						 replyService.getList({bno:bnoValue,page: page|| 1 }, function(list) {
+						
+						 var str="";
+						 if(list == null || list.length == 0){
+						
+						 replyUL.html("");
+						
+						 return;
+						 }
+						 for (var i = 0, len = list.length || 0; i < len; i++) {
+						 str +="<li class='left clearfix' data-rno='"+list[i].rno+"'>";
+						 str +="  <div><div class='header'><strong class='primary-font'>"+list[i].replyer+"</strong>"; 
+						 str +="    <small class='pull-right text-muted'>"+replyService.displayTime(list[i].replyDate)+"</small></div>";
+						 str +="    <p>"+list[i].reply+"</p></div></li>";
+						 }
+
+
+						 replyUL.html(str);
+
+						 });//end function
+						
+						 }//end showList */
+
 						var modal = $(".modal");
 						var modalInputReply = modal.find("input[name='reply']");
-						var modalInputReplyer = modal.find("input[name='replyer']");
-						var modalInputReplyDate = modal.find("input[name='replyDate']");
+						var modalInputReplyer = modal
+								.find("input[name='replyer']");
+						var modalInputReplyDate = modal
+								.find("input[name='replyDate']");
 
 						var modalModBtn = $("#modalModBtn");
 						var modalRemoveBtn = $("#modalRemoveBtn");
@@ -615,21 +665,23 @@
 						});
 
 						//댓글 조회 클릭 이벤트 처리 
-						$(".chat").on("click","li",	function(e) {
+						$(".chat").on("click","li",
+										function(e) {
 
 											var rno = $(this).data("rno");
 
-											replyService.get(rno, function(reply) {
+											replyService.get(rno,
+													function(reply) {
 
-													modalInputReply.val(reply.reply);
-													modalInputReplyer.val(reply.replyer);
-													modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
-													modal.data("rno", reply.rno);
-													modal.find("button[id !='modalCloseBtn']").hide();
-													modalModBtn.show();
-													modalRemoveBtn.show();
-													$(".modal").modal("show");
-											});
+																modalInputReply.val(reply.reply);
+																modalInputReplyer.val(reply.replyer);
+																modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
+																modal.data("rno", reply.rno);
+																modal.find("button[id !='modalCloseBtn']").hide();
+																modalModBtn.show();
+																modalRemoveBtn.show();
+																$(".modal").modal("show");
+															});
 										});
 
 						modalModBtn.on("click", function(e) {
@@ -693,34 +745,63 @@
 
 
 <script>
-	$(document).ready(function() {( function() {
+	$(document)
+			.ready(
+					function() {
+
+						(function() {
 
 							var bno = '<c:out value="${board.bno}"/>';
 
-							$.getJSON("/library/getAttachList",{ bno : bno }, function(arr) {
+							/* $.getJSON("/board/getAttachList", {bno: bno}, function(arr){
+							
+							  console.log(arr);
+							  
+							  
+							}); *///end getjson
+							$
+									.getJSON(
+											"/library/getAttachList",
+											{
+												bno : bno
+											},
+											function(arr) {
 
 												console.log(arr);
 
 												var str = "";
 
-												$(arr).each(function(i,	attach) {
+												$(arr)
+														.each(
+																function(i,
+																		attach) {
 
 																	//image type
-																	if (attach.fileType) { // 이미지 파일의 경우 썸네일을 출력
-																		var fileCallPath = encodeURIComponent(attach.uploadPath	+ "/s_"	+ attach.uuid+ "_" + attach.fileName);
+																	if (attach.fileType) {
+																		var fileCallPath = encodeURIComponent(attach.uploadPath
+																				+ "/s_"
+																				+ attach.uuid
+																				+ "_"
+																				+ attach.fileName);
 
 																		str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
-																		str += "<img src='/display?fileName="+ fileCallPath	+ "'>";
+																		str += "<img src='/display?fileName="
+																				+ fileCallPath
+																				+ "'>";
 																		str += "</div>";
-																		str	+ "</li>";
+																		str
+																				+ "</li>";
 
-																	} else { // 아닐 경우 파일 그림 출력
+																	} else {
 
 																		str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
-																		str += "<span> "+ attach.fileName+ "</span><br/>";
+																		str += "<span> "
+																				+ attach.fileName
+																				+ "</span><br/>";
 																		str += "<img src='/resources/img/attach.png'></a>";
 																		str += "</div>";
-																		str	+ "</li>";
+																		str
+																				+ "</li>";
 																	}
 																});
 
@@ -730,7 +811,10 @@
 
 						})();//end function
 
-						$(".uploadResult").on("click", "li", function(e) {
+						$(".uploadResult").on(
+								"click",
+								"li",
+								function(e) {
 
 									console.log("view image");
 
@@ -758,7 +842,8 @@
 
 							alert(fileCallPath);
 
-							$(".bigPictureWrapper").css("display", "flex").show();
+							$(".bigPictureWrapper").css("display", "flex")
+									.show();
 
 							$(".bigPicture").html(
 									"<img src='/display?fileName="

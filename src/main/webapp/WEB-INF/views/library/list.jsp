@@ -28,7 +28,7 @@
 }
 </style>
 
-	<!-- Home --><!-- 백그라운드 이미지 안나옴 -->
+
 
    <div class="home2">
       <div class="home_background_container prlx_parent">
@@ -74,23 +74,39 @@
 							<th>작성일</th>
 							<th>수정일</th>
 							<th>조회수</th>
+							<th>좋아요</th>
 						</tr>
 					</thead>
 
-					<c:forEach items="${list}" var="board"> <!-- 리스트 처리 하겠다. -->
+					<c:forEach items="${list}" var="board">
 						<tr>
 							<td><c:out value="${board.bno}" /></td>
 							<td><a class='move' href='<c:out value="${board.bno}"/>'>
-									<c:out value="${board.title}" /> <b>[  <c:out value="${board.replyCnt}" />  ]</b>
+									<c:out value="${board.title}" />
+									<b>[  <c:out value="${board.replyCnt}" />  ]</b><!-- 게시글 댓글 달린 수 표시 -->
+									<span class="fileName"><c:out value="${board.fileName}" /></span>
+									<span class="fileImage"></span>
+								
+									
 							</a></td>
 							<td><c:out value="${board.category}" /></td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}" /></td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate}" /></td>
 							<td><c:out value="${board.viewNum}" /></td>
+							<td><c:out value="${board.likeNum}" /></td>
 						</tr>
+						
 					</c:forEach>
+					<!--<tr>
+					<td><c:out value="${likeCount}" /></td>  좋아요 
+					</tr>-->
+					
 				</table>
-				
+							<div class='uploadResult'> 
+         						<ul>
+         						</ul>
+							</div>
+							
 				<!-- 검색 조건 관련 -->
 				<div class='row'>
 					<div class="col-lg-12">
@@ -148,7 +164,7 @@
 			</div>
 			<!-- endpanel-heading -->
 
-			<form id='actionForm' action="/library/list" method='get'>
+			<form id='actionForm' action="/library/list" method='get'><!-- Jstl  -->
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 				<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'>
@@ -186,17 +202,64 @@
 </div>
 </div>
 <!-- /.row -->
-			
 
 <!-- Java Script -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><!-- JQuery 사용 -->
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		
+
+		
+		var elements = document.getElementsByClassName("fileName");
+
+		// 각 요소에 대해 반복하면서 처리
+		Array.prototype.forEach.call(elements, function(element) {
+		    
+		    // 각 요소의 innerText 가져오기
+		    var elementsText = element.innerText;
+		    console.log(elementsText);
+		    
+		    // 파일명에서 확장자 추출하기
+		    
+		    var elementsTextExt = elementsText.substring(elementsText.lastIndexOf('.') + 1);
+		    
+		    var fileInputPath = $(".fileName"); // class = fileName 인곳을 향함
+		    
+		    console.log(elementsTextExt);
+		    
+		    var str ='';
+		    
+		    if(elementsTextExt == "jpg" || elementsTextExt == "png" || elementsTextExt == "jpeg"){
+		    	
+		        str = `<svg xmlns='http://www.w3.org/2000/svg' width="16" height="16" fill="currentColor" class="fileImage" viewBox="0 0 16 16">
+	                  <path d='M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0'/>
+	                  <path d='M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12z'/>
+	               	  </svg>`;
+		    	
+		    }else if (elementsTextExt == "no"){
+		    	
+		    	str = " ";
+		    	
+		    }else{
+		    	
+		    	str = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="fileImage" viewBox="0 0 16 16">
+		    	  <path d="M11 2H9v3h2z"/>
+		    	  <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
+		    	</svg`;
+		    	
+		    }//end else
+		    
+		    // fileInputPath.html(str);
+		    element.innerHTML = str;
+		    
+		});
+		    
 
 						var result = '<c:out value="${result}"/>';
+						
 
-						checkModal(result);
+						checkModal(result); // result 값에 따라 모달창 액션 여부
 
 						history.replaceState({}, null, null);
 
@@ -210,8 +273,8 @@
 								$(".modal-body").html("게시글 " + parseInt(result) + " 번이 등록되었습니다.");
 							}
 
-							$("#myModal").modal("show");
-						}
+							$("#myModal").modal("show"); // Modal id= myModal 을 show(창을 띄운다)
+						} // 모달창 띄우는 메서드
 
 						$("#regBtn").on("click", function() {
 
@@ -262,8 +325,18 @@
 									searchForm.submit();
 
 								});
+						
+						
+						
+					    
+			
+					    
+						
+						
+						
+						
 
-					});
+					}); // end $(document).ready(function()
 </script>
 
 
