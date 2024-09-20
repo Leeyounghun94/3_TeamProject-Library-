@@ -62,10 +62,27 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<UserVO> getUserList() {
-		// 유저 리스트 출력
-		return mapper.getAdminList();
+	public List<UserVO> getUserList(int authority) {
+		// 어드민 리스트
+		return mapper.getUserList(authority);
 	}
 
+	@Override
+	public int adminRegister(UserVO user) {
+		// 일반 유저 -> 관리자로 권한 변경
+		
+		mapper.adminRegister(user);
+		
+		if(user.getAuthority() == 1) {
+			return 1;
+		}
+		
+		return 0;
+	}
+
+
+
+	
+	
 	
 }

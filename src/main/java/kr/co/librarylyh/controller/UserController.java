@@ -51,11 +51,11 @@ public class UserController {
     // 회원가입
     @PostMapping("/join")
     public String join(UserVO user, HttpServletResponse response) {
-		/* log.info("회원가입 테스트"); */
+		log.info("회원가입 테스트");
     	
-    	service.login(user); // 회원가입 쿼리 실행
+    	service.join(user); // 회원가입 쿼리 실행
     	
-    	return "redirect:/library/home";
+    	return "redirect:/library/login";
     } 
     
     // 아이디 중복 검사
@@ -119,7 +119,9 @@ public class UserController {
     }
     
     @GetMapping("/myPage")
-    public void myPage() {}
+    public String myPage() {
+    	return "/library/myPage";
+    }
 
     
     @GetMapping("/modify")

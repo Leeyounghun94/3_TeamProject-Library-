@@ -1,14 +1,19 @@
 package kr.co.librarylyh.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import kr.co.librarylyh.domain.UserVO;
 import kr.co.librarylyh.service.UserService;
 import lombok.AllArgsConstructor;
+
 import lombok.extern.log4j.Log4j2;
+
 
 @Controller
 @Log4j2
@@ -34,14 +39,19 @@ public class AdminController {
 	}
 
 	@GetMapping("/adminManage")
-	public void adminManage(Model model)throws Exception {
-		
-		model.addAttribute("list", service.getUserList()); // 어드민 목록 가져옴
-		
+	public String adminManage(Model model) throws Exception {
+	    log.info("adminManage 페이지 진입");
+	    List<UserVO> adminList = service.getUserList(1);
+	    model.addAttribute("list", adminList); // 어드민 목록 가져옴
+	    return "/library/admin/adminManage";
 	}
 	
-	@GetMapping("/adminRegister") // 관리자 등록
-	public void adminManage()throws Exception {
+	@GetMapping("/adminRegister")
+	public String adminRegister(Model model) throws Exception {
+	    log.info("adminRegister 페이지 진입");
+	    List<UserVO> userList = service.getUserList(0);
+	    model.addAttribute("list", userList); // 일반회원 목록 가져옴
+	    return "/library/admin/adminRegister";
 	}
 
 	@GetMapping("/userList")
@@ -49,9 +59,17 @@ public class AdminController {
 		log.info("회원 목록 페이지 접속");
 	}
 	
-	@PostMapping("/adminManage")
-	public void adminManagePost() throws Exception {
-		service.getUserList();
+	@PostMapping("/adminRegister")
+	public String register(UserVO user) {
+		
+		user = service.get(user.getU_id());
+		
+		if(user.getAuthority() == 0) {
+			user.setAuthority(1);
+			
+			return "redirect:/library/admin/adminManage";
+		}
+		
+		return "redirect:/library/admin/adminManage";
 	}
-	
 }

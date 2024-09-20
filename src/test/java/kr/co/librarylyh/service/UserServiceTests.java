@@ -109,6 +109,6 @@ public class UserServiceTests {
 	@Test
 	public void testAdmin() {
 		
-		service.getUserList().forEach(user -> log.info(user));
+		service.getUserList(0).forEach(user -> log.info(user));
 	}
 }

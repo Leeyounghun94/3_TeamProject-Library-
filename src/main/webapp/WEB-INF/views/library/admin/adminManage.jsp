@@ -35,7 +35,7 @@
                                     </thead>
                      
                                     <tbody>
-                                        <c:forEach items="${list}" var="user"> <!-- 객체를 반복적으로 돌린다(list 객체) -->                                 
+                                       <c:forEach items="${list}" var="user"> <!-- 객체를 반복적으로 돌린다(list 객체) -->                                 
                                 			<tr> <!-- 1행 추가 -->
 			                                	<td><c:out value="${user.name}" /></td> <!-- 1열 -->
 			                                	<td><c:out value="${user.birth}" /></td>

@@ -22,19 +22,24 @@
 	      <th scope="col"></th>
 	    </tr>
 	  </thead>
-	  <tbody class="">
+	  <tbody class="adminRegisterList">
 	  	<c:forEach items="${list}" var="user">
-	  	<c:if test="${user.authority == 0 }"></c:if>
 		    <tr>
 		      <th scope="row"><c:out value="${user.u_id}" /></th>
 		      <td><c:out value="${user.id}" /></td>
 		      <td><c:out value="${user.nickName}" /></td>
 		      <td><c:out value="${user.phone}" /></td>
-		      <td><button>선택</button></td>
+		      <td><button class="selectAdmin">선택</button></td>
 		    </tr>
 		</c:forEach>			    
 	  </tbody>
 	</table>
 </form>
-
+<script type="text/javascript">
+$(".selectAdmin").click(function(){
+	/* alert("관리자 등록"); */
+	
+	
+});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>	

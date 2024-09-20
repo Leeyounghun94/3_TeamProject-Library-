@@ -15,11 +15,11 @@
 </head>
 <body>
     <main style="padding-top:150px;">
-        <jsp:include page="../includes/header.jsp" />
+        <jsp:include page="../../includes/header.jsp" />
 
         <section class="myPage-content">
 
-            <jsp:include page="../includes/myPageSide.jsp" />
+            <jsp:include page="../../includes/myPageSide.jsp" />
 
             <section class="myPage-main">
 
@@ -73,20 +73,12 @@
         </section>
 
     </main>
-<jsp:include page="../includes/footer.jsp" />
+<jsp:include page="../../includes/footer.jsp" />
     
 </body>
 <script type="text/javascript">
-$(document).ready(function(){ /* 브라우저 시작 시 실행 */
-	var formObj = $("form"); /* 상단 코드중에 form 태그를 formObj로 관여한다. */
-	$('button').on("click", function(e){
-		e.preventDefault(); 
-		/* <form>태그의 모든 버튼은 기본적으로 submit 처리 -> 기본 동작을 막고 마지막에 직접 submit()수행 */
-		document.getElementById("nickName").readOnly=false;
-		document.getElementById("phone").readOnly=false;
-		document.getElementById("email").readOnly=false;
-		
-	});
-});
+$(".myPage-submit").click(function(){
+	$("#nickName").attr("readonly", false);
+});	
 </script>
 </html>

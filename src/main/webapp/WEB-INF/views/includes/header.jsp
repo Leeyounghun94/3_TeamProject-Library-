@@ -43,7 +43,7 @@
 						<li class="main_nav_item"><a href="courses.html">베스트</a></li>
 						<li class="main_nav_item"><a href="elements.html">신상품</a></li>
 						<li class="main_nav_item"><a href="news.html">도서대여</a></li>
-						<li class="main_nav_item"><a href="/library/list">게시판</a></li>
+						<li class="main_nav_item"><a href="/library/list">게시판</a></li>	
 					</ul>
 				</div>
 			</nav>
@@ -53,7 +53,7 @@
 		<span>
 			<!-- 로그인 하지 않은 상태 -->
 			<c:if test = "${user == null }">
-			<a href= "/library/login.do">로그인</a> 
+			<a href= "/library/login">로그인</a> 
 			</c:if>
 			<!-- 로그인 한 상태 -->
 			<c:if test="${user != null }">
@@ -65,8 +65,8 @@
 				</div>
 			</c:if>
 			<c:if test="${user.authority == 1 }">
-				<a href="/library/admin/main">어드민페이지</a>
-			</c:if>	
+				<div><a href="/library/admin/main">어드민페이지</a></div>
+			</c:if>
 		</span>
 		</div>
 

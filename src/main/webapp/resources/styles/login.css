@@ -90,6 +90,17 @@
     border: 0;
     
 }
+.join_button{
+	width: 200px;
+    height: 50px;
+    background-color: #ebde83;
+    font-size: 30px;
+    font-weight: 900;
+    color: black;
+    margin : auto;
+    border: 0;
+	
+}
 
 /* float 속성 해제 */
 .clearfix{

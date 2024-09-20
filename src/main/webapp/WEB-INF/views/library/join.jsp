@@ -171,7 +171,7 @@
     		<div class="birth_wrap" style="padding-bottom:20px;">
     			<div class="title">생년월일</div>
     			<div class="birth_input_box">
-    				<input type="text" class="birth_input" name="name">
+    				<input type="text" class="birth_input" name="birth">
     			</div>
     			<span class="final_birth_ck">생년월일을 입력해주세요.</span>
     		</div>
@@ -341,7 +341,9 @@ $(document).ready(function(){
 		
 		if(idCheck&&idckCheck&&pwCheck&&pwckCheck&&pwckcorCheck&&nickCheck&&nickCheck_ck&&nameCheck&birthCheck&&phoneCheck&&emailCheck){
 			$("#joinForm").attr("action", "/library/join");
-			$("#joinForm").submit();	
+			$("#joinForm").submit();
+			alert("회원가입 완료");
+
 		}
 		return false; // 유효성 검사 중 단 한개라도 false가 있을 경우 false 반환
 	});
