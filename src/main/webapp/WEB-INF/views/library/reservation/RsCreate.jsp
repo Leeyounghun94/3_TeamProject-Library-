@@ -9,18 +9,17 @@
 
 <style>
 .col-md-4 {
-    -ms-flex: 0 0 100%;
-    flex: 0 0 100%;
-    max-width: 100%;
     color: black;
 }<!-- 본문(Body) 글자색 지정-->
 
 
 </style>
+
 <meta charset="UTF-8">
 <title>도서 예약 신청</title>
 </head>
 <body>
+
 <!-- Popular -->
 	<div class="popular page_section">
 		<div class="container">

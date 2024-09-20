@@ -9,9 +9,6 @@
 
 <style>
 .col-md-4 {
-    -ms-flex: 0 0 100%;
-    flex: 0 0 100%;
-    max-width: 100%;
     color: black;
 }<!-- 본문(Body) 글자색 지정-->
 
@@ -22,6 +19,7 @@
 <title>나의 예약 정보</title>
 </head>
 <body>
+
 <!-- Popular -->
 	<div class="popular page_section">
 		<div class="container">
@@ -36,15 +34,18 @@
 		</div><!-- <div class="container"> -->
 	</div><!-- <div class="popular page_section"> -->
 
+
+
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-4">
-		</div>
-		<div class="col-md-4">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-4">
+				</div>
+				<div class="col-md-4">
 			<form role="form">
-				<div class="form-group">
-					 
-					<label for="BookUser">예약자</label>
+						<div class="form-group">
+						<label for="BookUser">예약자</label>
 					<input type="text" class="form-control" id="" />
 				</div>
 				<div class="form-group">					 
@@ -64,23 +65,30 @@
 					<input type="text" class="form-control" id="" />
 				</div>
 				<div class="form-group">					 
-					<label for="RsStart-day">예약 시작 일자</label>
+					<label for="RsStart-day">예약 날짜</label>
 					<input type="text" class="form-control" id="" />
 				</div>
-				<div class="form-group">					 
-					<label for="RsEnd-day">예약 종료 일자</label>
-					<input type="text" class="form-control" id="" />
-				</div>			 
 				
-				<div style="text-align: center;"><a href="RsCreate" class="btn btn-outline-warning btn" type="button" >신청하기</a></div>	
 				
-				</form>
-		</div>
-		
-		<div class="col-md-4">
+			</form>
+			<br>							
+			<div class="find-btn" style="text-align: left; ">
+			    <button type="button" class="btn btn-outline-warning btn find-btn1" onclick="location.href='/library/RsRemove'">취소하기</button>
+			    <button type="button" class="btn btn-outline-warning btn find-btn1" onclick="location.href='/library/home'">메인화면으로 돌아가기</button>
+			</div>
+				
+				
+				<div class="col-md-4">
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
+
+
+
+
+
 
 
 <%@ include file="../../includes/footer.jsp" %>

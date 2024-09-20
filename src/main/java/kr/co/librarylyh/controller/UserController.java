@@ -23,26 +23,7 @@ import javax.servlet.http.HttpSession;
 public class UserController {
     @Autowired
 	private UserService service;
-    
-    
- /*   @GetMapping("/home")
-    public void home() {
-    }*/
-    
-/*    @GetMapping({"/ReservationMain", "/list", "/test/joinTest", "/test/loginTest"}) 
-    public void reservation() {
-    	
-    }*/
-    
-    @GetMapping({"/board/get", "/board/modify", "/board/register"})
-    public void board() {
-    	
-    }
-    
-/*    @GetMapping({"/reservation/BookReservation", "/reservation/StudyReservation", "/reservation/RsCreate"})
-    public void reservationInfo() {
-    	
-    }*/
+      
 
     @GetMapping({"/agreementForm", "/login", "/join"})
     public void replace() {
@@ -51,11 +32,11 @@ public class UserController {
     // 회원가입
     @PostMapping("/join")
     public String join(UserVO user, HttpServletResponse response) {
-		/* log.info("회원가입 테스트"); */
+		log.info("회원가입 테스트");
     	
-    	service.login(user); // 회원가입 쿼리 실행
+    	service.join(user); // 회원가입 쿼리 실행
     	
-    	return "redirect:/library/home";
+    	return "redirect:/library/login";
     } 
     
     // 아이디 중복 검사
@@ -116,6 +97,11 @@ public class UserController {
     	session.invalidate();
     	
     	return "redirect:/library/home";
+    }
+    
+    @GetMapping("/myPage")
+    public String myPage() {
+    	return "/library/myPage";
     }
 
     

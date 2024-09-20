@@ -11,16 +11,16 @@ public class SeatRsVO {
 	// 열람실 예약하기 - 1. 열람실VO 객체 생성
 	
 	
-	  private int sno;         // 좌석 번호
+	  private int sno;	// 좌석 번호
 	  
-	  private String name;    // 좌석 이름(고정석,자유석)
+	  private String name;	// 좌석 이름(고정석,자유석)
 	  
 	  private boolean status; // 좌석 이용 상태
 	  
 	  
-	  private Long userNo;     // 회원 번호
+	  private Long userNo;	// 회원 번호
 	
-	  private String u_id; // 회원 아이디
+	  private String u_id;	// 회원 아이디
 	  
 	  
 	  private Long regNo; // 등록번호

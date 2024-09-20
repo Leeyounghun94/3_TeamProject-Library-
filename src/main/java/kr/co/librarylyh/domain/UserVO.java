@@ -13,4 +13,5 @@ public class UserVO {
 	private String id;
 	private String pw;
 	private String nickName;
+	private int authority;
 }
