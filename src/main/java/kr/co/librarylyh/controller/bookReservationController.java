@@ -1,6 +1,8 @@
 package kr.co.librarylyh.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.librarylyh.domain.BookListVO;
 import kr.co.librarylyh.domain.CategoryVO;
+import kr.co.librarylyh.domain.Paging;
 import kr.co.librarylyh.domain.bookReservationVO;
 import kr.co.librarylyh.service.BookListService;
 import kr.co.librarylyh.service.BookReservationService;
@@ -86,20 +90,38 @@ public class bookReservationController {
 	
 	
 	// BookReservation.jsp 에서 책 목록 조회 List
-	@RequestMapping(value = "/reservation/BookReservation", method = RequestMethod.GET)
-	public void RsList(Model model) {
+	@GetMapping("/reservation/BookReservation")
+	public String RsList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+			@RequestParam(value = "amount", defaultValue = "10") int amount,
+			@RequestParam(value = "category_id", required = false) String category_id,
+			@RequestParam(value = "rentalAvailable", required = false) String rentalAvailable,
+			@RequestParam(value = "publicationDateFilter", required = false) String publicationDateFilter,
+			Model model) {
+		
+		Paging pge = new Paging(pageNum, amount);
+		Map<String, Object> searchParams = new HashMap<>();
+
+		// 필터 조건이 있을 경우에만 searchParams에 추가 (필터 설정 안할때 URL 난장판되길래 만듦)
+		if (category_id != null && !category_id.isEmpty()) {
+			searchParams.put("category_id", category_id);
+		}
+		if (rentalAvailable != null && !rentalAvailable.isEmpty()) {
+			searchParams.put("rentalAvailable", rentalAvailable);
+		}
+		if (publicationDateFilter != null && !publicationDateFilter.isEmpty()) {
+			searchParams.put("publicationDateFilter", publicationDateFilter);
+		}
+
+		// 기본 검색 조건에 맞는 모든 책 목록 가져오기
+		List<BookListVO> bookList = bookService.getListWithFiltersAndPaging(pge, searchParams);
+		model.addAttribute("bookList", bookList);
 		
 		log.info("bookReservationController.Rslist 메서드 실행");
 		
-		List<CategoryVO> list = bookService.getCategoriesByISBN(0);
-		model.addAttribute("list", list); 
+		return "library/reservation/BookReservation";
 	}
 	
-/*	@GetMapping("/reservation/BookReservation")
-	public void RsList( ) {
-		
-	}*/
-	
+
 	
 	
 	@GetMapping("/read")

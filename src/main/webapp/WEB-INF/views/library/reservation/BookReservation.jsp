@@ -31,6 +31,12 @@
     color: black;
 }<!-- 본문(Body) 글자색 지정-->
 
+td {
+   text-align: center;
+}
+
+
+
 
 </style>
 
@@ -190,32 +196,37 @@
 									<c:out value="${paginationInfo.totalPageCount}" />
 								</div>
 
-								<!-- 테이블 -->
+								<!-- 테이블(BookList) -->
 								<table class="table" style="margin: auto; text-align: center;">
 									<thead>
 										<tr>
-											<th>번호</th>
+											<th>isbn13</th>
+											<th>사진</th>
 											<th>도서명</th>
 											<th>저자</th>
 											<th>출판사</th>
 											<th>가격</th>
 											<th>예약</th>
+										
 										</tr>
 									</thead>
 									
-									<c:forEach var="vo" items="${list}">
+									<c:forEach  items="${bookList}" var="vo">
 										
 										<tr>
-											<td>${vo.isbn13}</td>
+											<td align=center valign=middle >${vo.isbn13}</td>
+											<td><img src="${vo.photo}" alt="" style="max-height: 300px"></td>											
 											<td>${vo.book}</td>
 										 	<td>${vo.author}</td>
 										 	<td>${vo.publisher}</td>
 										 	<td>${vo.price}</td>
+										 	<td><a href="RsCreate" class="btn btn-outline-warning btn"
+								type="button">신청하기</a></td>
 										</tr>
 									
 									</c:forEach>
 
-								</table>
+								</table><!-- 테이블 종료 -->
 								<br>
 								<div>
 									<nav class="pagination-sm"">
@@ -233,10 +244,7 @@
 
 							</div>
 						</div>
-						<div style="text-align: right;">
-							<a href="RsCreate" class="btn btn-outline-warning btn"
-								type="button">신청하기</a>
-						</div>
+					
 					</div>
 				</div>
 			</div>
