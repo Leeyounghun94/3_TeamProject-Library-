@@ -3,7 +3,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="/resources/styles/myPage-style.css">
-<%@include file="../includes/header.jsp" %>
+<%@include file="../../includes/header.jsp" %>
 <!-- ##### Main Content Wrapper Start ##### -->
 <div class="main-content-wrapper d-flex clearfix">
   <div class="cart-table-area section-padding-100">
@@ -58,4 +58,4 @@
 <script type="text/javascript">
 $
 </script>
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../../includes/footer.jsp"%>

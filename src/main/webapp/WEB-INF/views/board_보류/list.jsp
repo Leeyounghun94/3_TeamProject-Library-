@@ -59,6 +59,7 @@
 							<th>작성자</th>
 							<th>작성일</th>
 							<th>수정일</th>
+							<th>조회수</th>
 						</tr>
 					</thead>
 
@@ -71,6 +72,7 @@
 							<td><c:out value="${board.category}" /></td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}" /></td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate}" /></td>
+							<td><c:out value="${board.viewNum}" /></td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -176,9 +178,7 @@
 
 <!-- Java Script -->
 <script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
+	$(document).ready(function() {
 
 						var result = '<c:out value="${result}"/>';
 
@@ -193,9 +193,7 @@
 							}
 
 							if (parseInt(result) > 0) {
-								$(".modal-body").html(
-										"게시글 " + parseInt(result)
-												+ " 번이 등록되었습니다.");
+								$(".modal-body").html("게시글 " + parseInt(result) + " 번이 등록되었습니다.");
 							}
 
 							$("#myModal").modal("show");
@@ -205,36 +203,25 @@
 
 							self.location = "/board/register";
 
-						});
+						}); // 새 게시글 등록
 
 						var actionForm = $("#actionForm");
 
-						$(".paginate_button a").on(
-								"click",
-								function(e) {
+						$(".paginate_button a").on("click",	function(e) {
 
 									e.preventDefault();
 
 									console.log('click');
 
-									actionForm.find("input[name='pageNum']")
-											.val($(this).attr("href"));
+									actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 									actionForm.submit();
 								});
 
-						$(".move")
-								.on(
-										"click",
-										function(e) {
+						$(".move").on("click", function(e) {
 
 											e.preventDefault();
-											actionForm
-													.append("<input type='hidden' name='bno' value='"
-															+ $(this).attr(
-																	"href")
-															+ "'>");
-											actionForm.attr("action",
-													"/board/get");
+											actionForm.append("<input type='hidden' name='bno' value='" + $(this).attr("href") + "'>");
+											actionForm.attr("action", "/board/get");
 											actionForm.submit();
 
 										});

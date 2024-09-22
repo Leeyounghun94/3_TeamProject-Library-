@@ -32,23 +32,16 @@
 		]]>
 	</select>
 
-	<insert id="insert">
-		<![CDATA[
-			insert into tbl_board (bno, title, content, category, nickName)
-			values (seq_board.nextval, #{title}, #{content}, #{category}, #{nickName})
-		]]>
-	</insert>
 	
  	<insert id="insertSelectKey">
-
+		<!-- selectKey는 DB에 명령을 한번만 보내며, 우선 입력한 값의 결과값을 다음 쿼리로 바로 return 시켜주는 것 -->
 		<selectKey keyProperty="bno" order="BEFORE"
 			resultType="long">
 			select seq_board.nextval from dual
 		</selectKey>
 
 		insert into tbl_board (bno,title,content, category)
-		values (#{bno},
-		#{title}, #{content}, #{category})
+		values (#{bno},	#{title}, #{content}, #{category})
 	</insert>
 	
 	<select id="read" resultType="kr.co.librarylyh.domain.BoardVO">
@@ -74,11 +67,11 @@
 	<select id="getListWithPaging" resultType="kr.co.librarylyh.domain.BoardVO">
   <![CDATA[
   select 
-    bno, title, content, category, regdate, updatedate, replycnt, viewNum
+    bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
   from 
       (
       select /*+INDEX_DESC(tbl_board pk_board) */
-        rownum rn, bno, title, content, category, regdate, updatedate, replycnt, viewNum
+        rownum rn, bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
       from 
         tbl_board
       where 
@@ -95,8 +88,8 @@
   
 
 	<select id="getTotalCount" resultType="int">
-		select count(*) from tbl_board where 
-		
+		select count(*) from tbl_board where
+		<!-- refid(reference id)는 반복되는 쿼리를 미리 작성해 놓고 재활용 할 수 있게 해줌 -->
 		<include refid="criteria"></include> 
 		
 		bno > 0
@@ -119,39 +112,59 @@
     	]]>
     </update>
     
-    <!-- 게시물 졸아요 -->
+    <!-- 게시물 졸아요 관련-->
     
-    <!-- 게시물 좋아요 여부 -->
+    <!-- 게시글 좋아요 여부 -->
     <select id="checkLike" resultType="kr.co.librarylyh.domain.LikeVO">
-		<![CDATA[
-			select * from tbl_like where bno = #{bno}
+		<![CDATA[ 
+			select * from tbl_like where bno = #{bno} 
 		]]>
 	</select>
+    
 	
-	<!-- 게시글 좋아요 -->
+	<!-- 게시글 좋아요 tbl_like-->
 	<insert id="insertLike">
 		<![CDATA[
-			insert into tbl_like (userId, bno)
-			values (#{userId}, #{bno})
+			insert into tbl_like (UserId, bno)
+			values (#{UserId}, #{bno})
 		]]>
 	</insert>
 	
-	<!-- 게시글 좋아요 (취소) -->
+	<!-- 게시판 좋아요 tbl_board -->
+    <update id="boardLikeNumUp" parameterType="Long">
+    	<![CDATA[  
+    		update tbl_board set
+    		likeNum = viewNum + 1
+    		where bno=#{bno}
+    	]]>
+    </update>
+    
+	
+	<!-- 게시글 좋아요 (취소) tbl_like -->
 	<delete id="deleteLike">
 		<![CDATA[
 			delete tbl_like where bno = #{bno} and userId = #{userId}
 		]]>
 	</delete>
 	
-	<!-- 게시글 좋아요 갯수 파악 -->
-	<delete id="countLike">
-		<![CDATA[
-			select count (*) from tbl_like where bno = #{bno}
-		]]>
-	</delete>
-
-
-
+		<!-- 게시판 좋아요 (취소) tbl_board -->
+    <update id="boardLikeNumDown" parameterType="Long">
+    	<![CDATA[  
+    		update tbl_board set
+    		likeNum = viewNum - 1
+    		where bno=#{bno}
+    	]]>
+    </update>
+    
+    <!-- 게시글 제목 옆 파일 넣기 -->
+    <!-- 첨부파일 확장자 이름을 대입 -->
+	<insert id="insertFileName">
+		insert into tbl_attach (uuid, uploadPath, fileName,
+		fileType)
+		values (#{uuid}, #{uploadPath}, #{fileName},
+		#{fileType}) where bno = #{bno}
+	</insert>
+	
 
 
 </mapper>
