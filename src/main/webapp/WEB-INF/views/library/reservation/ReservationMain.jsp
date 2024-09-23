@@ -5,11 +5,33 @@
 <%@ include file="../../includes/header.jsp" %>   
 <!DOCTYPE html>
 <html>
+
+<style>
+
+.home2 {
+  width: 100%;
+  height: 50vh;
+}
+
+</style>
+
 <head>
 <meta charset="UTF-8">
-<title>예약 메인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/resources/styles/courses_styles.css">
+    <link rel="stylesheet" type="text/css" href="/resources/styles/courses_responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+          rel="stylesheet">
 </head>
+
 <body>
+
+<div class="home2">
+    <div class="home_background_container prlx_parent">
+        <div class="home_background prlx2"
+             style="background-image:url(/resources/images/courses_background.jpg)"></div>
+    </div>
+</div>
 
 	<!-- Popular -->
 	<div class="popular page_section">
@@ -37,7 +59,7 @@
 					<img class="card-img-top" src="/resources/images/Book.png" alt="https://unsplash.com/@kellybrito">
                        <div class="section_title text-center">                         
                             <div class="featurs-content text-center" style="border:1px gray; color:gray;">
-                               <a href="#" onclick="location.href='BookReservation'"><h1>도서 예약/대출</h1></a>
+                               <a href="#" onclick="location.href='BookReservation'"><h1>도서 예약/대여</h1></a>
                             </div>
                         </div>
                     </div><!-- 도서 예약/대출 end -->

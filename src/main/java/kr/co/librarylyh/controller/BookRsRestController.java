@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @RestController// rest 방식으로 응답하며, view-jsp 가 아닌 json과 xml 로 나타난다.
-@RequestMapping("/library/*")//	 
+@RequestMapping("/library/*") 
 @Log4j2
 @AllArgsConstructor// 생성자 구현 -> new ReplyController(ReplyService);
 

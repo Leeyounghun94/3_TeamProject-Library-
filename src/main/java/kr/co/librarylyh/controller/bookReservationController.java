@@ -33,9 +33,9 @@ public class bookReservationController {
 
 	// 도서 예약 컨트롤러
 	
-	private BookReservationService service ; // service - 예약
-	private BookListService bookService ;	// service - book
-	private UserService userService ;	// service - user
+	private BookReservationService service ; // service - Reservation
+	private BookListService bookService ;	// service - BookService
+	private UserService userService ;	// service - UserService
 	
 	@GetMapping("/home")
 	public void home() {// home.jsp 연결
@@ -43,13 +43,13 @@ public class bookReservationController {
 	}
 	
 	@GetMapping("/reservation/ReservationMain")
-	public void ReservationMain() {// 
+	public void ReservationMain() {// Reservation Main Page
 		
 	}
 	
 	
 	@GetMapping("/reservation/StudyReservation")
-	public void StudyReservation() {// 해당 서비스 구현 중
+	public void StudyReservation() {// 열람실 예약하기 - 해당 서비스 추후 개발 예정
 		
 	}
 	
@@ -75,10 +75,8 @@ public class bookReservationController {
 	@PostMapping("/reservation/RsCreate")
 	public String RsCreate(bookReservationVO vo, RedirectAttributes rttr, Model model) {
 		
-		log.info("bookReservationController.RsCreate 메서드 실행");
-		
-		service.rsRegister(vo);
-		
+		log.info("bookReservationController.RsCreate 메서드 실행");		
+		service.rsRegister(vo);		
 		return "redirect:/reservation/RsCreate";
 
 	}
@@ -116,24 +114,23 @@ public class bookReservationController {
 		List<BookListVO> bookList = bookService.getListWithFiltersAndPaging(pge, searchParams);
 		model.addAttribute("bookList", bookList);
 		
-		log.info("bookReservationController.Rslist 메서드 실행");
+		log.info("bookReservationController.RsList 메서드 실행");
 		
 		return "library/reservation/BookReservation";
 	}
 	
-
 	
-	
-	@GetMapping("/read")
-	public void read(@PathVariable("rsNum") Long rsNum, Model model) {
+	@GetMapping("reservation/RsBookRead/{isbn13}")
+	public String RsBookRead(@PathVariable("isbn13") Long isbn13, Model model) {
+		BookListVO bookDetail = bookService.get(isbn13);
+		model.addAttribute("bookDetail", bookDetail);
+		return "reservation/RsBookRead"; // 책 상세 보기 뷰로 이동
+	}
 		
-		log.info("bookReservationController.read 메서드 실행");
-	
-		
+	@GetMapping("reservation/RsBookRead")
+	public void RsBookRead() {
 		
 	}
-	
-	
 	
 	
 	
