@@ -1,5 +1,6 @@
 package kr.co.librarylyh.domain;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,10 @@ public class BoardVO {
   private String uploadPath; // 업로드 경로
   private String uuid; // UUID 값
   
+  private LocalDate startDate;
+  private LocalDate endDate;
+  
   
   private List<BoardAttachVO> attachList;
+  
 }

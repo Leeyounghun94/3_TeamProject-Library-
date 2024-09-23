@@ -21,7 +21,7 @@ public interface BoardService {
 
 	// public List<BoardVO> getList();
 
-	public List<BoardVO> getList(Criteria cri); // 게시글 페이징 처리
+	public List<BoardVO> getList(Criteria cri); // 게시물 가져오기.
 
 	
 	public int getTotal(Criteria cri); // 게시글 수 카운트

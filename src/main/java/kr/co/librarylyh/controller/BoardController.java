@@ -3,9 +3,11 @@ package kr.co.librarylyh.controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +49,6 @@ public class BoardController {
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model, Long bno) {
 
-		log.info("list: 1231231241413d23r23r213r" + cri);
 		model.addAttribute("list", service.getList(cri)); // 게시물 리스트
 
 		int total = service.getTotal(cri); // 총 게시물 수
@@ -55,8 +56,9 @@ public class BoardController {
 		log.info("total: " + total);
 		
 		model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
-
-	}	
+		
+		
+	}
 	
 	@PostMapping("/board/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
@@ -78,7 +80,7 @@ public class BoardController {
 		
 		rttr.addFlashAttribute("result", board.getBno()); // 그 글을 떙겨오면 몇번 값인지 알수있음
 
-		return "redirect:/library/list";
+		return "redirect:/library/list"; // 게시물을 등록하고 그 값을 list로 보낸다 + list 페이지로 이동 된다.
 	}
 	
 
@@ -186,6 +188,8 @@ public class BoardController {
 		
 		
 	}// end likeDown *(ajax)
+	
+
 	
 
 }

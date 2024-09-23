@@ -48,4 +48,6 @@ public interface BoardMapper {
 	// 게시글 제목 옆에 뜨게
 	public void insertFileName(BoardVO board);
 	
+
+	
 }

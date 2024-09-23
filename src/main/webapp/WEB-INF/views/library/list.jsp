@@ -25,7 +25,18 @@
     outline: none;
     padding-left: 10px;
     background-color: rgb(233,233,233);
+    
 }
+ .news_page_nav{
+ 	margin-left: 650px;
+ }
+ 
+ /* 달력 관련 */
+.ui-datepicker-trigger{cursor: pointer;}
+
+.hasDatepicker{cursor: pointer;}
+
+
 </style>
 
 
@@ -55,8 +66,7 @@
 			</div>
 		</div><!-- <div class="container"> -->
 	</div><!-- <div class="popular page_section"> -->
-	
-							
+					
 	<div class="col-lg-12">
 		<div class="panel panel-default" style="padding-left:10%;">
 			<div class="panel-heading">
@@ -77,7 +87,7 @@
 							<th>좋아요</th>
 						</tr>
 					</thead>
-
+					
 					<c:forEach items="${list}" var="board">
 						<tr>
 							<td><c:out value="${board.bno}" /></td>
@@ -86,8 +96,6 @@
 									<b>[  <c:out value="${board.replyCnt}" />  ]</b><!-- 게시글 댓글 달린 수 표시 -->
 									<span class="fileName"><c:out value="${board.fileName}" /></span>
 									<span class="fileImage"></span>
-								
-									
 							</a></td>
 							<td><c:out value="${board.category}" /></td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}" /></td>
@@ -95,17 +103,8 @@
 							<td><c:out value="${board.viewNum}" /></td>
 							<td><c:out value="${board.likeNum}" /></td>
 						</tr>
-						
-					</c:forEach>
-					<!--<tr>
-					<td><c:out value="${likeCount}" /></td>  좋아요 
-					</tr>-->
-					
-				</table>
-							<div class='uploadResult'> 
-         						<ul>
-         						</ul>
-							</div>
+					</c:forEach>			
+				</table><!-- end table table-striped table-bordered table-hover -->	
 							
 				<!-- 검색 조건 관련 -->
 				<div class='row'>
@@ -122,57 +121,56 @@
 								<option value="W"
 									<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>닉네임</option>
 								<option value="TC"
-									<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목
-									or 내용</option>
+									<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목 or 내용</option>
 								<option value="TW"
-									<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>제목
-									or 작성자</option>
+									<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>제목 or 작성자</option>
 								<option value="TWC"
-									<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목
-									or 내용 or 작성자</option>
+									<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목 or 내용 or 작성자</option>
 							</select> 
+							
+							<label for="startDate">시작 날짜</label><!-- (startDate) label for 값이 input id 값으로 입력됨 -->
+							<input type= "date" id="startDate" name="startDate" required>
+							<label for="endDate">종료 날짜</label><!-- (endDate) label for 값이 input id 값으로 입력됨 -->
+							<input type= "date" id="endDate" name="endDate" required>							
+							
 							<input type='text' class="text" name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
 							<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
 							<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
+							
+
+		
 							<button class='btn btn-warning'>검색</button>
 						</form>
 					</div>
 				</div>
 				
-				<!-- 페이징 처리 관련 -->
+				<!-- 페이징 버튼 관련 -->
 				<div class='news_page_nav'>
 					<ul class="pagination" style="align-items:center;">
-
 						 <c:if test="${pageMaker.prev}">
 							<li class="paginate_button previous text-center"><a href="${pageMaker.startPage -1}">이전</a></li>
 						</c:if> 
-
 						<c:forEach var="num" begin="${pageMaker.startPage}"	end="${pageMaker.endPage}">
 							<li class="paginate_button text-center ${pageMaker.cri.pageNum == num ? 'active':''} ">
 								<a href="${num}">${num}</a>
 							</li>
 						</c:forEach>
-
 						 <c:if test="${pageMaker.next}">
 							<li class="paginate_button next text-center"><a href="${pageMaker.endPage +1 }">다음</a></li>
 						</c:if> 
-
-
 					</ul>
 				</div>
 				<!--  end Pagination -->
 			</div>
 			<!-- endpanel-heading -->
 
+			<!-- 페이지 번호 클릭시 함께 전달 되는 데이터 -->
 			<form id='actionForm' action="/library/list" method='get'><!-- Jstl  -->
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 				<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'>
 				<input type='hidden' name='keyword'	value='<c:out value="${ pageMaker.cri.keyword }"/>'>
 			</form>
-							
-					
-
 
 			<!-- Modal  추가 -->
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
@@ -327,16 +325,55 @@
 								});
 						
 						
-						
-					    
-			
+						 // 달력
+						 $("#datepicker").datepicker({
+						 
+						                dateFormat: 'yy-mm-dd' //Input Display Format 변경
+
+						                 ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+
+						                 ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
+
+						                 ,changeYear: true //콤보박스에서 년 선택 가능
+
+						                 ,changeMonth: true //콤보박스에서 월 선택 가능                
+
+						                 ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+
+						                 ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+
+						                 ,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
+
+						                 ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
+
+						                 ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
+
+						                 ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
+
+						                 ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
+
+						                 ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
+
+						                 ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
+
+						                 ,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+
+						                 ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)                
+
+						             });                    
+
+						             
+
+						             //초기값을 오늘 날짜로 설정
+						 
+						 
 					    
 						
 						
 						
 						
 
-					}); // end $(document).ready(function()
+					}); // 
 </script>
 
 

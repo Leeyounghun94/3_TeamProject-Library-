@@ -8,7 +8,7 @@
 	<sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
 			<foreach item='type' collection="typeArr">
-				<trim prefix="OR">
+				<trim prefix="OR"><!-- 맨 앞에 생성되는 "OR 제거" -->
 					<choose>
 						<when test="type == 'T'.toString()">
 							title like '%'||#{keyword}||'%'
@@ -80,6 +80,7 @@
   <include refid="criteria"></include> 
       
   <![CDATA[    
+   
       rownum <= #{pageNum} * #{amount}
       )
   where rn > (#{pageNum} -1) * #{amount}   

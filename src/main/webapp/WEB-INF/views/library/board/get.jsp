@@ -86,104 +86,7 @@
 }
 
 
-
-
-
-/* From Uiverse.io by catraco */ 
-.heart-container {
-  --heart-color: rgb(255, 91, 137);
-  position: relative;
-  width: 35px;
-  height: 35px;
-  transition: .3s;
-  margin-left: 350px;
-}
-
-.heart-container .checkbox {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  z-index: 20;
-  cursor: pointer;
-}
-
-.heart-container .svg-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.heart-container .svg-outline,
-        .heart-container .svg-filled {
-  fill: var(--heart-color);
-  position: absolute;
-}
-
-.heart-container .svg-filled {
-  animation: keyframes-svg-filled 1s;
-  display: none;
-}
-
-.heart-container .svg-celebrate {
-  position: absolute;
-  animation: keyframes-svg-celebrate .5s;
-  animation-fill-mode: forwards;
-  display: none;
-  stroke: var(--heart-color);
-  fill: var(--heart-color);
-  stroke-width: 2px;
-}
-
-.heart-container .checkbox:checked~.svg-container .svg-filled {
-  display: block
-}
-
-.heart-container .checkbox:checked~.svg-container .svg-celebrate {
-  display: block
-}
-
-@keyframes keyframes-svg-filled {
-  0% {
-    transform: scale(0);
-  }
-
-  25% {
-    transform: scale(1.2);
-  }
-
-  50% {
-    transform: scale(1);
-    filter: brightness(1.5);
-  }
-}
-
-@keyframes keyframes-svg-celebrate {
-  0% {
-    transform: scale(0);
-  }
-
-  50% {
-    opacity: 1;
-    filter: brightness(1.5);
-  }
-
-  100% {
-    transform: scale(1.4);
-    opacity: 0;
-    display: none;
-  }
-}
-
-
-
-
 </style>
-
-
-
 
 <!-- News -->
 
@@ -223,9 +126,6 @@
 										<h1>
 											<c:out value="${board.title }" />
 										</h1>
-										
-	
-        					
 									</div>
 									<div class="news_post_meta">
 										<span class="news_post_comments">작성자</span> <span>|</span> <span
@@ -246,21 +146,12 @@
 								</p>
 							</div>
 							
-							<!-- 좋아요 -->
-							<div class="heart-container" title="Like">
-            					<input type="checkbox" class="checkbox" id="Give-It-An-Id">
-           							<div class="svg-container">
-							                <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-							                    <polygon points="10,10 20,20"></polygon>
-							                    <polygon points="10,50 20,50"></polygon>
-							                    <polygon points="20,80 30,70"></polygon>
-							                    <polygon points="90,10 80,20"></polygon>
-							                    <polygon points="90,50 80,50"></polygon>
-							                    <polygon points="80,80 70,70"></polygon>
-							                </svg>
-            						</div> <!-- <div class="svg-container">  -->
-        					</div> <!-- class="heart-container" title="Like" -->
-							
+							<!-- 좋아요 버튼 -->
+							<div class='svg-heart-container-div'>
+								<i class="svg-heart-container"></i>
+								
+								<span> <- 좋아요버튼</span>
+							</div>
 							
 							<div class='row'>
 								<div class="col-lg-12">
@@ -300,23 +191,15 @@
 	</div>
 </div>
 
-<form id='operForm' action="/library/board/modify" method="get">
-	<input type='hidden' id='bno' name='bno'
-		value='<c:out value="${board.bno}"/>'> <input type='hidden'
-		name='pageNum' value='<c:out value="${cri.pageNum}"/>'> <input
-		type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
-	<input type='hidden' name='keyword'
-		value='<c:out value="${cri.keyword}"/>'> <input type='hidden'
-		name='type' value='<c:out value="${cri.type}"/>'>
+ <form id='operForm' action="/library/board/modify" method="get">
+	<input type='hidden' id='bno' name='bno' value='<c:out value="${board.bno}"/>'>
+	<input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/>'>
+	<input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
+	<input type='hidden' name='keyword'	value='<c:out value="${cri.keyword}"/>'>
+	<input type='hidden' name='type' value='<c:out value="${cri.type}"/>'>
 </form>
 
 <!-- 댓글 좋아요 눌렀을 때 -->
-
-
-
-
-
-
 
 
 <!-- Modal -->
@@ -434,43 +317,39 @@
 
 						//< %=session.getAttribute("UserId")%> 이 방법은 서버 사이드에서 세션 값을 받아오지만, 자바스크립트에서는 이를 텍스트로 처리합니다. 만약 세션 값이 존재하지 않으면 빈 문자열이 아닌 "null" 또는 "undefined"와 같은 문자열로 처리될 가능성이 있습니다.
 
-						function likeCheck() {// 좋아요 체크 (빈하트 / 찬하트)
-							var likeChk = '<c:out value="${likeChk.userId}"/>'; // model을 통해 들어온 likeChk 값을 받음,  bno는 list로 부터 전달 받음 list 자바 스크립트 .move쪽에서 넘어옴
-							var likeSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
-							console.log("아이디 체크 DB =" + likeChk);
-							console.log("아이디 체크 세션 =" + likeSessionUserId);
-							
-							var likeImg = $(".svg-container");
-							var str = ""; // 함수 호출시 마다 초기화
-
-							if (likeChk == likeSessionUserId) { // DB의 아이디와 세션의 아이디를 비교 하여 해당게시글 좋아요 여부 판단.
-								console.log("찬하트 아이디 체크 DB =" + likeChk);
-								console.log("찬하트 아이디 체크 세션 =" + likeSessionUserId);
-								//str = "<li><img src='../../resources/images/heart_full.JPG'></li>";
-								
-						        // 찬 하트
-						        str = "<svg viewBox='0 0 24 24' class='svg-filled' xmlns='http://www.w3.org/2000/svg'>";
-						        str += "<path d='M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z'></path>";
-						        str += "</svg>";
-
-							
-							} else { // 그렇지 않을 경우 좋아요를 누르지 않았다 판정 -> 빈하트
-								console.log("빈하트 아이디 체크 DB =" + likeChk);
-								console.log("빈하트 아이디 체크 세션 =" + likeSessionUserId);
-								//str = "<li><img src='../../resources/images/heart_empty.JPG'></li>";
-								
-						        // 빈 하트
-						        str = "<svg viewBox='0 0 24 24' class='svg-outline' xmlns='http://www.w3.org/2000/svg'>";
-						        str += "<path d='M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z'></path>";
-						        str += "</svg>";
-											
-							}
-							
-							likeImg.html(str); // 결과를 출력
-						} //end likeCheck()
+					function likeCheck() { // 좋아요 체크 (빈하트 / 찬하트)
+					    var likeChk = '<c:out value="${likeChk.userId}"/>'; // DB에서 받은 likeChk 값
+					    var likeSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>'; // 세션의 유저 ID
+					    console.log("아이디 체크 DB = " + likeChk);
+					    console.log("아이디 체크 세션 = " + likeSessionUserId);
+					
+					    var likeImg = $(".svg-heart-container");
+					    var str = ""; // 함수 호출시 마다 초기화
+					
+					    if (likeChk === likeSessionUserId) { // DB의 아이디와 세션의 아이디 비교
+					        console.log("찬하트 아이디 체크 DB = " + likeChk);
+					        console.log("찬하트 아이디 체크 세션 = " + likeSessionUserId);
+					
+					        // 찬 하트
+					        str = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-heart-fill' viewBox='0 0 16 16'>";
+					        str += "<path fill-rule='evenodd' d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'/>";
+					        str += "</svg>";
+					
+					    } else { // 좋아요가 아닌 경우 빈 하트
+					        console.log("빈하트 아이디 체크 DB = " + likeChk);
+					        console.log("빈하트 아이디 체크 세션 = " + likeSessionUserId);
+					
+					        // 빈 하트
+					        str = "<svg viewBox='0 0 24 24' width='30' height='30' class='svg-outline' xmlns='http://www.w3.org/2000/svg'>";
+					        str += "<path d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15'/>";
+					        str += "</svg>";
+					    }
+					
+					    likeImg.html(str); // 결과 출력
+					} // end likeCheck()
 						
 							
-						$(".heart-container").on("click", function(e){ // 좋아요 버튼을 누르면 LikeVO 테이블에 bno와 userId가 저장됨.
+						$(".svg-heart-container-div").on("click", function(e){ // 좋아요 버튼을 누르면 LikeVO 테이블에 bno와 userId가 저장됨.
 		
 							var likeSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
 							var likeBno = '<c:out value="${board.bno}"/>';

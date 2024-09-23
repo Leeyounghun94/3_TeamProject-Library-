@@ -148,6 +148,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 
+
 	/*@Override
 	public int serviceCountLike(Long bno) {
 		// TODO Auto-generated method stub

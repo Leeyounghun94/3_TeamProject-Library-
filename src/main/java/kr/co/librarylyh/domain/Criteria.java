@@ -1,5 +1,7 @@
 package kr.co.librarylyh.domain;
 
+import java.time.LocalDate;
+
 import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.Getter;
@@ -17,7 +19,7 @@ public class Criteria {
   
   private String type;
   private String keyword;
-
+  
   public Criteria() {
     this(1, 10);
   }
@@ -27,6 +29,7 @@ public class Criteria {
     this.amount = amount;
   }
   
+  // MyBatis는 원하는 속성을 찾을 때 getTypeArr()과 같이 이름에 기반을 두어서 검색
   public String[] getTypeArr() {
     
     return type == null? new String[] {}: type.split("");
