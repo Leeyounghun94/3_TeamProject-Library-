@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- xml를 활용한 공통코드 -->
+<!-- Mapper 인터페이스의 SQL 처리용 -->
+<mapper namespace="kr.co.librarylyh.mapper.UserMapper">
+	
+	<insert id="join"> <!-- 회원가입 메서드 -->
+	<selectKey keyProperty="u_id" order="BEFORE" resultType="String">
+		select dbms_random.String('X',10) u_id from dual 
+	</selectKey>	
+		<![CDATA[
+			insert into member_tbl(u_id, name, birth, phone, email, id, pw, nickName) values(#{u_id}, #{name}, #{birth}, #{phone}, #{email}, #{id}, #{pw}, #{nickName} )
+		]]>
+	</insert>
+	
+	<!-- 중복 아이디 체크 -->
+	<select id="idCheck" resultType="int">
+		<![CDATA[
+			select count(*) from member_tbl where id = #{id}
+		]]>
+	</select>
+	
+	<!-- 중복 닉네임 체크 -->
+	<select id="nickNameCheck" resultType="int">
+		<![CDATA[
+			select count(*) from member_tbl where nickName = #{nickName}
+		]]>
+	</select>
+	
+	<!-- 로그인 체크 -->
+	<select id="login" resultType="kr.co.librarylyh.domain.UserVO" >
+		<![CDATA[
+			select u_id, name, birth, phone, email, id, pw, nickName from member_tbl where id = #{id} and pw = #{pw}
+		]]>
+	</select>
+	
+	<!-- 현재 비밀번호 확인 -->
+	<select id="checkPw">
+		<![CDATA[
+			select pw from member_tbl where id = #{id}
+		]]>
+	</select>
+	
+	<!-- 비밀번호 업데이트 -->
+	<update id="updatePw">
+		<![CDATA[
+			update member_tbl set pw = #{pw}
+		]]>
+	</update>
+	
+	<!-- 어드민 리스트 -->
+	<select id="getUserList" resultType="kr.co.librarylyh.domain.UserVO">
+		<![CDATA[
+			select * from member_tbl where authority = #{authority}
+		]]>
+	</select>
+	
+	<update id="adminRegister">
+		<![CDATA[
+			update member_tbl set authority = 1 where u_id = #{u_id}
+		]]>
+	</update>
+	
+	<select id="read" resultType="kr.co.librarylyh.domain.UserVO" >
+		<![CDATA[
+			select * from member_tbl where u_id = #{u_id}
+		]]>
+	</select>
+	
+
+	
+	
+</mapper>

@@ -431,19 +431,21 @@
 
 						//게시글 좋아요 관련 코드
 							
-						var likeChk = '<c:out value="${likeChk.userId}"/>'; // model을 통해 들어온 likeChk 값을 받음,  bno는 list로 부터 전달 받음 list 자바 스크립트 .move쪽에서 넘어옴
-						var likeSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
+
 						//< %=session.getAttribute("UserId")%> 이 방법은 서버 사이드에서 세션 값을 받아오지만, 자바스크립트에서는 이를 텍스트로 처리합니다. 만약 세션 값이 존재하지 않으면 빈 문자열이 아닌 "null" 또는 "undefined"와 같은 문자열로 처리될 가능성이 있습니다.
 
 						function likeCheck() {// 좋아요 체크 (빈하트 / 찬하트)
-							console.log("아이디 체크 DB" + likeChk);
-							console.log("아이디 체크 세션 " + likeSessionUserId);
+							var likeChk = '<c:out value="${likeChk.userId}"/>'; // model을 통해 들어온 likeChk 값을 받음,  bno는 list로 부터 전달 받음 list 자바 스크립트 .move쪽에서 넘어옴
+							var likeSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
+							console.log("아이디 체크 DB =" + likeChk);
+							console.log("아이디 체크 세션 =" + likeSessionUserId);
 							
 							var likeImg = $(".svg-container");
 							var str = ""; // 함수 호출시 마다 초기화
 
-							if (likeChk === likeSessionUserId && likeChk != undefined) { // DB의 아이디와 세션의 아이디를 비교 하여 해당게시글 좋아요 여부 판단.
-								
+							if (likeChk == likeSessionUserId) { // DB의 아이디와 세션의 아이디를 비교 하여 해당게시글 좋아요 여부 판단.
+								console.log("찬하트 아이디 체크 DB =" + likeChk);
+								console.log("찬하트 아이디 체크 세션 =" + likeSessionUserId);
 								//str = "<li><img src='../../resources/images/heart_full.JPG'></li>";
 								
 						        // 찬 하트
@@ -453,15 +455,15 @@
 
 							
 							} else { // 그렇지 않을 경우 좋아요를 누르지 않았다 판정 -> 빈하트
-								
+								console.log("빈하트 아이디 체크 DB =" + likeChk);
+								console.log("빈하트 아이디 체크 세션 =" + likeSessionUserId);
 								//str = "<li><img src='../../resources/images/heart_empty.JPG'></li>";
 								
 						        // 빈 하트
 						        str = "<svg viewBox='0 0 24 24' class='svg-outline' xmlns='http://www.w3.org/2000/svg'>";
 						        str += "<path d='M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z'></path>";
 						        str += "</svg>";
-								
-								
+											
 							}
 							
 							likeImg.html(str); // 결과를 출력
@@ -474,29 +476,37 @@
 							var likeBno = '<c:out value="${board.bno}"/>';
 							var likeChk = '<c:out value="${likeChk.userId}"/>'; // model을 통해 들어온 likeChk 값을 받음,  bno는 list로 부터 전달 받음 list 자바 스크립트 .move쪽에서 넘어옴
 
-							if(likeSessionUserId || likeSessionUserId.trim() === ""){
+							if(!likeSessionUserId || likeSessionUserId.trim() === "" ){
+								console.log("로그인 아이디 확인 : "+likeSessionUserId); 
+								console.log("컨트롤러에서 가져온아이디 : "+likeChk); 
+								console.log("번호 가져오는지 : "+likeBno);
+								
 								alert("로그인 먼저 진행해 주세요.");
 								return false;
 								
 							}else if (likeSessionUserId != likeChk){ // 빈 하트 일 경우 
 							$.ajax({
-								url: '/likeUp', // boardController 의 likeUp 호출
+								url: '/library/likeUp', // boardController 의 likeUp 호출
 								data: {likeUserId : likeSessionUserId, bno : likeBno}, // 각각 변수 대입
 								dataType:'text', // 데이터 타입
 								type:'POST', //POST 방식 
-								success: function(likeResult){
-								console.log(result); 
+								success: function(){
+								console.log("좋아요 업 성공"); 
+								location.reload(); // 페이지 자동 새로고침
+								
 								 }
 							}); // end ajax
 							
-							}else if (likeUserId == likeChk){ // 색칠 하트일 경우
+							}else if (likeSessionUserId == likeChk){ // 색칠 하트일 경우
 								$.ajax({
-								url: '/likeDown', // boardController 의 likeDown 호출
+								url: '/library/likeDown', // boardController 의 likeDown 호출
 								data: {likeUserId : likeSessionUserId, bno : likeBno}, // 각각 변수 대입
 								dataType:'text', // 데이터 타입
 								type:'POST', //POST 방식 
-								success: function(likeResult){
-								console.log(result); 
+								success: function(){
+								console.log("좋아요 다운 성공"); 
+								location.reload(); // 페이지 자동 새로고침
+								
 								 }
 							}); // end ajax
 								

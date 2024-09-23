@@ -125,8 +125,8 @@
 	<!-- 게시글 좋아요 tbl_like-->
 	<insert id="insertLike">
 		<![CDATA[
-			insert into tbl_like (UserId, bno)
-			values (#{UserId}, #{bno})
+			insert into tbl_like (bno, userId)
+			values (#{bno}, #{likeUserId})
 		]]>
 	</insert>
 	
@@ -134,7 +134,7 @@
     <update id="boardLikeNumUp" parameterType="Long">
     	<![CDATA[  
     		update tbl_board set
-    		likeNum = viewNum + 1
+    		likeNum = likeNum + 1
     		where bno=#{bno}
     	]]>
     </update>
@@ -143,7 +143,7 @@
 	<!-- 게시글 좋아요 (취소) tbl_like -->
 	<delete id="deleteLike">
 		<![CDATA[
-			delete tbl_like where bno = #{bno} and userId = #{userId}
+			delete tbl_like where bno = #{bno} and userId = #{likeUserId}
 		]]>
 	</delete>
 	
@@ -151,7 +151,7 @@
     <update id="boardLikeNumDown" parameterType="Long">
     	<![CDATA[  
     		update tbl_board set
-    		likeNum = viewNum - 1
+    		likeNum = likeNum - 1
     		where bno=#{bno}
     	]]>
     </update>

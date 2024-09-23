@@ -250,7 +250,7 @@
 		    	
 		    }//end else
 		    
-		    // fileInputPath.html(str);
+		    
 		    element.innerHTML = str;
 		    
 		});

@@ -34,9 +34,9 @@ public interface BoardMapper {
 	
 	public LikeVO checkLike(Long bno); // 게시글 좋아요 여부 판단 
 	
-	public void insertLike(String likeUserId, Long bno); // 게시글 좋아요 (좋아요)
+	public void insertLike(@Param("likeUserId") String likeUserId, @Param("bno") Long bno); // 게시글 좋아요 (좋아요)
 	
-	public int deleteLike(String likeUserId, Long bno); // 게시글 좋아요 한번더 (좋아요 취소)
+	public int deleteLike(@Param("likeUserId") String likeUserId, @Param("bno") Long bno); // 게시글 좋아요 한번더 (좋아요 취소)
 	
 	public void boardLikeNumUp(Long bno) throws Exception; // tbl_board 게시글 좋아요 수 증가
 	
