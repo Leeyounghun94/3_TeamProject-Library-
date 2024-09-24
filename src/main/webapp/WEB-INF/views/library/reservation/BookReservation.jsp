@@ -208,6 +208,8 @@
 									<c:out value="${paginationInfo.totalPageCount}" />
 								</div>
 
+
+
 								<!-- 테이블(BookList) -->
 								<table class="table" style="margin: auto; text-align: center;">
 									<thead>
@@ -219,7 +221,7 @@
 											<th>저자</th>
 											<th>출판사</th>
 											<th>가격</th>
-											<th>상세보기</th>
+											<th>상세보기(개발 예정)</th>
 										
 										</tr>
 									</thead>
@@ -227,13 +229,14 @@
 									<c:forEach  items="${bookList}" var="vo">
 										
 										<tr>											
-											<td align=center valign=middle >${vo.isbn13}</td>
+											<td>${vo.isbn13}</td>
 											<td><img src="${vo.photo}" alt="" style="max-height: 300px"></td>											
 											<td>${vo.book}</td>
 										 	<td>${vo.author}</td>
 										 	<td>${vo.publisher}</td>
-										 	<td>${vo.price}</td>
-										 	<td><a href="RsBookRead" class="btn btn-outline-warning btn" type="button">자세히</a></td>
+										 	<td>${vo.price}</td>										 									 	
+										 	<td><button type="button" class="btn btn-outline-warning btn" onclick="location.href='/library/read/${isbn13}'">자세히</button>	
+										
 										</tr>
 									
 									</c:forEach>
@@ -266,13 +269,17 @@
 
 
 
+<script type="text/javascript">
+	 $(document).ready(
+          function () {
+          
+          }
 
 
 
 
 
-
-
+</script>
 	<%@ include file="../../includes/footer.jsp"%>
 </body>
 </html>

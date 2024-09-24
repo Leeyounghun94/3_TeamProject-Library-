@@ -53,22 +53,12 @@ public class bookReservationController {
 		
 	}
 	
-/*	@GetMapping("/reservation/BookReservation")
-	public void BookReservation( ) {
-		
-		log.info("bookReservationController.BookReservation 메서드 실행");		
-		
-	}
-	*/
-	
+
 	
 	@GetMapping("/reservation/RsUpdate")
-	public void RsUpdate( ) {
-			
-		
+	public void RsUpdate() {// MyPage -> 나의 예약 정보
+					
 	}
-	
-	
 	
 	
 	// 예약 신청하기
@@ -118,21 +108,7 @@ public class bookReservationController {
 		
 		return "library/reservation/BookReservation";
 	}
-	
-	
-	@GetMapping("reservation/RsBookRead/{isbn13}")
-	public String RsBookRead(@PathVariable("isbn13") Long isbn13, Model model) {
-		BookListVO bookDetail = bookService.get(isbn13);
-		model.addAttribute("bookDetail", bookDetail);
-		return "reservation/RsBookRead"; // 책 상세 보기 뷰로 이동
-	}
 		
-	@GetMapping("reservation/RsBookRead")
-	public void RsBookRead() {
-		
-	}
-	
-	
-	
+
 
 }

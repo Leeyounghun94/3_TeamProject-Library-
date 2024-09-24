@@ -69,7 +69,8 @@ public class BookListRestController {
   // 책의 카테고리 ID 목록 제공
   @GetMapping(value = "/getBookCategoryIds", produces = { MediaType.APPLICATION_JSON_VALUE })
   public ResponseEntity<List<String>> getBookCategoryIds(@RequestParam("isbn13") Long isbn13) {
-    try {
+  
+	  try {
       // 책의 카테고리 ID 목록을 가져오기
       List<String> categoryIds = service.getCategoriesByISBN(isbn13)
           .stream()

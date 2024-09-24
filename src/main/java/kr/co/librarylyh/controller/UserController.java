@@ -23,7 +23,8 @@ import javax.servlet.http.HttpSession;
 public class UserController {
     @Autowired
 	private UserService service;
-      
+    
+ 
 
     @GetMapping({"/agreementForm", "/login", "/join"})
     public void replace() {
@@ -85,6 +86,9 @@ public class UserController {
     	}
     	
     	session.setAttribute("user", loginUser);
+    	
+    	String userId = loginUser.getId();//// add
+    	session.setAttribute("userId", userId);/// add
     	
         return "redirect:/library/home";
     }

@@ -62,7 +62,7 @@
 				<div class="col">
 				<br><br><br><br>		
 					<div class="section_title text-center">					
-						<h1>도서 예약 신청</h1>
+						<h1>도서 상세 보기</h1>
 					</div>
 				</div>
 			</div>

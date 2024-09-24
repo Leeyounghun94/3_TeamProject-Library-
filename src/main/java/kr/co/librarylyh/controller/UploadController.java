@@ -35,86 +35,7 @@ import net.coobird.thumbnailator.Thumbnailator;
 @Log4j2
 public class UploadController {
 
-	/*@GetMapping("/uploadForm")
-	public void uploadForm() {
-
-		log.info("upload form");
-	}*/
-
-	// @PostMapping("/uploadFormAction")
-	// public void uploadFormPost(MultipartFile[] uploadFile, Model model) {
-	//
-	// for (MultipartFile multipartFile : uploadFile) {
-	//
-	// log.info("-------------------------------------");
-	// log.info("Upload File Name: " +multipartFile.getOriginalFilename());
-	// log.info("Upload File Size: " +multipartFile.getSize());
-	//
-	// }
-	// }
-
-	/*@PostMapping("/uploadFormAction")
-	public void uploadFormPost(MultipartFile[] uploadFile, Model model) {
-
-		String uploadFolder = "C:\\upload";
-
-		for (MultipartFile multipartFile : uploadFile) {
-
-			log.info("-------------------------------------");
-			log.info("Upload File Name: " + multipartFile.getOriginalFilename());
-			log.info("Upload File Size: " + multipartFile.getSize());
-
-			File saveFile = new File(uploadFolder, multipartFile.getOriginalFilename());
-
-			try {
-				multipartFile.transferTo(saveFile);
-			} catch (Exception e) {
-				log.error(e.getMessage());
-			} // end catch
-		} // end for
-
-	}*/
-
-	/*@GetMapping("/uploadAjax")
-	public void uploadAjax() {
-
-		log.info("upload ajax");
-	}*/
-
-	// @PostMapping("/uploadAjaxAction")
-	// public void uploadAjaxPost(MultipartFile[] uploadFile) {
-	//
-	// log.info("update ajax post.........");
-	//
-	// String uploadFolder = "C:\\upload";
-	//
-	// for (MultipartFile multipartFile : uploadFile) {
-	//
-	// log.info("-------------------------------------");
-	// log.info("Upload File Name: " + multipartFile.getOriginalFilename());
-	// log.info("Upload File Size: " + multipartFile.getSize());
-	//
-	// String uploadFileName = multipartFile.getOriginalFilename();
-	//
-	// // IE has file path
-	// uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") +
-	// 1);
-	// log.info("only file name: " + uploadFileName);
-	//
-	// File saveFile = new File(uploadFolder, uploadFileName);
-	//
-	// try {
-	//
-	// multipartFile.transferTo(saveFile);
-	// } catch (Exception e) {
-	// log.error(e.getMessage());
-	// } // end catch
-	//
-	// } // end for
-	//
-	// }
-
-	private String getFolder() {
+	private String getFolder() { // 업로드 폴더 생성
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -125,92 +46,8 @@ public class UploadController {
 		return str.replace("-", File.separator);
 	}
 
-	// @PostMapping("/uploadAjaxAction")
-	// public void uploadAjaxPost(MultipartFile[] uploadFile) {
-	//
-	// String uploadFolder = "C:\\upload";
-	//
-	// // make folder --------
-	// File uploadPath = new File(uploadFolder, getFolder());
-	// log.info("upload path: " + uploadPath);
-	//
-	// if (uploadPath.exists() == false) {
-	// uploadPath.mkdirs();
-	// }
-	// // make yyyy/MM/dd folder
-	//
-	// for (MultipartFile multipartFile : uploadFile) {
-	//
-	// log.info("-------------------------------------");
-	// log.info("Upload File Name: " + multipartFile.getOriginalFilename());
-	// log.info("Upload File Size: " + multipartFile.getSize());
-	//
-	// String uploadFileName = multipartFile.getOriginalFilename();
-	//
-	// // IE has file path
-	// uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") +
-	// 1);
-	// log.info("only file name: " + uploadFileName);
-	//
-	// // File saveFile = new File(uploadFolder, uploadFileName);
-	// File saveFile = new File(uploadPath, uploadFileName);
-	//
-	// try {
-	//
-	// multipartFile.transferTo(saveFile);
-	// } catch (Exception e) {
-	// log.error(e.getMessage());
-	// } // end catch
-	//
-	// } // end for
-	//
-	// }
 
-	// @PostMapping("/uploadAjaxAction")
-	// public void uploadAjaxPost(MultipartFile[] uploadFile) {
-	//
-	// String uploadFolder = "C:\\upload";
-	//
-	// // make folder --------
-	// File uploadPath = new File(uploadFolder, getFolder());
-	// log.info("upload path: " + uploadPath);
-	//
-	// if (uploadPath.exists() == false) {
-	// uploadPath.mkdirs();
-	// }
-	// // make yyyy/MM/dd folder
-	//
-	// for (MultipartFile multipartFile : uploadFile) {
-	//
-	// log.info("-------------------------------------");
-	// log.info("Upload File Name: " + multipartFile.getOriginalFilename());
-	// log.info("Upload File Size: " + multipartFile.getSize());
-	//
-	// String uploadFileName = multipartFile.getOriginalFilename();
-	//
-	// // IE has file path
-	// uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") +
-	// 1);
-	// log.info("only file name: " + uploadFileName);
-	//
-	// UUID uuid = UUID.randomUUID();
-	//
-	// uploadFileName = uuid.toString() + "_" + uploadFileName;
-	//
-	// File saveFile = new File(uploadPath, uploadFileName);
-	//
-	// try {
-	//
-	// multipartFile.transferTo(saveFile);
-	// } catch (Exception e) {
-	// log.error(e.getMessage());
-	// } // end catch
-	//
-	// } // end for
-	//
-	// }
-
-	private boolean checkImageType(File file) {
+	private boolean checkImageType(File file) { // 파일 확장자 체크
 
 		try {
 			String contentType = Files.probeContentType(file.toPath());
@@ -225,58 +62,6 @@ public class UploadController {
 		return false;
 	}
 
-	// @PostMapping("/uploadAjaxAction")
-	// public void uploadAjaxPost(MultipartFile[] uploadFile) {
-	//
-	// String uploadFolder = "C:\\upload";
-	//
-	// // make folder --------
-	// File uploadPath = new File(uploadFolder, getFolder());
-	// log.info("upload path: " + uploadPath);
-	//
-	// if (uploadPath.exists() == false) {
-	// uploadPath.mkdirs();
-	// }
-	// // make yyyy/MM/dd folder
-	//
-	// for (MultipartFile multipartFile : uploadFile) {
-	//
-	// log.info("-------------------------------------");
-	// log.info("Upload File Name: " + multipartFile.getOriginalFilename());
-	// log.info("Upload File Size: " + multipartFile.getSize());
-	//
-	// String uploadFileName = multipartFile.getOriginalFilename();
-	//
-	// // IE has file path
-	// uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") +
-	// 1);
-	// log.info("only file name: " + uploadFileName);
-	//
-	// UUID uuid = UUID.randomUUID();
-	//
-	// uploadFileName = uuid.toString() + "_" + uploadFileName;
-	//
-	// try {
-	// File saveFile = new File(uploadPath, uploadFileName);
-	// multipartFile.transferTo(saveFile);
-	// // check image type file
-	// if (checkImageType(saveFile)) {
-	//
-	// FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" +
-	// uploadFileName));
-	//
-	// Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100,
-	// 100);
-	//
-	// thumbnail.close();
-	// }
-	//
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// } //end catch
-	// } // end for
-	//
-	// }
 
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
@@ -299,7 +84,9 @@ public class UploadController {
 			AttachFileDTO attachDTO = new AttachFileDTO();
 
 			String uploadFileName = multipartFile.getOriginalFilename();
-
+			
+			log.info("파일이름 체크 uploadFileName : "+uploadFileName);
+			
 			// IE has file path
 			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
 			log.info("only file name: " + uploadFileName);

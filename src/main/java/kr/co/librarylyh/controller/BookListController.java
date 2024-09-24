@@ -25,7 +25,7 @@ public class BookListController {
 
 	private BookListService service;
 
-	@GetMapping("/booklist")
+	@GetMapping("/booklist") 
 	public String booklist(
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			@RequestParam(value = "amount", defaultValue = "10") int amount,
