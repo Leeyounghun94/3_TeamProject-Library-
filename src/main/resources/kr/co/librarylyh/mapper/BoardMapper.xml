@@ -40,8 +40,8 @@
 			select seq_board.nextval from dual
 		</selectKey>
 
-		insert into tbl_board (bno,title,content, category)
-		values (#{bno},	#{title}, #{content}, #{category})
+		insert into tbl_board (bno,title,content, category, nickName, boardUserId)
+		values (#{bno},	#{title}, #{content}, #{category}, #{nickName}, #{boardUserId})
 	</insert>
 	
 	<select id="read" resultType="kr.co.librarylyh.domain.BoardVO">
@@ -64,7 +64,7 @@
 		]]>
 	</update>
 	
-	<select id="getListWithPaging" resultType="kr.co.librarylyh.domain.BoardVO">
+<select id="getListWithPaging" resultType="kr.co.librarylyh.domain.BoardVO">
   <![CDATA[
   select 
     bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
@@ -78,14 +78,14 @@
   ]]>
 
   <include refid="criteria"></include> 
+
+  <![CDATA[
       
-  <![CDATA[    
-   
       rownum <= #{pageNum} * #{amount}
       )
-  where rn > (#{pageNum} -1) * #{amount}   
+  where rn > (#{pageNum} -1) * #{amount}
   ]]>
-  </select>
+</select>
   
 
 	<select id="getTotalCount" resultType="int">

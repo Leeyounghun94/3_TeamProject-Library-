@@ -28,3 +28,5 @@ select u_id, name, birth, phone, email, id, pw, nickName from member_tbl where i
 
 update MEMBER_TBL set authority = 0 where id ='test222';
 select * from member_tbl where authority>0;
+
+update MEMBER_TBL set authority = 1 where id ='t';

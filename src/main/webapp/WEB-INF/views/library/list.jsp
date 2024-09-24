@@ -128,11 +128,6 @@
 									<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목 or 내용 or 작성자</option>
 							</select> 
 							
-							<label for="startDate">시작 날짜</label><!-- (startDate) label for 값이 input id 값으로 입력됨 -->
-							<input type= "date" id="startDate" name="startDate" required>
-							<label for="endDate">종료 날짜</label><!-- (endDate) label for 값이 input id 값으로 입력됨 -->
-							<input type= "date" id="endDate" name="endDate" required>							
-							
 							<input type='text' class="text" name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
 							<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
 							<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
@@ -244,10 +239,9 @@
 		    	str = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="fileImage" viewBox="0 0 16 16">
 		    	  <path d="M11 2H9v3h2z"/>
 		    	  <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
-		    	</svg`;
+		    	</svg>`;
 		    	
 		    }//end else
-		    
 		    
 		    element.innerHTML = str;
 		    
@@ -275,10 +269,17 @@
 						} // 모달창 띄우는 메서드
 
 						$("#regBtn").on("click", function() {
+							
+						    var loginSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>'; // 세션의 유저 ID
+							
+							if(!loginSessionUserId || loginSessionUserId.trim() === ""){
+								alert("로그인 먼저 진행해 주세요.");
+								return false;
+							}else{
+								self.location = "/library/board/register";
+							}
 
-							self.location = "/library/board/register";
-
-						}); // 새 게시글 등록(모달)
+						}); // 새 게시글 등록
 
 						var actionForm = $("#actionForm");
 
@@ -323,52 +324,6 @@
 									searchForm.submit();
 
 								});
-						
-						
-						 // 달력
-						 $("#datepicker").datepicker({
-						 
-						                dateFormat: 'yy-mm-dd' //Input Display Format 변경
-
-						                 ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-
-						                 ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
-
-						                 ,changeYear: true //콤보박스에서 년 선택 가능
-
-						                 ,changeMonth: true //콤보박스에서 월 선택 가능                
-
-						                 ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-
-						                 ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-
-						                 ,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
-
-						                 ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
-
-						                 ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
-
-						                 ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
-
-						                 ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
-
-						                 ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
-
-						                 ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
-
-						                 ,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-
-						                 ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)                
-
-						             });                    
-
-						             
-
-						             //초기값을 오늘 날짜로 설정
-						 
-						 
-					    
-						
 						
 						
 						

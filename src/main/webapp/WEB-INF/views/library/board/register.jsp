@@ -116,7 +116,8 @@
         <form role="form" action="/library/board/register" method="post">
         	<div class="form-group">
         		<label>닉네임</label> 
-        		<input class="form-control" name='nickName' value="testValue" readonly>
+        		<input class="form-control" name='nickName' value="${userNickName}" readonly>
+        		<input class="form-control" type='hidden' name='boardUserId' value="${userId}" readonly>
     	 	</div>
         	<div class="input-group mb-3">
   			<label class="input-group-text" for="inputGroupSelect01">카테고리</label>

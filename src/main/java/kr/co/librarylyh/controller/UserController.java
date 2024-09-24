@@ -96,8 +96,12 @@ public class UserController {
     	
     	session.setAttribute("user", loginUser);
     	
-    	String userId = loginUser.getId();//// add
-    	session.setAttribute("userId", userId);/// add
+    	String userId = loginUser.getId();//// add_게시판 아이디 확인용 2024 09 23
+    	session.setAttribute("userId", userId);/// add_게시판 아이디 확인용  2024 09 23
+    	String userNickName = loginUser.getNickName(); // add_ 게시판 닉네임 확인용 2024 09 23
+    	session.setAttribute("userNickName", userNickName); // add_ 게시판 닉네임 확인용 2024 09 23
+    	int userAuthority = loginUser.getAuthority(); // add_ 게시판 관리자 권한 확인(관리자 답글용) 2024 09 24
+    	session.setAttribute("userAuthority", userAuthority); // add_ 게시판 관리자 권한 확인(관리자 답글용) 2024 09 24
     	
         return "redirect:/library/home";
     }

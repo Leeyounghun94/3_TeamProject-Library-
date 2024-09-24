@@ -83,7 +83,64 @@
 
 .likeResult li img { /* 썸네일 이미지의 크기 */
 	width: 30px;
+
 }
+
+.svg-heart-container{
+	cursor : pointer;
+}
+
+
+ul.chat li{
+ display: inline-block;
+    width: 100%;
+    height: 60px;
+    border-bottom: 1px solid gray;
+}
+
+ul.adminChat li{
+ display: inline-block;
+    width: 100%;
+    height: 60px;
+    border-bottom: 1px solid gray;
+}
+
+
+
+/* 관리자 표시 */
+.button {
+  width: fit-content;
+  display: flex;
+  padding: 0.5em 0.2rem;
+  cursor: pointer;
+  gap: 0.4rem;
+  font-weight: bold;
+  border-radius: 20px; /* 테두리 둥글기 */
+  text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);
+  background: linear-gradient(15deg, #880088, #aa2068, #cc3f47, #de6f3d, #f09f33, #de6f3d, #cc3f47, #aa2068, #880088) no-repeat;
+  background-size: 100%;
+  color: #fff;
+  border: none;
+  background-position: left center;
+  box-shadow: 0 30px 10px -20px rgba(0,0,0,.2);
+  transition: background .5s ease;
+}
+
+.button:hover {
+  background-size: 320%;
+  background-position: right center;
+}
+
+.button:hover svg {
+  fill: #fff;
+}
+
+.button svg { /* 왕관 크기 */
+  width: 23px;
+  fill: #f09f33;
+  transition: .3s ease;
+}
+
 
 
 </style>
@@ -159,14 +216,19 @@
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<i class="fa fa-comments fa-fw"></i> 댓글
-											<button id='addReplyBtn'
-												class='btn btn-primary btn-xs pull-right'>댓글 작성</button>
+											<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>댓글 작성</button>
 											<button data-oper='modify' class="btn btn-default">글수정</button>
 											<button data-oper='list' class="btn btn-info">목록</button>
+											<span class='adminBtn'><!-- 히든 버튼이 나올 창 -->
+											</span>
 										</div>
 
 										<!-- /.panel-heading -->
-										<div class="panel-body">
+										<br>
+										<div class="panel-body"><!-- 댓글이 작성되는 창 -->
+											<ul class="adminChat"><!-- 운영자가 답글을 작성하면 입력되는 칸 -->
+											</ul>
+											<br><br>
 											<ul class="chat">
 											</ul>
 											<!-- ./ end ul -->
@@ -179,15 +241,10 @@
 								<!-- ./ end row -->
 							</div>
 						</div>
-
 					</div>
-
 				</div>
-
 			</div>
-
 		</div>
-
 	</div>
 </div>
 
@@ -210,23 +267,21 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">REPLY MODAL</h4>
+				<h4 class="modal-title" id="myModalLabel">댓글 작성</h4>
 			</div>
-			<div class="modal-body">
+			
+			<div class="modal-body"> <!-- 댓글 작성을 누르면 나오는 창 -->
 				<div class="form-group">
-					<label>Reply</label> <input class="form-control" name='reply'
-						value='New Reply!!!!'>
+					<label>댓글 내용</label> <input class="form-control" name='reply' value='New Reply!!!!'>
 				</div>
 				<div class="form-group">
-					<label>Replyer</label> <input class="form-control" name='replyer'
-						value='replyer'>
+					<label>작성자</label> <input class="form-control" name='replyer' value="replyer" >
 				</div>
 				<div class="form-group">
-					<label>Reply Date</label> <input class="form-control"
-						name='replyDate' value='2018-01-01 13:13'>
+					<label>Reply Date</label> <input class="form-control" name='replyDate' value='2018-01-01 13:13'>
 				</div>
-
-			</div>
+			</div> <!-- end 댓글 작성을 누르면 나오는 창 -->
+			
 			<div class="modal-footer">
 				<button id='modalModBtn' type="button" class="btn btn-warning">Modify</button>
 				<button id='modalRemoveBtn' type="button" class="btn btn-danger">Remove</button>
@@ -251,65 +306,70 @@
 
 <script>
 	$(document).ready(function() {
-
+						
+						
 						var bnoValue = '<c:out value="${board.bno}"/>';
 						var replyUL = $(".chat");
+						var replyULAdmin = $(".adminChat");
+					    var authorityValue = '<%=session.getAttribute("userAuthority") != null ? session.getAttribute("userAuthority") : "" %>' ; // 세션 계정 등급 확인
+
+
 
 						showList(1);
 						likeCheck(); // 좋아요 함수 호출
+						adminCheck(); // 관리자 로그인 체크
 						
+						
+						// 댓글 리스트를 출력할 때, 관리자 댓글은 adminChat에 출력
 						function showList(page) {
+						    console.log("show list " + page);
 
-							console.log("show list " + page);
+						    replyService.getList({
+						        bno: bnoValue,
+						        page: page || 1
+						    }, function(replyCnt, list) {
+						        console.log("replyCnt: " + replyCnt);
+						        console.log("list: " + list);
 
-							replyService.getList(
-											{
-												bno : bnoValue,
-												page : page || 1
-											},
-											function(replyCnt, list) {
+						        var userStr = "";
+						        var adminStr = "";
 
-												console.log("replyCnt: "
-														+ replyCnt);
-												console.log("list: " + list);
-												console.log(list);
+						        if (list == null || list.length == 0) {
+						            return;
+						        }
 
-												if (page == -1) {
-													pageNum = Math
-															.ceil(replyCnt / 10.0);
-													showList(pageNum);
-													return;
-												}
+						        // 댓글 목록 출력
+						        for (var i = 0, len = list.length || 0; i < len; i++) {
+						            var replyHtml = "<li class='left clearfix' data-rno='"+list[i].rno+"'>";
+						            replyHtml += "<div class='replyBox'><strong class='primary-font'>" + list[i].replyer + "</strong>";
+						            replyHtml += "<small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small>";
+						            replyHtml += "<small class='editDelReply'>&nbsp&nbsp&nbsp&nbsp수정/삭제</small>";
+						            replyHtml += "<p>" + list[i].reply + "</p></div></li>";
+						            
+						            var adminHtml = "<li class='left clearfix' data-rno='" + list[i].rno + "'>";
+						            adminHtml += "<div class='replyBox'>";
+						            adminHtml += "<span class='button'>";
+						            adminHtml += "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'>";
+						            adminHtml += "<path d='M18 0l8 12 10-8-4 20H4L0 4l10 8 8-12z'></path>";
+						            adminHtml += "</svg>관리자</span>";
+						            adminHtml += "<span>" + list[i].reply + "</span></div></li>";
+						            
+						            // 관리자인 경우 adminChat에 출력
+						            if (list[i].authority) {
+						                adminStr += adminHtml;
+						            } else {
+						                userStr += replyHtml;
+						            }
+						        }
 
-												var str = "";
+						        // 일반 유저 댓글은 .chat에, 관리자 댓글은 .adminChat에 출력
+						        $(".chat").html(userStr);
+						        
+						        $(".adminChat").html(adminStr);
 
-												if (list == null || list.length == 0) {
-													return;
-												}
-												//댓글 작성되면 나오는 칸 관련
-												for (var i = 0, len = list.length || 0; i < len; i++) {
-													str += "<li class='left clearfix' data-rno='"+list[i].rno+"'>";
-													str += "  <div class='replyBox'><strong class='primary-font'>["
-															+ list[i].rno
-															+ "] "
-															+ list[i].replyer
-															+ "</strong>";
-													str += "    <small class='pull-right text-muted'>"
-															+ replyService
-																	.displayTime(list[i].replyDate)
-															+ "</small>";
-													str += "    <p>"
-															+ list[i].reply
-															+ "</p></div></li>";
-												}
-
-												replyUL.html(str);
-
-												showReplyPage(replyCnt);
-
-											});//end function
-
-						}//end showList
+						        showReplyPage(replyCnt);
+						    });
+						}
 						
 
 						//게시글 좋아요 관련 코드
@@ -349,7 +409,7 @@
 					} // end likeCheck()
 						
 							
-						$(".svg-heart-container-div").on("click", function(e){ // 좋아요 버튼을 누르면 LikeVO 테이블에 bno와 userId가 저장됨.
+						$(".svg-heart-container").on("click", function(e){ // 좋아요 버튼을 누르면 LikeVO 테이블에 bno와 userId가 저장됨.
 		
 							var likeSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
 							var likeBno = '<c:out value="${board.bno}"/>';
@@ -393,7 +453,6 @@
 							}// end else if 
 							
 						}); // end click like Btn function
-						
 						
 
 						var pageNum = 1;
@@ -460,6 +519,7 @@
 						var modalInputReply = modal.find("input[name='reply']");
 						var modalInputReplyer = modal.find("input[name='replyer']");
 						var modalInputReplyDate = modal.find("input[name='replyDate']");
+						
 
 						var modalModBtn = $("#modalModBtn");
 						var modalRemoveBtn = $("#modalRemoveBtn");
@@ -470,25 +530,86 @@
 							modal.modal('hide');
 						});
 
-						$("#addReplyBtn").on("click", function(e) {
-
-							modal.find("input").val("");
-							modalInputReplyDate.closest("div").hide();
-							modal.find("button[id !='modalCloseBtn']").hide();
+						$("#addReplyBtn").on("click", function(e) { // 댓글 작성 modal
+							
+						    var loginSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>'; // 세션의 유저 ID
+						    console.log(loginSessionUserId);
+							if(!loginSessionUserId || loginSessionUserId.trim() === ""){
+								alert("로그인 먼저 진행해 주세요.");
+								return false;
+							}else{
+							
+								
+							modal.find("input").val(""); // 입력값을 찾음(위 변수 참고)
+							
+							
+							modalInputReplyDate.closest("div").hide(); // 작성일.hide()
+							modal.find("button[id !='modalCloseBtn']").hide();// close 누르면 hide()
 
 							modalRegisterBtn.show();
 
 							$(".modal").modal("show");
+							}
 
 						});
+						
+						function adminCheck() {
+						    var loginSessionUserAuthority = '<%=session.getAttribute("userAuthority") != null ? session.getAttribute("userAuthority") : "" %>' ; // 세션 계정 등급 확인
+						    console.log("userAuthority 값: ", loginSessionUserAuthority);
+						    var adminBtn = $(".adminBtn");
 
-						modalRegisterBtn.on("click", function(e) {
+						    if (loginSessionUserAuthority === '1') { // 관리자 권한이 '1'일 경우
+						    	console.log("userAuthority 값: ", loginSessionUserAuthority);
+						        var str = "<button id='addReplyAdmin' class='btn btn-primary btn-xs pull-right'>관리자 답변</button>";
 
-							var reply = {
+						        // 관리자가 댓글 작성할 수 있도록 버튼을 표시
+						        adminBtn.html(str);
+						        
+						        // 관리자 댓글 작성 버튼 클릭 이벤트
+						        $("#addReplyAdmin").on("click", function(e) {
+						            modal.find("input").val(""); // 입력창 초기화
+						            modalInputReplyDate.closest("div").hide(); // 작성일 필드를 숨김
+						            modal.find("button[id !='modalCloseBtn']").hide(); // 닫기 버튼 제외한 다른 버튼 숨김
+
+						            modalRegisterBtn.show(); // 등록 버튼 표시
+						            
+						            $(".modal").modal("show"); // 모달 창 열기
+						        });
+						        
+								//관리자 댓글 조회 클릭 이벤트 처리 
+								$(".adminChat").on("click","li",function(e) {
+
+													var rno = $(this).data("rno");
+
+													replyService.get(rno, function(reply) {
+
+															modalInputReply.val(reply.reply);
+															modalInputReplyer.val(reply.replyer);
+															modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
+															modal.data("rno", reply.rno);
+															modal.find("button[id !='modalCloseBtn']").hide();
+															modalModBtn.show();
+															modalRemoveBtn.show();
+															$(".modal").modal("show");
+													});
+												});
+
+						    } else {
+						        return; // 권한이 없으면 아무것도 하지 않음
+						    }
+						}
+						
+						modalRegisterBtn.on("click", function(e) { // modal에서 register를 눌렀을때 작동
+
+							var reply = { // modal 입력창에서 받은 갑 입력
 								reply : modalInputReply.val(),
 								replyer : modalInputReplyer.val(),
-								bno : bnoValue
+								bno : bnoValue,
+								authority : authorityValue // 권한도 넘어가게 함.
+
+								
 							};
+						
 							replyService.add(reply, function(result) {
 
 								alert(result);
@@ -502,11 +623,22 @@
 							});
 
 						});
+						
+						//댓글 수정/삭제 버튼 클릭 
+						//$(".editDelReply").on("click","li", "small"	function(e) 
+							$(".chat").on("click", ".editDelReply", function(e){
+							
+							
+							var SessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
 
-						//댓글 조회 클릭 이벤트 처리 
-						$(".chat").on("click","li",	function(e) {
-
-											var rno = $(this).data("rno");
+							if(!SessionUserId || SessionUserId.trim() === "" ){
+								
+								alert("로그인 먼저 진행해 주세요.");
+								
+								return false;
+							}else{
+											//var rno = $(this).data("rno");
+											var rno = $(this).closest("li").data("rno")
 
 											replyService.get(rno, function(reply) {
 
@@ -518,8 +650,11 @@
 													modalModBtn.show();
 													modalRemoveBtn.show();
 													$(".modal").modal("show");
-											});
-										});
+											});// end replyService.get
+							}
+											
+										});// end .chat on click
+						
 
 						modalModBtn.on("click", function(e) {
 
@@ -565,8 +700,21 @@
 		var operForm = $("#operForm");
 
 		$("button[data-oper='modify']").on("click", function(e) {
-
+			
+		//아이디 체크
+			var SessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
+			var boardUserId = '<c:out value="${board.boardUserId}"/>';
+			
+			if(SessionUserId != boardUserId ){
+				
+				alert("로그인 하거나 아이디를 확인해주세요.");
+				
+				return false;
+				
+			}else{
+		
 			operForm.attr("action", "/library/board/modify").submit();
+			}
 
 		});
 

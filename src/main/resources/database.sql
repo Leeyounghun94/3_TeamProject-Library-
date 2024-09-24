@@ -44,6 +44,8 @@ alter table tbl_board add (uploadPath varchar2(200) default 'X' );
 alter table tbl_board add (fileName varchar2(100) default '.no' );
 alter table tbl_board add (filetype char(1) default 'I');
 
+alter table tbl_board add (boardUserId varchar2(100) default 'A');
+
 
 ALTER TABLE tbl_board DROP COLUMN fileName; -- 칼럼 삭제
 
@@ -67,23 +69,34 @@ create table tbl_reply (
 	rno number(10,0),  -- 댓글 번호
 	bno number(10,0),  -- fk(게시판번호)
  	reply varchar2(1000) not null, -- 댓글
- 	replyer varchar2(50) not null, -- 댓글 작성자
+ 	replyer varchar2(50), -- 댓글 작성자
 	replyDate date default sysdate,
-	updateDate date default sysdate );
+	updateDate date default sysdate,
+	authority number(10,0) default 0,
+	replyerUserId varchar2(100)
 	
+	)
+	
+-- 추가해야 할 것	
+alter table tbl_reply add constraint pk_reply primary key (rno); 
+-- pk를 rno로 지정(롤이름 : pk_reply)
+alter table tbl_reply add constraint fk_reply_board foreign key (bno) references tbl_board (bno); 
+-- tbl_reply의 bno(자)와 tbl_board의 bno(부)를 연결 (부모가 있어야 자식이 있다) 
 
+
+alter table tbl_reply drop column replyerUserId; -- 특정 테이블 컬럼 삭제 명령어
+
+drop table tbl_reply;
 
 create sequence seq_reply ; -- 댓글용 자동번호객체 추가
 
 drop sequence seq_reply;
 
-alter table tbl_reply add constraint pk_reply primary key (rno); 
--- pk를 rno로 지정(롤이름 : pk_reply)
+
 
 insert into TBL_BOARD (bno, title, content, writer) (select seq_board.nextval, title, content, writer from tbl_board); -- 재귀 복사
 
-alter table tbl_reply add constraint fk_reply_board foreign key (bno) references tbl_board (bno); 
--- tbl_reply의 bno(자)와 tbl_board의 bno(부)를 연결 (부모가 있어야 자식이 있다) 
+
 
 -- tbl_board 초기화 -> 더미데이터 - > 댓글 더미데이터 입력
 
@@ -119,4 +132,5 @@ drop table tbl_board -- 보드 테이블 삭제
 drop table tbl_reply -- 댓글 테이블 삭제
 drop sequence tbl_like_seq; -- 보드_시퀀스 삭제
 
+select * from tbl_reply order by bno desc;
 

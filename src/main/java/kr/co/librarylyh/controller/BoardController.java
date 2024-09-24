@@ -3,11 +3,9 @@ package kr.co.librarylyh.controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +47,7 @@ public class BoardController {
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model, Long bno) {
 
+	    
 		model.addAttribute("list", service.getList(cri)); // 게시물 리스트
 
 		int total = service.getTotal(cri); // 총 게시물 수
@@ -90,6 +89,7 @@ public class BoardController {
 		//RequestParam을 통해 URL에서 추출된 bno 값을 이용하게 됨.
 		log.info("/get or modify");
 		model.addAttribute("board", service.get(bno));
+		
 		
 		model.addAttribute("likeChk", service.serviceCheckLike(bno)); // 좋아요 체크 여부
 		

@@ -32,7 +32,7 @@
 	<!-- 로그인 체크 -->
 	<select id="login" resultType="kr.co.librarylyh.domain.UserVO" >
 		<![CDATA[
-			select u_id, name, birth, phone, email, id, pw, nickName from member_tbl where id = #{id} and pw = #{pw}
+			select u_id, name, birth, phone, email, id, pw, nickName, authority from member_tbl where id = #{id} and pw = #{pw}
 		]]>
 	</select>
 	
