@@ -26,9 +26,9 @@ select * from member_tbl where id = 'test555' and pw = 'test55';
 
 select u_id, name, birth, phone, email, id, pw, nickName from member_tbl where id = 'test555' and pw = 'test55';
 
-update MEMBER_TBL set authority = 0 where id ='test222';
+update MEMBER_TBL set authority = 1 where id ='admin123';
 select * from member_tbl where authority>0;
-
+update member_tbl set nickName = '제발', phone = '010-1111-1111', email = 'library@naver.com' where id = 'test';
 
 select * from member_tbl where name='test'and email='library5@naver.com';
 --------------------------------------------- 좋아요 구현 10차 시기
@@ -59,6 +59,7 @@ alter table tbl_attach add constraint fk_board_attach foreign key (bno) referenc
 
 
 --------------------------------------------- 게시판용
+select * from TBL_BOARD;
 create sequence seq_board;
 
 create table tbl_board (
@@ -173,9 +174,10 @@ create table book_tbl
     photo            varchar2(250) NOT NULL,
     publicationDate date,
     reviewCount     number(6),
-    averageRating   number(2, 1),
+    averageRating   number(3, 1),
     bookCount          number(10)
 );
+
 
 create table book_detail_tbl
 (
@@ -217,6 +219,7 @@ CREATE INDEX idx_publication_date ON book_tbl (publicationDate);
 CREATE INDEX idx_book_category_isbn ON book_category_tbl (isbn13);
 -- book_category_tbl의 categoryId 에 대한 인덱스
 CREATE INDEX idx_book_categoryId ON book_category_tbl (categoryId);
+
 
 
 SELECT b.*, bd.* FROM book_tbl b LEFT JOIN book_detail_tbl bd ON b.isbn13 = bd.isbn13

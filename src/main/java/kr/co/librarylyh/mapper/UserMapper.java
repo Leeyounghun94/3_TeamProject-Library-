@@ -15,14 +15,7 @@ public interface UserMapper {
 	/*
 	 * public int insertSelectUid(UserVO user); // u_id 생성 후 회원가입 완료
 	 */	
-	public UserVO read(String u_id); // 회원 정보 읽어옴
-	
-	public boolean update(UserVO user); // 회원 정보 수정
-	
-	public int delete(String u_id); // 회원 탈퇴
-	
-	  
-	
+
 	// 회원가입 
 	public void join(UserVO user); 
 	
@@ -55,6 +48,12 @@ public interface UserMapper {
 	
 	// 어드민 등록
 	public void adminRegister(UserVO user);
+	
+	public UserVO read(String id); // 회원 정보 읽어옴
+	
+	public String update(UserVO user); // 회원 정보 수정
+	
+	public int delete(String u_id); // 회원 탈퇴
 	
 	
 }	

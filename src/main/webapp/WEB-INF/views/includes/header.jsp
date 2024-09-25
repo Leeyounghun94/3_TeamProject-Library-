@@ -44,6 +44,9 @@
 						<li class="main_nav_item"><a href="elements.html">신상품</a></li>
 						<li class="main_nav_item"><a href="news.html">도서대여</a></li>
 						<li class="main_nav_item"><a href="/library/list">게시판</a></li>	
+						<c:if test="${user.authority == 1 }">
+            			<li class="main_nav_item"><a href="/library/admin/main">어드민페이지</a></li>
+         				</c:if>
 					</ul>
 				</div>
 			</nav>
@@ -64,9 +67,8 @@
 					<a href="/library/logout" id="logout_button">로그아웃</a>
 				</div>
 			</c:if>
-			<c:if test="${user.authority == 1 }">
-				<div><a href="/library/admin/main">어드민페이지</a></div>
-			</c:if>
+			
+			
 		</span>
 		</div>
 

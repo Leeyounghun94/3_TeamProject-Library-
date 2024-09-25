@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Log4j2
@@ -32,15 +33,15 @@ public class UserServiceImpl implements UserService{
     }
 
 	@Override
-	public UserVO get(String id) {
+	public UserVO read(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return mapper.read(id);
 	}
 
 	@Override
 	public boolean remove(String u_id) {
 		// TODO Auto-generated method stub
-		return false;
+		return mapper.delete(u_id) == 1;
 	}
 
 	@Override
@@ -95,7 +96,8 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public boolean updateUser(UserVO user) {
+	public String update(UserVO user) {
+
 		return mapper.update(user);
 		// 회원정보 업데이트
 		

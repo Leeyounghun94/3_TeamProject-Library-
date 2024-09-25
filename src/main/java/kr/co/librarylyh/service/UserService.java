@@ -13,10 +13,10 @@ public interface UserService {
 	// 메서드에 실제 용어 사용
 	
 	// 정보수정
-	public boolean updateUser(UserVO user);
+	public String update(UserVO user);
 	
 	// 회원 정보 상세보기
-	public UserVO get(String id);
+	public UserVO read(String id);
 	
 	// 회원 탈퇴
 	public boolean remove(String u_id);

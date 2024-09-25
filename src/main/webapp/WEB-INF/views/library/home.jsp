@@ -57,10 +57,10 @@
 
 					<div class="col-lg-4 hero_box_col">
 						<div class="hero_box d-flex flex-row align-items-center justify-content-start">
-							<img src="/resources/images/earth-globe.svg" class="svg" alt="">
+							<img src="/resources/images/book_log.png" >
 							<div class="hero_box_content">
-								<h2 class="hero_box_title">Online Courses</h2>
-								<a href="courses.html" class="hero_box_link">view more</a>
+								<h2 class="hero_box_title">도서 전체 목록</h2>
+								<a href="/library/booklist" class="hero_box_link">view more</a>
 							</div>
 						</div>
 					</div>
