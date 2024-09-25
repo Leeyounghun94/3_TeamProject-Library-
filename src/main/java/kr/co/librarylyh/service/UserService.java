@@ -13,7 +13,7 @@ public interface UserService {
 	// 메서드에 실제 용어 사용
 	
 	// 정보수정
-	public boolean modify(UserVO user);
+	public boolean updateUser(UserVO user);
 	
 	// 회원 정보 상세보기
 	public UserVO get(String id);
@@ -38,5 +38,15 @@ public interface UserService {
 
 	// 어드민 권한 부여
 	public int adminRegister(UserVO user);
+	
+	// 유저 아이디 찾기
+	public UserVO findUserId(UserVO user);
+	
+	// 유저 비밀번호 찾기
+	public int findUserPw(UserVO user);
+		
+	// 비밀번호 업데이트
+	public UserVO pwUpdate(UserVO user);
+	
 	
 }

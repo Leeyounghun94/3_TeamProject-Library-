@@ -32,12 +32,6 @@ public class UserServiceImpl implements UserService{
     }
 
 	@Override
-	public boolean modify(UserVO user) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public UserVO get(String id) {
 		// TODO Auto-generated method stub
 		return null;
@@ -80,9 +74,31 @@ public class UserServiceImpl implements UserService{
 		return 0;
 	}
 
+	@Override
+	public UserVO findUserId(UserVO user) {
+		// 아이디찾기
+		return mapper.findUserId(user);
+	}
 
+	@Override
+	public int findUserPw(UserVO user) {
+		// 비밀번호찾기
+		
+		return mapper.findUserPw(user);
+	}
 
-	
-	
-	
+	@Override
+	public UserVO pwUpdate(UserVO user) {
+		// 비밀번호 업데이트
+
+		return mapper.pwUpdate(user);
+	}
+
+	@Override
+	public boolean updateUser(UserVO user) {
+		return mapper.update(user);
+		// 회원정보 업데이트
+		
+	}
+
 }

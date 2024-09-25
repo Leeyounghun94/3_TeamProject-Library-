@@ -43,7 +43,7 @@
 
     <ul class="list-group">
         
-        <li> <a href="/library/myPage">내 정보</a> </li>
+        <li> <a href="/library/myPage/updateForm">내 정보 수정</a> </li>
         
         <li> <a href="/myPage/myReservation">내 예약 관리</a></li>
         

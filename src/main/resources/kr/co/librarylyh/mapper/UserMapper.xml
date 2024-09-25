@@ -36,6 +36,27 @@
 		]]>
 	</select>
 	
+	<!-- 아이디 찾기 -->
+	<select id="findUserId" resultType="kr.co.librarylyh.domain.UserVO">
+		<![CDATA[
+			select * from member_tbl where name = #{name} and email = #{email}
+		]]>
+	</select>
+	
+	<!-- 비밀번호 찾기 -->
+	<select id="findUserPw" resultType="Integer">
+		<![CDATA[
+			select count(*) from member_tbl where id = #{id} and name = #{name} and email = #{email}
+		]]>
+	</select>
+	
+	<!-- 비밀번호 업데이트 -->
+	<update id="pwUpdate" >
+		<![CDATA[
+			update member_tbl set pw = #{pw} where id = #{id} and name = #{name} and email = #{email}
+		]]>
+	</update>
+	
 	<!-- 현재 비밀번호 확인 -->
 	<select id="checkPw">
 		<![CDATA[
@@ -47,6 +68,13 @@
 	<update id="updatePw">
 		<![CDATA[
 			update member_tbl set pw = #{pw}
+		]]>
+	</update>
+	
+	<!-- 회원정보 수정 -->
+	<update id="update" >
+		<![CDATA[
+			update member_tbl set nickName = #{nickName}, phone = #{phone}, email = #{email} where id = #{id}
 		]]>
 	</update>
 	
@@ -65,7 +93,7 @@
 	
 	<select id="read" resultType="kr.co.librarylyh.domain.UserVO" >
 		<![CDATA[
-			select * from member_tbl where u_id = #{u_id}
+			select * from member_tbl where id = #{id}
 		]]>
 	</select>
 	

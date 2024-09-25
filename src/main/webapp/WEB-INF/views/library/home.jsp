@@ -67,10 +67,10 @@
 
 					<div class="col-lg-4 hero_box_col">
 						<div class="hero_box d-flex flex-row align-items-center justify-content-start">
-							<img src="/resources/images/books.svg" class="svg" alt="">
+							<img src="/resources/images/board.png">
 							<div class="hero_box_content">
-								<h2 class="hero_box_title">Our Library</h2>
-								<a href="courses.html" class="hero_box_link">view more</a>
+								<h2 class="hero_box_title">게시판</h2>
+								<a href="<c:url value='/library/list' />"  class="hero_box_link">view more</a>
 							</div>
 						</div>
 					</div>
@@ -80,7 +80,7 @@
 							<img src="/resources/images/reservation.png">
 							<div class="hero_box_content">
 								<h2 class="hero_box_title">도서 대출 | 예약</h2>
-								<a href="<c:url value='/library/ReservationMain' />" class="hero_box_link">view more</a>
+								<a href="<c:url value='/library/reservation/ReservationMain' />" class="hero_box_link">view more</a>
 							</div>
 						</div>
 					</div>

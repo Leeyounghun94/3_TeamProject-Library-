@@ -121,7 +121,7 @@
         <form role="form" action="/board/register" method="post">
         	<div class="form-group">
         		<label>닉네임</label> 
-        		<input class="form-control" name='nickName' value="testValue" readonly>
+        		<input class="form-control" name='nickName' value="${user.nickName}" readonly>
     	 	</div>
         	<div class="input-group mb-3">
   			<label class="input-group-text" for="inputGroupSelect01">카테고리</label>

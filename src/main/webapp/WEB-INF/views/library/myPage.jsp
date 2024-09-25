@@ -24,7 +24,6 @@
             <section class="myPage-main">
 
                 <h1 class="myPage-title">내 정보</h1>
-                <span class="myPage-subject">원하는 회원 정보를 수정할 수 있습니다.</span>
 
                 <form method="POST"  name="myPageFrm">
 
@@ -63,9 +62,7 @@
                         <input type="text" id="email" name="email" readonly="readonly"
                             value="${user.email}">
                     </div>
-
-
-                    <button class="myPage-submit" >수정하기</button>
+                    
                 </form>
 
             </section>
@@ -76,17 +73,4 @@
 <jsp:include page="../includes/footer.jsp" />
     
 </body>
-<script type="text/javascript">
-$(document).ready(function(){ /* 브라우저 시작 시 실행 */
-	var formObj = $("form"); /* 상단 코드중에 form 태그를 formObj로 관여한다. */
-	$('button').on("click", function(e){
-		e.preventDefault(); 
-		/* <form>태그의 모든 버튼은 기본적으로 submit 처리 -> 기본 동작을 막고 마지막에 직접 submit()수행 */
-		document.getElementById("nickName").readOnly=false;
-		document.getElementById("phone").readOnly=false;
-		document.getElementById("email").readOnly=false;
-		
-	});
-});
-</script>
 </html>

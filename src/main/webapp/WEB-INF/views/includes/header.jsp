@@ -115,15 +115,4 @@
 		</div>
 
 	</div>
-<script type="text/javascript">
-/* $("#logout_button").click(function(){
-	$.ajax({
-		type:"post",
-		url:"/library/logout",
-		success:function(data){
-			alert("로그아웃 성공");
-			document.location.reload();
-		}
-	}); // ajax
-}); */
-</script>	
+	
