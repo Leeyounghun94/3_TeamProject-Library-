@@ -24,12 +24,12 @@ crossorigin="anonymous"></script>
 			<div class="login_wrap"> 
 				<div class="id_wrap">
 						<div class="id_input_box">
-						<input class="id_input" name="id">
+						<input class="id_input" name="id" placeholder="ID">
 					</div>
 				</div>
 				<div class="pw_wrap">
 					<div class="pw_input_box">
-						<input type="password" class="pw_input" name="pw">
+						<input type="password" class="pw_input" name="pw" placeholder="Password">
 					</div>
 				</div>
 				<c:if test = "${result == 0}">
@@ -41,7 +41,9 @@ crossorigin="anonymous"></script>
 				<div class="login_button_wrap">
 					<button type="button" class="login_button" >로그인</button>
 					<button type="button" class="join_button" onclick="location.href='/library/agreementForm'">회원가입</button>
-				</div>			
+					<p style="align:center;"><a href="/library/findId">아이디 찾기</a> | <a href="/library/findPw">비밀번호 찾기</a></p>
+				</div>
+						
 			</div>
 		
 		</form>

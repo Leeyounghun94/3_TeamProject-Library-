@@ -17,7 +17,7 @@ public interface UserMapper {
 	 */	
 	public UserVO read(String u_id); // 회원 정보 읽어옴
 	
-	public int update(UserVO user); // 회원 정보 수정
+	public boolean update(UserVO user); // 회원 정보 수정
 	
 	public int delete(String u_id); // 회원 탈퇴
 	
@@ -41,11 +41,20 @@ public interface UserMapper {
 	// 비밀번호 변경
 	public int updatePw(String pw);
 	
+	// 유저 아이디 찾기
+	public UserVO findUserId(UserVO user);
+		
+	// 유저 비밀번호 찾기
+	public int findUserPw(UserVO user);
+	
+	// 비밀번호 업데이트
+	public UserVO pwUpdate(UserVO user);
+	
 	// 어드민 리스트 
 	public List<UserVO> getUserList(int authority); 
 	
 	// 어드민 등록
 	public void adminRegister(UserVO user);
 	
-
+	
 }	

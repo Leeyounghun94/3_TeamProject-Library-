@@ -1,5 +1,8 @@
 package kr.co.librarylyh.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +16,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.librarylyh.domain.BookListVO;
+import kr.co.librarylyh.domain.CategoryVO;
 import kr.co.librarylyh.domain.bookReservationVO;
+import kr.co.librarylyh.service.BookListService;
 import kr.co.librarylyh.service.BookReservationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @RestController// rest 방식으로 응답하며, view-jsp 가 아닌 json과 xml 로 나타난다.
-@RequestMapping("/library/*")//	 
+@RequestMapping("/library/*") 
 @Log4j2
 @AllArgsConstructor// 생성자 구현 -> new ReplyController(ReplyService);
 
@@ -32,6 +38,8 @@ public class BookRsRestController {
 	
 	
 	private final BookReservationService rsService ;
+	
+	private final BookListService bookService ;
 	
 	
 	

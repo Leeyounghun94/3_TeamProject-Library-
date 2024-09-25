@@ -3,17 +3,41 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../../includes/header.jsp"%>
+<link rel="stylesheet" type="text/css"
+	href="/resources/styles/news_styles.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/styles/news_responsive.css">
 
 
-<div class="row">
-  <div class="col-lg-12">
-    <h1 class="page-header">Board Modify</h1>
-  </div>
-  <!-- /.col-lg-12 -->
+
+<div class="home">
+	<div class="home_background_container prlx_parent">
+		<div class="home_background prlx"
+			style="background-image: url(/resources/images/news_background.jpg)"></div>
+	</div>
+	<div class="home_content">
+		<h1>게시글 수정</h1>
+	</div>
 </div>
-<!-- /.row -->
+	
+	
 
-<div class="row">
+	
+	<!-- Popular -->
+
+	<div class="popular page_section">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="section_title text-center">
+						<h1>게시글 수정</h1>
+					</div>
+				</div>
+			</div>
+		</div><!-- <div class="container"> -->
+	</div><!-- <div class="popular page_section"> -->
+
+<div class="row-context">
   <div class="col-lg-12">
     <div class="panel panel-default">
 
@@ -21,7 +45,7 @@
       <!-- /.panel-heading -->
       <div class="panel-body">
 
-      <form role="form" action="/board/modify" method="post">
+      <form role="form" action="/library/board/modify" method="post">
       
         <input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum }"/>'>
         <input type='hidden' name='amount' value='<c:out value="${cri.amount }"/>'>
@@ -29,40 +53,47 @@
 		<input type='hidden' name='keyword' value='<c:out value="${cri.keyword }"/>'>
       
  
-<div class="form-group">
-  <label>Bno</label> 
-  <input class="form-control" name='bno' 
-     value='<c:out value="${board.bno }"/>' readonly="readonly">
-</div>
-
-<div class="form-group">
-  <label>Title</label> 
-  <input class="form-control" name='title' 
-    value='<c:out value="${board.title }"/>' >
-</div>
-
-<div class="form-group">
-  <label>Text area</label>
-  <textarea class="form-control" rows="3" name='content' ><c:out value="${board.content}"/></textarea>
-</div>
-
-<div class="form-group">
-  <label>닉네임</label> 
-  <input class="form-control" name='writer'
-    value='<c:out value="${board.nickName}"/>' readonly="readonly">            
-</div>
-
-<div class="form-group">
-  <label>RegDate</label> 
-  <input class="form-control" name='regDate'
-    value='<fmt:formatDate pattern = "yyyy/MM/dd" value = "${board.regdate}" />'  readonly="readonly">            
-</div>
-
-<div class="form-group">
-  <label>Update Date</label> 
-  <input class="form-control" name='updateDate'
-    value='<fmt:formatDate pattern = "yyyy/MM/dd" value = "${board.updateDate}" />'  readonly="readonly">            
-</div>
+		<div class="form-group">
+		  <label>글번호</label> 
+		  <input class="form-control" name='bno' 
+		     value='<c:out value="${board.bno }"/>' readonly="readonly">
+		</div>
+		
+		<div class="form-group">
+		  <label>제목</label> 
+		  <input class="form-control" name='title' 
+		    value='<c:out value="${board.title }"/>' >
+		</div>
+		
+		<div class="form-group">
+		  <label>글내용</label>
+		  <textarea class="form-control" rows="3" name='content' ><c:out value="${board.content}"/></textarea>
+		</div>
+		
+		<label class="input-group-text" for="inputGroupSelect01">카테고리</label>
+		<select class="form-select" id="inputGroupSelect01" name="category">
+    		<option selected>선택</option>
+    		<option value="자유">자유</option>
+    		<option value="Q&A">Q&A</option>
+  		</select>
+		
+		<div class="form-group">
+		  <label>닉네임</label> 
+		  <input class="form-control" name='nickName'
+		    value='<c:out value="${board.nickName}"/>' readonly="readonly">            
+		</div>
+		
+		<div class="form-group">
+		  <label>RegDate</label> 
+		  <input class="form-control" name='regDate'
+		    value='<fmt:formatDate pattern = "yyyy/MM/dd" value = "${board.regdate}" />'  readonly="readonly">            
+		</div>
+		
+		<div class="form-group">
+		  <label>Update Date</label> 
+		  <input class="form-control" name='updateDate'
+		    value='<fmt:formatDate pattern = "yyyy/MM/dd" value = "${board.updateDate}" />'  readonly="readonly">            
+		</div>
 
           
 
@@ -90,6 +121,18 @@
 
 
 <style>
+.row-context{
+  	height: 700px;
+	width: 600px;
+	margin-left: 550px;
+}
+
+.row-file{
+  	height: 200px;
+	width: 600px;
+	margin-left: 550px;
+}
+
 .uploadResult {
   width:100%;
   background-color: gray;
@@ -139,7 +182,7 @@
 
 
 
-<div class="row">
+<div class="row-file">
   <div class="col-lg-12">
     <div class="panel panel-default">
 
@@ -165,6 +208,8 @@
 </div>
 <!-- /.row -->
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><!-- JQuery 사용 -->
+
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -180,11 +225,11 @@ $(document).ready(function() {
 	    console.log(operation);
 	    
 	    if(operation === 'remove'){
-	      formObj.attr("action", "/board/remove");
+	      formObj.attr("action", "/library/board/remove");
 	      
 	    }else if(operation === 'list'){
 	      //move to list
-	      formObj.attr("action", "/board/list").attr("method","get");
+	      formObj.attr("action", "/library/list").attr("method","get");
 	      
 	      var pageNumTag = $("input[name='pageNum']").clone();
 	      var amountTag = $("input[name='amount']").clone();
@@ -233,7 +278,7 @@ $(document).ready(function() {
     
     var bno = '<c:out value="${board.bno}"/>';
     
-    $.getJSON("/board/getAttachList", {bno: bno}, function(arr){
+    $.getJSON("/library/getAttachList", {bno: bno}, function(arr){
     
       console.log(arr);
       

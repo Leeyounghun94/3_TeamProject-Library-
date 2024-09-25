@@ -50,7 +50,7 @@
       <![CDATA[ b.publicationDate DESC ]]>
       <!-- 기본 정렬: 최신 출판일 순으로 정렬 -->
     </if>
-    <![CDATA[ ) AS rnum, b.isbn13, b.book, b.author, b.publisher, b.publicationDate AS publicationDate, b.price, b.averageRating
+    <![CDATA[ ) AS rnum, b.isbn13, b.book, b.author, b.publisher, b.publicationDate AS publicationDate, b.rentalAvailable, b.price, b.averageRating
     AS averageRating, b.reviewCount, b.bookCount, b.photo FROM book_tbl b ]]>
     <!-- 카테고리 필터가 있으면 카테고리 테이블과 LEFT JOIN -->
     <if test="categoryId != null and categoryId != ''">
@@ -59,7 +59,7 @@
     <![CDATA[ WHERE 1=1 ]]>
     <!-- 공통 검색 조건 적용 -->
     <include refid="searchConditions"/>
-    <![CDATA[ GROUP BY b.isbn13, b.book, b.author, b.publisher, b.publicationDate, b.price, b.averageRating, b.reviewCount, b.bookCount, b.photo )
+    <![CDATA[ GROUP BY b.isbn13, b.book, b.author, b.publisher, b.publicationDate, b.rentalAvailable, b.price, b.averageRating, b.reviewCount, b.bookCount, b.photo )
     a WHERE rnum BETWEEN #{startRow} AND #{endRow} ]]>
     <!-- 페이징 처리를 위해 rnum으로 시작 행부터 종료 행까지의 결과만 가져옴 -->
   </select>
@@ -77,13 +77,30 @@
   </select>
 
   <!-- 책 추가 -->
-  <insert id="insert">
-    <![CDATA[ INSERT INTO book_tbl (isbn13, book, bookDescription, author, publisher, photo, weight, bookSize,
-    rentalAvailable, price, pageCount, bookCount, averageRating, star1Count, star2Count, star3Count, star4Count, star5Count, reviewCount, publicationDate)
-    VALUES (#{isbn13}, #{book}, #{bookDescription, jdbcType=CLOB}, #{author}, #{publisher}, #{photo}, #{weight}, #{bookSize}, #{rentalAvailable},
-     #{price}, #{pageCount}, #{bookCount}, #{averageRating}, #{star1Count}, #{star2Count}, #{star3Count}, #{star4Count}, #{star5Count}, #{reviewCount}, #{publicationDate}) ]]>
-    <!-- 새로운 책을 book_tbl 테이블에 추가 -->
+  <insert id="insertBook">
+    <![CDATA[
+    INSERT INTO book_tbl
+    (isbn13, book, author, publisher, price, rentalAvailable, photo, publicationDate, reviewCount, averageRating, bookCount)
+    VALUES (#{isbn13}, #{book}, #{author}, #{publisher}, #{price}, #{rentalAvailable}, #{photo}, #{publicationDate}, #{reviewCount}, #{averageRating}, #{bookCount})
+  ]]>
   </insert>
+  <!-- 책 상세 정보 추가 -->
+  <insert id="insertBookDetail">
+    <![CDATA[
+    INSERT INTO book_detail_tbl
+    (isbn13, bookDescription, pageCount, weight, bookSize, star1Count, star2Count, star3Count, star4Count, star5Count)
+    VALUES (#{isbn13}, #{bookDescription, jdbcType=CLOB}, #{pageCount}, #{weight}, #{bookSize}, #{star1Count}, #{star2Count}, #{star3Count}, #{star4Count}, #{star5Count})
+  ]]>
+  </insert>
+  <!-- 카테고리 + 책 복합 테이블에 추가 -->
+  <insert id="insertBookCategory">
+    <![CDATA[
+    INSERT INTO book_category_tbl
+    (isbn13, categoryId)
+    VALUES (#{isbn13}, #{categoryId})
+  ]]>
+  </insert>
+
 
   <!-- 책 조회 (카테고리 정보는 따로) -->
   <select id="read" parameterType="long" resultType="kr.co.librarylyh.domain.BookListVO">

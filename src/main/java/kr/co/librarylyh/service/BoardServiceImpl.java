@@ -42,12 +42,10 @@ public class BoardServiceImpl implements BoardService {
 		if (board.getAttachList() == null || board.getAttachList().size() <= 0) {
 			return;
 		}
-
-		board.getAttachList().forEach(attach -> {
-
+		board.getAttachList().forEach(attach -> { // 첨부파일 이름 및 경로 첨부파일_테이블에 저장
 			attach.setBno(board.getBno());
 			attachMapper.insert(attach);
-			attachMapper.insertBoard(attach); // 보드에입력해줌
+			attachMapper.insertBoard(attach); // 첨부파일 이름 및 경로 게시글_테이블에 저장
 		});
 	}
 
@@ -138,6 +136,7 @@ public class BoardServiceImpl implements BoardService {
 	public void serviceInsertLike(String likeUserId, Long bno) throws Exception { // 게시글 좋아요 (좋아요 상승)
 		// TODO Auto-generated method stub
 		mapper.boardLikeNumUp(bno); // 해당 메서드 실행 하여 조회수 증가
+		
 		mapper.insertLike(likeUserId, bno);
 	}
 
@@ -147,6 +146,7 @@ public class BoardServiceImpl implements BoardService {
 		mapper.boardLikeNumDown(bno);
 		return mapper.deleteLike(likeUserId, bno);
 	}
+
 
 
 	/*@Override

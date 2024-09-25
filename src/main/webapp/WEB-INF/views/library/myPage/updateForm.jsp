@@ -19,14 +19,13 @@
 
         <section class="myPage-content">
 
-            <jsp:include page="../../includes/myPageSide.jsp" />
 
             <section class="myPage-main">
 
                 <h1 class="myPage-title">내 정보</h1>
-                <span class="myPage-subject">원하는 회원 정보를 수정할 수 있습니다.</span>
+                <span class="myPage-subject">닉네임, 전화번호, 이메일을 수정할 수 있습니다.</span>
 
-                <form method="POST"  name="myPageFrm">
+                <form method="POST"  name="myPageFrm" action="/library/myPage">
 
                     <div class="myPage-row">
                         <label>아이디</label>
@@ -36,7 +35,7 @@
                     
                     <div class="myPage-row">
                         <label>닉네임</label>
-                        <input type="text" id="nickName" name="nickName" readonly="readonly"
+                        <input type="text" id="nickName" name="nickName" 
                             value="${user.nickName}" >
                     </div>
 
@@ -54,18 +53,20 @@
                     
                     <div class="myPage-row">
                         <label>전화번호</label>
-                        <input type="text" name="phone" id="phone" maxlength="11" readonly="readonly"
+                        <input type="text" name="phone" id="phone"
                             value="${user.phone}">
                     </div>
                     
                     <div class="myPage-row">
                         <label>이메일</label>
-                        <input type="text" id="email" name="email" readonly="readonly"
+                        <input type="text" id="email" name="email" 
                             value="${user.email}">
                     </div>
 
-
-                    <button class="myPage-submit" >수정하기</button>
+					<div>
+                    	<button class="myPage-submit" type="submit" >수정완료</button>>
+                    	<button class="myPage-submit" >이전으로</button>
+                    </div>
                 </form>
 
             </section>
@@ -76,9 +77,4 @@
 <jsp:include page="../../includes/footer.jsp" />
     
 </body>
-<script type="text/javascript">
-$(".myPage-submit").click(function(){
-	$("#nickName").attr("readonly", false);
-});	
-</script>
 </html>

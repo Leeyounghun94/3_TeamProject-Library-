@@ -6,10 +6,42 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<style>
+.col-md-4 {
+    color: black;
+}<!-- 본문(Body) 글자색 지정-->
+
+
+.home2 {
+  width: 100%;
+  height: 50vh;
+
+}
+
+
+</style>
+
 <meta charset="UTF-8">
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/resources/styles/courses_styles.css">
+    <link rel="stylesheet" type="text/css" href="/resources/styles/courses_responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+          rel="stylesheet">
 <title>도서 예약 신청</title>
 </head>
 <body>
+
+<div class="home2">
+    <div class="home_background_container prlx_parent">
+        <div class="home_background prlx2"
+             style="background-image:url(/resources/images/courses_background.jpg)">
+        </div>
+    </div>
+</div>
+
+
 <!-- Popular -->
 	<div class="popular page_section">
 		<div class="container">

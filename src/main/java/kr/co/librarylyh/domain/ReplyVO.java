@@ -12,6 +12,8 @@ public class ReplyVO {  // db에 있는 자료를 객체와 시키는 용도
 	
 	private String reply ; // 댓글
 	private String replyer ; // 작성자
+	private String replyerUserId; // 작성자의 아이디
 	private Date replyDate ; // 댓글 작성일
 	private Date updateDate ; // 수정일
+	private Long authority; // 권한
 }

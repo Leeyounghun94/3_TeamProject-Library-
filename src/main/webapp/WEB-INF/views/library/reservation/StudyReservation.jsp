@@ -12,11 +12,45 @@
     font-size: calc(1.325rem + .75vw) !important;
 } <!-- 본 페이지는 ~ -> 글자 사이즈 CSS -->
 
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    background: #FFFFFF;
+    color: #a5a5a5;
+}
+
+.home2 {
+  width: 100%;
+  height: 50vh;
+
+}
+
+
+
 </style>
 <meta charset="UTF-8">
+ <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/resources/styles/courses_styles.css">
+    <link rel="stylesheet" type="text/css" href="/resources/styles/courses_responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+          rel="stylesheet">
+          
 <title>열람실 예약하기</title>
 </head>
 <body>
+
+<div class="home2">
+    <div class="home_background_container prlx_parent">
+        <div class="home_background prlx2"
+             style="background-image:url(/resources/images/courses_background.jpg)">
+        </div>
+    </div>
+</div>
+
+
+
 	<!-- Popular -->
 	<div class="popular page_section">
 		<div class="container">
@@ -48,7 +82,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star" viewBox="0 0 16 16">
 					  <path d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.18.18 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.18.18 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.18.18 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.18.18 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.18.18 0 0 0 .134-.098z"></path>
 					  <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"></path>
-					</svg> 해당 서비스는 준비중 입니다.
+					</svg> 해당 서비스는 <strong>추후 개발 예정</strong> 입니다.
 	            </div>					
 </div>
 

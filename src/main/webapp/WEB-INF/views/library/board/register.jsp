@@ -111,35 +111,29 @@
       <div class="panel-heading">게시글을 작성 합니다. 귀하의 소중한 의견을 공유해 주세요.</div><br>
       <!-- /.panel-heading -->
       <div class="panel-body">
-      
-      	<% /* 로그인 객체가 세션으로 들어오면 nickName 만 받아오기 위함. 아래 내용은 수정 되어야함 */
-    		String nickName = (String) session.getAttribute("nickName");
-		%>
-		
 
 		
-        <form role="form" action="/board/register" method="post">
+        <form role="form" action="/library/board/register" method="post">
         	<div class="form-group">
         		<label>닉네임</label> 
-        		<input class="form-control" name='nickName' value="testValue" readonly>
+        		<input class="form-control" name='nickName' value="${userNickName}" readonly>
+        		<input class="form-control" type='hidden' name='boardUserId' value="${userId}" readonly>
     	 	</div>
         	<div class="input-group mb-3">
   			<label class="input-group-text" for="inputGroupSelect01">카테고리</label>
-  			<select class="form-select" id="inputGroupSelect01">
+  			<select class="form-select" id="inputGroupSelect01" name="category">
     			<option selected>선택</option>
-    			<option value="1">자유</option>
-    			<option value="2">Q&A</option>
+    			<option value="자유">자유</option>
+    			<option value="Q&A">Q&A</option>
   			</select>
-		</div>	
+			</div>
           <div class="form-group">
             <label>제목</label> <input class="form-control" name='title' placeholder="제목을 입력해주세요.">
           </div>
-
           <div class="form-group">
             <label>내용</label>
             <textarea class="form-control" rows="3" name='content' placeholder="내용을 입력해주세요."></textarea>
           </div>
-    
         </form>
 
       </div>
@@ -160,10 +154,10 @@
       <!-- /.panel-heading -->
       	<label>파일업로드(선택)</label>
       	<div class="input-group mb-3">
- 			<input type="file" class="form-control" id="inputGroupFile01">
+ 			<input type="file" class="form-control" name='uploadFile' multiple>
 		</div>
         
-        <div class='uploadResult'> 
+        <div class='uploadResult'> <!-- 새 게시글 등록에서 이미지 첨부 했을 때 나오는 곳 -->
           <ul>
           </ul>
         </div>
@@ -177,9 +171,7 @@
   <!-- end panel -->
 </div>
 <!-- /.row -->
-						
-
-					
+			
 						</div>
 					</div>
 						
@@ -193,28 +185,6 @@
 						<p class="about_text">*게시글 작성 시 유의사항 개인적인 친분의 수준을 넘어선 과도한 비방, 음담패설, 도배, 근거 없는 사실 유포 이외 기타 악성 게시글들을 엄격히 금지하며, 위 항목에 해당하는 댓글 역시 철저히 금지합니다.
 위와 같은 게시글/댓글은 경고없이 삭제되며, 작성자는 경고없이 탈퇴될 수 있습니다.<br>*규정에 어긋난 심한 욕설로 삭제 처리되며 지속적으로 남겨주실 경우 탈퇴처리 될 수 있으니 유의바랍니다.</p>
 
-<!-- 						<div class="contact_info">
-							<ul>
-								<li class="contact_info_item">
-									<div class="contact_info_icon">
-										<img src="/resources/images/placeholder.svg" class="gps" alt="https://www.flaticon.com/authors/lucy-g">
-									</div>
-									Blvd Libertad, 34 m05200 Arévalo
-								</li>
-								<li class="contact_info_item">
-									<div class="contact_info_icon">
-										<img src="/resources/images/smartphone.svg" class="phone" alt="https://www.flaticon.com/authors/lucy-g">
-									</div>
-									0034 37483 2445 322
-								</li>
-								<li class="contact_info_item">
-									<div class="contact_info_icon">
-										<img src="/resources/images/envelope.svg" class="letter" alt="https://www.flaticon.com/authors/lucy-g">
-									</div>hello@company.com
-								</li>
-							</ul>
-						</div> -->
-
 					</div>
 				</div>
 
@@ -227,23 +197,11 @@
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 		crossorigin="anonymous">
 </script> <!-- 외부 js 삽입 -->
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><!-- JQuery 사용 -->
 
 <script>
 
 $(document).ready(function(e){
-
-	/* 
-  var formObj = $("form[role='form']");
-  
-  $("button[type='submit']").on("click", function(e){
-    
-    e.preventDefault();
-    
-    console.log("submit clicked");
-    
-  }); */
-
   
   var formObj = $("form[role='form']"); // 파일업로드는 별도의 업로드 버튼 없이 <input type='file'>의 내용이 변경되는 것을 감지
   
@@ -255,7 +213,7 @@ $(document).ready(function(e){
     
     var str = "";
     
-    $(".uploadResult ul li").each(function(i, obj){
+    $(".uploadResult ul li").each(function(i, obj){ //업로드된 파일 리스트에서 정보를 추출해 숨겨진 input으로 추
       
       var jobj = $(obj);
       
@@ -273,7 +231,9 @@ $(document).ready(function(e){
     
     console.log(str);
     
-    formObj.append(str).submit();
+    formObj.append(str).submit(); // 폼을 제출
+    
+    
     
   });
 
@@ -336,30 +296,8 @@ $(document).ready(function(e){
     var str ="";
     
     $(uploadResultArr).each(function(i, obj){
-    
-        /* //image type
-        if(obj.image){
-          var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
-          str += "<li><div>";
-          str += "<span> "+ obj.fileName+"</span>";
-          str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
-          str += "<img src='/display?fileName="+fileCallPath+"'>";
-          str += "</div>";
-          str +"</li>";
-        }else{
-          var fileCallPath =  encodeURIComponent( obj.uploadPath+"/"+ obj.uuid +"_"+obj.fileName);            
-            var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
-              
-          str += "<li><div>";
-          str += "<span> "+ obj.fileName+"</span>";
-          str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
-          str += "<img src='/resources/img/attach.png'></a>";
-          str += "</div>";
-          str +"</li>";
-        } */
-		//image type
 		
-		if(obj.image){
+		if(obj.image){ // 이미지 파일일 경우
 			var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
 			str += "<li data-path='"+obj.uploadPath+"'";
 			str +=" data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.image+"'"
@@ -370,7 +308,7 @@ $(document).ready(function(e){
 			str += "<img src='/display?fileName="+fileCallPath+"'>";
 			str += "</div>";
 			str +"</li>";
-		}else{
+		}else{ // 파일의 경우
 			var fileCallPath =  encodeURIComponent( obj.uploadPath+"/"+ obj.uuid +"_"+obj.fileName);			      
 		    var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
 		      
@@ -389,7 +327,7 @@ $(document).ready(function(e){
     uploadUL.append(str);
   }
 
-  $(".uploadResult").on("click", "button", function(e){
+  $(".uploadResult").on("click", "button", function(e){ // 게시글 작성하고 파일 업로드하면 버튼 생기는데 그 버튼임 
 	    
     console.log("delete file");
       
@@ -399,8 +337,8 @@ $(document).ready(function(e){
     var targetLi = $(this).closest("li");
     
     $.ajax({
-      url: '/deleteFile',
-      data: {fileName: targetFile, type:type},
+      url: '/deleteFile', // UploadController url 과 같음
+      data: {fileName: targetFile, type:type}, // 괄호 안에 들어가는 매개 변수들
       dataType:'text',
       type: 'POST',
         success: function(result){

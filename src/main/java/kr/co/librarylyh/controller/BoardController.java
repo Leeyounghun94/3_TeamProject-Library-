@@ -5,9 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,43 +47,17 @@ public class BoardController {
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model, Long bno) {
 
-		log.info("list: " + cri);
-		model.addAttribute("list", service.getList(cri));
-		log.info("list: " + cri);
-		// model.addAttribute("pageMaker", new PageDTO(cri, 123));
+	    
+		model.addAttribute("list", service.getList(cri)); // 게시물 리스트
 
-		int total = service.getTotal(cri);
-		//int liketotal = service.serviceCountLike(bno);
+		int total = service.getTotal(cri); // 총 게시물 수
+
 		log.info("total: " + total);
 		
-		 // 확장자끄집어낼 예정
+		model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
 		
-		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		
-		//model.addAttribute("likeCount", liketotal); // 좋아요 갯수 파악
-		
-
 	}
-	
-	@RequestMapping("/list")// 세션 값 들어오는 것 태스트
-	public String test2(HttpServletRequest request) throws Exception {
-	    
-	    HttpSession session = request.getSession(true); // 세션이 없으면 새로 생성
-	    
-	    String name = "test"; // 임의의 사용자 아이디 설정
-	    
-	    session.setAttribute("userId", name); // 세션에 userId 설정
-	    
-	    // 세션에 제대로 값이 설정되었는지 확인
-	    String sessionUserId = (String) session.getAttribute("userId");
-	    System.out.println("설정된 세션 userId: " + sessionUserId); // 로그 출력
-	    
-	    return "redirect:/library/list";
-	    
-	} // 삭제해도됨 세션 테스트임
-	
-	
-    
 	
 	@PostMapping("/board/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
@@ -107,7 +79,7 @@ public class BoardController {
 		
 		rttr.addFlashAttribute("result", board.getBno()); // 그 글을 떙겨오면 몇번 값인지 알수있음
 
-		return "redirect:/library/list";
+		return "redirect:/library/list"; // 게시물을 등록하고 그 값을 list로 보낸다 + list 페이지로 이동 된다.
 	}
 	
 
@@ -117,6 +89,8 @@ public class BoardController {
 		//RequestParam을 통해 URL에서 추출된 bno 값을 이용하게 됨.
 		log.info("/get or modify");
 		model.addAttribute("board", service.get(bno));
+		
+		
 		model.addAttribute("likeChk", service.serviceCheckLike(bno)); // 좋아요 체크 여부
 		
 		//model.addAttribute("likeCount", service.serviceCountLike(bno)); // 좋아요 갯수 파악
@@ -198,18 +172,24 @@ public class BoardController {
 	//(빈 하트 일 때) 좋아요를 누를 경우 userId, bno를 받아 쿼리문 실행을 목적으로 함
 	@PostMapping("/likeUp") // 좋아요 클릭 > 좋아요 수 증가
 	@ResponseBody
-	public void likeUp(@RequestParam("likeUserId") String likeUserId, @RequestParam("bno") Long bno) throws Exception {
+	public void likeUp(@Param("likeUserId") String likeUserId, @Param("bno") Long bno) throws Exception {
 		
 		service.serviceInsertLike(likeUserId, bno);
+		
+		
 	}// end likeUp *(ajax)
 	
 	//(색칠 하트 일 때) 좋아요를 누를 경우 userId, bno를 받아 쿼리문 실행을 목적으로 함
 	@PostMapping("/likeDown") // 좋아요 클릭 > 좋아요 수 증가
 	@ResponseBody
-	public void likeDown(@RequestParam("likeUserId") String likeUserId, @RequestParam("bno") Long bno) throws Exception {
+	public void likeDown(@Param("likeUserId") String likeUserId, @Param("bno") Long bno) throws Exception {
 		
 		service.serviceDeleteLike(likeUserId, bno);
+		
+		
 	}// end likeDown *(ajax)
+	
+
 	
 
 }

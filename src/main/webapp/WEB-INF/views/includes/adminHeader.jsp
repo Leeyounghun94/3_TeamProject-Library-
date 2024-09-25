@@ -67,7 +67,7 @@
                         <h6 class="collapse-header">Admin</h6>
                         <a class="collapse-item" href="/library/admin/booksManage">도서등록</a>
                         <a class="collapse-item" href="/library/admin/booksList">전체 도서목록</a>
-                        <a class="collapse-item" href="/library/admin/adminManage">관리자 등록</a>
+                        <a class="collapse-item" href="/library/admin/adminManage">관리자 리스트</a>
                     </div>
                 </div>
             </li>
@@ -83,9 +83,9 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">User</h6>
-                        <a class="collapse-item" href="utilities-color.html">회원목록</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
+                        <a class="collapse-item" href="utilities-color.html">회원 리스트</a>
+                        <a class="collapse-item" href="utilities-border.html">Q&A 답변</a>
+                        <a class="collapse-item" href="utilities-animation.html">----</a>
                         <a class="collapse-item" href="utilities-other.html">Other</a>
                     </div>
                 </div>

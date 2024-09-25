@@ -12,6 +12,7 @@ public class UserVO {
 	private String email;
 	private String id;
 	private String pw;
+	private String newPw;
 	private String nickName;
 	private int authority;
 }

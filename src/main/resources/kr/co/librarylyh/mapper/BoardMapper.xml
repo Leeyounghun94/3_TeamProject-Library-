@@ -8,7 +8,7 @@
 	<sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
 			<foreach item='type' collection="typeArr">
-				<trim prefix="OR">
+				<trim prefix="OR"><!-- 맨 앞에 생성되는 "OR 제거" -->
 					<choose>
 						<when test="type == 'T'.toString()">
 							title like '%'||#{keyword}||'%'
@@ -40,8 +40,8 @@
 			select seq_board.nextval from dual
 		</selectKey>
 
-		insert into tbl_board (bno,title,content, category)
-		values (#{bno},	#{title}, #{content}, #{category})
+		insert into tbl_board (bno,title,content, category, nickName, boardUserId)
+		values (#{bno},	#{title}, #{content}, #{category}, #{nickName}, #{boardUserId})
 	</insert>
 	
 	<select id="read" resultType="kr.co.librarylyh.domain.BoardVO">
@@ -64,7 +64,7 @@
 		]]>
 	</update>
 	
-	<select id="getListWithPaging" resultType="kr.co.librarylyh.domain.BoardVO">
+<select id="getListWithPaging" resultType="kr.co.librarylyh.domain.BoardVO">
   <![CDATA[
   select 
     bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
@@ -78,13 +78,14 @@
   ]]>
 
   <include refid="criteria"></include> 
+
+  <![CDATA[
       
-  <![CDATA[    
       rownum <= #{pageNum} * #{amount}
       )
-  where rn > (#{pageNum} -1) * #{amount}   
+  where rn > (#{pageNum} -1) * #{amount}
   ]]>
-  </select>
+</select>
   
 
 	<select id="getTotalCount" resultType="int">
@@ -125,8 +126,8 @@
 	<!-- 게시글 좋아요 tbl_like-->
 	<insert id="insertLike">
 		<![CDATA[
-			insert into tbl_like (UserId, bno)
-			values (#{UserId}, #{bno})
+			insert into tbl_like (bno, userId)
+			values (#{bno}, #{likeUserId})
 		]]>
 	</insert>
 	
@@ -134,7 +135,7 @@
     <update id="boardLikeNumUp" parameterType="Long">
     	<![CDATA[  
     		update tbl_board set
-    		likeNum = viewNum + 1
+    		likeNum = likeNum + 1
     		where bno=#{bno}
     	]]>
     </update>
@@ -143,7 +144,7 @@
 	<!-- 게시글 좋아요 (취소) tbl_like -->
 	<delete id="deleteLike">
 		<![CDATA[
-			delete tbl_like where bno = #{bno} and userId = #{userId}
+			delete tbl_like where bno = #{bno} and userId = #{likeUserId}
 		]]>
 	</delete>
 	
@@ -151,7 +152,7 @@
     <update id="boardLikeNumDown" parameterType="Long">
     	<![CDATA[  
     		update tbl_board set
-    		likeNum = viewNum - 1
+    		likeNum = likeNum - 1
     		where bno=#{bno}
     	]]>
     </update>
