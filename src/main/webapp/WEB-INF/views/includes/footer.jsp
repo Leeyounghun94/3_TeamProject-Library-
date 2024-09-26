@@ -54,7 +54,7 @@
 
 					<!-- Footer Column - Menu -->
 
-					<div class="col-lg-3 footer_col">
+<!-- 					<div class="col-lg-3 footer_col">
 						<div class="footer_column_title">메뉴</div>
 						<div class="footer_column_content">
 							<ul>
@@ -65,11 +65,11 @@
 								<li class="footer_list_item"><a href="contact.html"></a></li>
 							</ul>
 						</div>
-					</div>
+					</div> -->
 
 					<!-- Footer Column - Usefull Links -->
 
-					<div class="col-lg-3 footer_col">
+<!-- 					<div class="col-lg-3 footer_col">
 						<div class="footer_column_title">쇼핑도우미</div>
 						<div class="footer_column_content">
 							<ul>
@@ -80,7 +80,7 @@
 								<li class="footer_list_item"><a href="#">공지사항</a></li>
 							</ul>
 						</div>
-					</div>
+					</div> -->
 
 					<!-- Footer Column - Contact -->
 

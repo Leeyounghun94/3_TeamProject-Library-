@@ -56,7 +56,7 @@ public class UserMapperTests {
 		user.setPhone("010-1111-1111");
 		user.setEmail("library1@naver.com");
 		
-		boolean count = mapper.update(user);
+		String count = mapper.update(user);
 		
 		log.info("수정 결과 : " + count);
 		log.info("수정 결과 : " + user);

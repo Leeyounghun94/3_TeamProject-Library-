@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public String update(UserVO user) {
+	public int update(UserVO user) {
 
 		return mapper.update(user);
 		// 회원정보 업데이트

@@ -85,7 +85,7 @@ p {
 				<c:when test="${search == 0 }">
 				<p class="inquiry">조회결과가 없습니다.</p>
 				<div class="button_wrap">
-					<button type="button" class="login_button" onclick="location.href='/library/login'" >비밀번호 재설정</button>
+					<button type="button" class="login_button" onclick="location.href='/library/login'" >이전으로</button>
 				</div>
 				</c:when>
 				<c:otherwise>

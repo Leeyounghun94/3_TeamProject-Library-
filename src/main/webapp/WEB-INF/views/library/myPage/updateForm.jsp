@@ -89,14 +89,16 @@ $('.myPage-submit').on('click', function(){
 
     $.ajax({
         type : "PUT",
-        url : "/userPage/updateForm/" + $('#id').val(),
+        url : "/userPage/updateForm/",
         data : JSON.stringify(userData), 
         contentType: 'application/json',
         success : function(result) {
+        	alert("정보수정이 완료되었습니다.")
             window.location.href = '/library/myPage';
         },
         error: function(error) {
-            alert("오류" + error.responseText);
+            alert("정보수정에 실패하였습니다.");
+            alert(JSON.strigify(error));
         }
     });
 });

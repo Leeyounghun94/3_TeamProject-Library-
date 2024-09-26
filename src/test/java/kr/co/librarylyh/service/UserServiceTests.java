@@ -46,7 +46,7 @@ public class UserServiceTests {
 	@Test
 	public void testGet() {
 		
-		log.info(service.get("6XIRWL253U"));
+		log.info(service.read("6XIRWL253U"));
 		/*
 		|-----------|--------|-------|--------------|-------------------|--------|-----------|------------|
 		|u_id       |name    |birth  |phone         |email              |id      |pw         |nickname    |
@@ -58,7 +58,7 @@ public class UserServiceTests {
 	
 	@Test
 	public void testModify() {
-		UserVO user = service.get("6XIRWL253U");
+		UserVO user = service.read("6XIRWL253U");
 		
 		if(user == null) {
 			log.info("찾는 객체가 없습니다.");
@@ -71,7 +71,7 @@ public class UserServiceTests {
 		user.setPw("test555");
 		user.setNickName("test5_5");
 		
-		service.updateUser(user);
+		service.update(user);
 		log.info("결과 : " + user);
 	}
 	

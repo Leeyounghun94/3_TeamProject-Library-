@@ -62,7 +62,7 @@ public class AdminController {
 	@PostMapping("/adminRegister")
 	public String register(UserVO user) {
 		
-		user = service.get(user.getU_id());
+		user = service.read(user.getId());
 		
 		if(user.getAuthority() == 0) {
 			user.setAuthority(1);
