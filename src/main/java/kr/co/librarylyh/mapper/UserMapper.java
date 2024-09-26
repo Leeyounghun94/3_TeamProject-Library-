@@ -51,7 +51,7 @@ public interface UserMapper {
 	
 	public UserVO read(String id); // 회원 정보 읽어옴
 	
-	public String update(UserVO user); // 회원 정보 수정
+	public int update(UserVO user); // 회원 정보 수정
 	
 	public int delete(String u_id); // 회원 탈퇴
 	

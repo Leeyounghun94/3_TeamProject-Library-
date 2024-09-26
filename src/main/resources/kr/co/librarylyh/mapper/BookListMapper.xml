@@ -81,7 +81,7 @@
     <![CDATA[
     INSERT INTO book_tbl
     (isbn13, book, author, publisher, price, rentalAvailable, photo, publicationDate, reviewCount, averageRating, bookCount)
-    VALUES (#{isbn13}, #{book}, #{author}, #{publisher}, #{price}, #{rentalAvailable}, #{photo}, #{publicationDate}, #{reviewCount}, #{averageRating}, #{bookCount})
+    VALUES (#{isbn13, jdbcType=NUMERIC}, #{book}, #{author}, #{publisher}, #{price, jdbcType=NUMERIC}, #{rentalAvailable}, #{photo}, #{publicationDate}, #{reviewCount, jdbcType=NUMERIC}, #{averageRating, jdbcType=NUMERIC}, #{bookCount, jdbcType=NUMERIC})
   ]]>
   </insert>
   <!-- 책 상세 정보 추가 -->
@@ -89,7 +89,7 @@
     <![CDATA[
     INSERT INTO book_detail_tbl
     (isbn13, bookDescription, pageCount, weight, bookSize, star1Count, star2Count, star3Count, star4Count, star5Count)
-    VALUES (#{isbn13}, #{bookDescription, jdbcType=CLOB}, #{pageCount}, #{weight}, #{bookSize}, #{star1Count}, #{star2Count}, #{star3Count}, #{star4Count}, #{star5Count})
+    VALUES (#{isbn13, jdbcType=NUMERIC}, #{bookDescription, jdbcType=CLOB}, #{pageCount, jdbcType=NUMERIC}, #{weight, jdbcType=VARCHAR}, #{bookSize, jdbcType=VARCHAR}, #{star1Count, jdbcType=CHAR}, #{star2Count, jdbcType=CHAR}, #{star3Count, jdbcType=CHAR}, #{star4Count, jdbcType=CHAR}, #{star5Count, jdbcType=CHAR})
   ]]>
   </insert>
   <!-- 책과 카테고리를 book_category_tbl에 여러 개 저장 -->
@@ -100,7 +100,7 @@
   ]]>
     <foreach collection="categoryIds" item="categoryId" separator=",">
       <![CDATA[
-      (#{isbn13}, #{categoryId})
+      (#{isbn13, jdbcType=NUMERIC}, #{categoryId})
     ]]>
     </foreach>
   </insert>
@@ -122,9 +122,9 @@
 
   <!-- 책 수정 -->
   <update id="update">
-    <![CDATA[ UPDATE book_tbl SET book = #{book}, bookDescription = #{bookDescription, jdbcType=CLOB}, price = #{price}, bookCount = #{bookCount},
-    averageRating = #{averageRating}, rentalAvailable = #{rentalAvailable}, pageCount = #{pageCount}, weight = #{weight}, bookSize = #{bookSize},
-    star1Count = #{star1Count}, star2Count = #{star2Count}, star3Count = #{star3Count}, star4Count = #{star4Count}, star5Count = #{star5Count}, reviewCount = #{reviewCount} WHERE isbn13 = #{isbn13} ]]>
+    <![CDATA[ UPDATE book_tbl SET book = #{book}, bookDescription = #{bookDescription, jdbcType=CLOB}, price = #{price, jdbcType=NUMERIC}, bookCount = #{bookCount, jdbcType=NUMERIC},
+    averageRating = #{averageRating, jdbcType=NUMERIC}, rentalAvailable = #{rentalAvailable}, pageCount = #{pageCount, jdbcType=NUMERIC}, weight = #{weight, jdbcType=VARCHAR}, bookSize = #{bookSize, jdbcType=VARCHAR},
+    star1Count = #{star1Count, jdbcType=CHAR}, star2Count = #{star2Count, jdbcType=CHAR}, star3Count = #{star3Count, jdbcType=CHAR}, star4Count = #{star4Count, jdbcType=CHAR}, star5Count = #{star5Count, jdbcType=CHAR}, reviewCount = #{reviewCount, jdbcType=NUMERIC} WHERE isbn13 = #{isbn13, jdbcType=NUMERIC} ]]>
     <!-- 책 정보를 수정 -->
   </update>
 
@@ -144,11 +144,7 @@
   <select id="checkIsbnExists" resultType="int">
     SELECT COUNT(*)
     FROM book_tbl
-    WHERE isbn13 = #{isbn13}
-  </select>
-
-  <select id="getBookByIsbn" parameterType="Long" resultType="BookListVO">
-    SELECT * FROM book_tbl WHERE isbn13 = #{isbn13}
+    WHERE isbn13 = #{isbn13, jdbcType=NUMERIC}
   </select>
 
 </mapper>

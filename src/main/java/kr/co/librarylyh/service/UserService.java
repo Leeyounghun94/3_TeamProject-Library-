@@ -13,7 +13,7 @@ public interface UserService {
 	// 메서드에 실제 용어 사용
 	
 	// 정보수정
-	public String update(UserVO user);
+	public int update(UserVO user);
 	
 	// 회원 정보 상세보기
 	public UserVO read(String id);

@@ -62,18 +62,17 @@ public class BookListController {
 	}
 
 	@GetMapping("/manage")
-	public String manageBook(@RequestParam(value = "isbn13", required = false) Long isbn13, @RequestParam("mode") String mode, Model model) {
+	public String manageBook(@RequestParam(value = "isbn13", required = false) Long isbn13,
+			@RequestParam("mode") String mode, Model model) {
+		log.info("Mode: " + mode);
+		log.info("ISBN13: " + isbn13);
+
 		if ("edit".equals(mode) && isbn13 != null) {
-			// 수정모드일경우 isbn13을 기준으로 해당 책을 불러옴
-			// /library/manage?mode=add 이런식
 			BookListVO bookDetail = service.get(isbn13);
+			log.info("Book Detail: " + bookDetail);  // 책 정보를 로그로 확인
 			model.addAttribute("bookDetail", bookDetail);
 		}
-		// mode가 "add"인 경우에는 빈 폼을 제공 (별도 처리 필요 없음)
-		model.addAttribute("mode", mode); // 추가 모드 혹은 수정 모드 전달
-		return "library/bookManagement";  // 관리 페이지로 이동
+		model.addAttribute("mode", mode);
+		return "library/bookManagement";
 	}
-
-
-
 }

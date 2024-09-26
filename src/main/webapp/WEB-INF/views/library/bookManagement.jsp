@@ -83,32 +83,6 @@
     transition: color .2s ease-in-out;
   }
 
-  #fileInput {
-    width: 350px;
-    max-width: 100%;
-    color: #444;
-    padding: 2px;
-    background: #fff;
-    border-radius: 10px;
-    border: 1px solid rgba(8, 8, 8, 0.288);
-    font-size: initial;
-    line-height: normal;
-  }
-
-  #fileInput::file-selector-button {
-    margin-right: 20px;
-    border: none;
-    background: #084cdf;
-    padding: 10px 20px;
-    border-radius: 10px;
-    color: #fff;
-    cursor: pointer;
-    transition: background .2s ease-in-out;
-  }
-
-  #fileInput::file-selector-button:hover {
-    background: #0d45a5;
-  }
 
   #preview img {
     max-width: 600px;
@@ -140,60 +114,6 @@
     opacity: 1;
   }
 
-  /* From Uiverse.io by Yaya12085 */
-  .dateform {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 300px;
-    background-color: white;
-    border-radius: 12px;
-    padding: 20px;
-    border: solid #c5c4c4;
-  }
-
-  .datetitle {
-    font-size: 20px;
-    font-weight: bold;
-    color: black
-  }
-
-  .datemessage {
-    color: #a3a3a3;
-    font-size: 14px;
-    margin-top: 4px;
-    text-align: center
-  }
-
-  .dateinputs {
-    margin-top: 10px
-  }
-
-  .dateinputs input {
-    width: 32px;
-    height: 32px;
-    text-align: center;
-    border: none;
-    border-bottom: 1.5px solid #d2d2d2;
-    margin: 0 10px;
-  }
-
-  .dateinputs input:focus {
-    border-bottom: 1.5px solid royalblue;
-    outline: none;
-  }
-
-  .dateaction {
-    margin-top: 24px;
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: none;
-    background-color: royalblue;
-    color: white;
-    cursor: pointer;
-    align-self: end;
-  }
   .rebutton {
     --main2-focus: #2d8cf0;
     --font2-color: #323232;
@@ -256,6 +176,81 @@
     transform: translate(3px, 3px);
     box-shadow: 0px 0px var(--main2-color);
   }
+
+  .tabs {
+    display: inline-flex;
+    max-height: 54px;
+    position: relative;
+    background-color: #fff;
+    box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
+    padding: 0.75rem;
+    margin: 5px;
+    border-radius: 99px;
+  }
+
+  .tabs * {
+    z-index: 2;
+  }
+
+  .view-container input[type="radio"] {
+    display: none;
+  }
+
+  .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 80px;
+    font-size: 1rem;
+    color: black;
+    font-weight: 500;
+    border-radius: 99px;
+    cursor: pointer;
+    transition: color 0.15s ease-in;
+  }
+
+
+  .view-container input[type="radio"]:checked + label {
+    color: #185ee0;
+  }
+
+  .view-container input[type="radio"]:checked + label > .notification {
+    background-color: #185ee0;
+    color: #fff;
+    margin: 0px;
+  }
+
+  .view-container input[id="radio-1"]:checked ~ .glider {
+    transform: translateX(0);
+  }
+
+  .view-container input[id="radio-2"]:checked ~ .glider {
+    transform: translateX(100%);
+  }
+
+  .view-container input[id="radio-3"]:checked ~ .glider {
+    transform: translateX(200%);
+  }
+
+  .glider {
+    position: absolute;
+    display: flex;
+    height: 37px;
+    width: 80px;
+    background-color: #e6eef9;
+    z-index: 1;
+    border-radius: 99px;
+    transition: 0.25s ease-out;
+    margin-top: -3px;
+  }
+
+  .bi {
+    font-size: 28px;
+    color: black;
+  }
+
+
 </style>
 <head>
     <title>도서 관리</title>
@@ -284,64 +279,62 @@
     </button>
     <button type="button" id="deleteBookButton" class="btn btn-outline-danger">책 삭제</button>
     <div class="row">
-        <form class="needs-validation was-validated" enctype="multipart/form-data" novalidate="">
+        <form class="needs-validation was-validated" enctype="multipart/form-data">
             <div class="row">
-                <div class="bookform">
-                    <span class="bookform-title">Upload your file</span>
-                    <p class="bookform-paragraph">
-                        File should be an image
-                    </p>
-                    <label for="fileInput" class="bookdrop-container">
-                        <span class="bookdrop-title">Drop files here</span>
-                        or
-                        <input type="file" name="file" accept="image/*" required="" id="fileInput">
-                    </label>
-                </div>
                 <div id="preview" style="padding: 20px;"></div>
             </div>
-  <%--          <div class="dateform">
-                <div class="datetitle">발행일 입력</div>
-                <p class="datemessage">년&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp월&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp일&nbsp</p>
-                <div class="dateinputs">
-                    <input id="input2" type="text" maxlength="4" placeholder="yyyy" pattern="\d{4}"> <!-- 연도 -->
-                    <input id="input1" type="text" maxlength="2" placeholder="MM" pattern="\d{2}"> <!-- 월 -->
-                    <input id="input3" type="text" maxlength="2" placeholder="dd" pattern="\d{2}"> <!-- 일 -->
+
+            <div class="tabs mb-2">
+                <input type="radio" id="uploadByUrl" name="imageUploadType" value="url" checked="">
+                <label class="tab" for="uploadByUrl">URL</label>
+                <input type="radio" id="uploadByFile" name="imageUploadType" value="file">
+                <label class="tab" for="uploadByFile">File</label>
+                <span class="glider"></span>
+            </div>
+            <div class="col-sm-6">
+                <div id="imageUrlInput" style="display: block;">
+                    <input type="text" id="photoUrl" name="photoUrl" class="form-control"
+                           placeholder="이미지 URL을 입력하세요"
+                           value="${mode == 'edit' && bookDetail.photo != null && bookDetail.photo.startsWith('http') ? bookDetail.photo : ''}" required="">
                 </div>
-                <label for="hiddenDateInput"><input type="hidden" id="hiddenDateInput" name="publicationDate" required></label>
-                <button class="dateaction">확인</button>
-                <div id="customInput">
-                    <div class="invalid-feedback" style="display: none;">필수 항목 입니다.</div>
+                <div id="imageFileInput"
+                     style="display:${bookDetail.photo != null && !bookDetail.photo.startsWith('http') ? 'block' : 'none'}">
+                    <input type="file" id="fileInput" name="file" class="form-control">
                 </div>
-            </div>--%>
+            </div>
+
             <div class="row g-3">
                 <div class="col-sm-6">
-                    <label for="bookTitle" class="form-label">제목</label>
-                    <input type="text" name="bookTitle" class="form-control" id="bookTitle" placeholder=""
-                           value="" required="">
+                    <label for="book" class="form-label">제목</label>
+                    <input type="text" name="book" class="form-control" id="book"
+                           placeholder=""
+                           value="${mode == 'edit' ? bookDetail.book : ''}" required="">
                     <div class="invalid-feedback">
                         필수 항목 입니다.
                     </div>
                 </div>
                 <div class="manage col-sm-6">
-                    <label for="bookAuthor" class="form-label">작가</label>
-                    <input type="text" name="bookAuthor" class="form-control" id="bookAuthor" placeholder=""
-                           value="" required="">
+                    <label for="author" class="form-label">작가</label>
+                    <input type="text" name="author" class="form-control" id="author" placeholder=""
+                           value="${mode == 'edit' ? bookDetail.author : ''}" required="">
                     <div class="invalid-feedback">
                         필수 항목 입니다.
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <label for="bookPublisher" class="form-label">출판사</label>
-                    <input type="text" name="bookPublisher" class="form-control" id="bookPublisher" placeholder=""
-                           value="" required="">
+                    <label for="publisher" class="form-label">출판사</label>
+                    <input type="text" name="publisher" class="form-control" id="publisher"
+                           placeholder=""
+                           value="${mode == 'edit' ? bookDetail.publisher : ''}" required="">
                     <div class="invalid-feedback">
                         필수 항목 입니다.
                     </div>
                 </div>
                 <div class="manage col-sm-6">
                     <label for="publicationDate" class="form-label">발행일</label>
-                    <input type="date" name="publicationDate" class="form-control" id="publicationDate" placeholder=""
-                           value="" required="">
+                    <input type="date" name="publicationDate" class="form-control"
+                           id="publicationDate" placeholder=""
+                           value="${mode == 'edit' ? bookDetail.publicationDate : ''}" required="">
                     <div class="invalid-feedback">
                         필수 항목 입니다.
                     </div>
@@ -349,11 +342,14 @@
                 <div class="manage col-12">
                     <label for="bookDescription" class="form-label">책 소개 <span
                             class="text-body-secondary">(선택)</span></label>
-                    <input type="text" class="form-control" name="bookDescription" id="bookDescription">
+                    <input type="text" class="form-control" name="bookDescription"
+                           value="${mode == 'edit' ? bookDetail.bookDescription : ''}"
+                           id="bookDescription">
                 </div>
                 <div class="manage col-12">
-                    <label for="address" class="form-label">카테고리</label>
-                    <input type="text" class="form-control" id="address" readonly required="">
+                    <label for="categories" class="form-label">카테고리</label>
+                    <input type="text" value="${mode == 'edit' ? bookDetail.categories : ''}"
+                           class="form-control" id="categories" readonly required="">
                     <div class="invalid-feedback">
                         필수 항목 입니다.
                     </div>
@@ -373,13 +369,17 @@
                     </div>
                 </div>
                 <div id="toastContainer" class="toast-container"></div>
-                <button id="addCategoryButton" type="button" style="margin-left: 20px;">카테고리 추가</button>
-                <div class="reset" style="display: flex; justify-content: flex-end; margin-left: 20px">
+                <button id="addCategoryButton" type="button" style="margin-left: 20px;">카테고리 추가
+                </button>
+                <div class="reset"
+                     style="display: flex; justify-content: flex-end; margin-left: 20px">
                     <button id="resetButton" type="button" class="rebutton" style="outline: none;
                         ">
                         <span class="rebutton__text">메뉴 리셋</span>
-                        <span class="rebutton__icon"><svg class="resvg" height="48" viewBox="0 0 48 48"
-                                                          width="48" xmlns="http://www.w3.org/2000/svg"><path
+                        <span class="rebutton__icon"><svg class="resvg" height="48"
+                                                          viewBox="0 0 48 48"
+                                                          width="48"
+                                                          xmlns="http://www.w3.org/2000/svg"><path
                                 d="M35.3 12.7c-2.89-2.9-6.88-4.7-11.3-4.7-8.84 0-15.98 7.16-15.98 16s7.14 16 15.98 16c7.45 0 13.69-5.1 15.46-12h-4.16c-1.65 4.66-6.07 8-11.3 8-6.63 0-12-5.37-12-12s5.37-12 12-12c3.31 0 6.28 1.38 8.45 3.55l-6.45 6.45h14v-14l-4.7 4.7z"></path><path
                                 d="M0 0h48v48h-48z" fill="none"></path></svg></span>
                     </button>
@@ -387,7 +387,8 @@
                 <div class="manage col-12 mt-3">
                     <label for="isbn13" class="form-label">ISBN13</label>
                     <input type="text" name="isbn13" class="form-control" id="isbn13"
-                           placeholder="" required="">
+                           value="${mode == 'edit' ? bookDetail.isbn13 : ''}" placeholder=""
+                           required="">
                     <div class="invalid-feedback">
                         필수 항목 입니다.
                     </div>
@@ -399,26 +400,29 @@
                 <div class="form-check">
                     <input id="available" name="rentalAvailable" type="radio"
                            class="form-check-input" value="Y" checked="" required="">
-                    <label class="form-check-label" for="available">가능</label>
+                    <label class="rentalAvailable" for="available">가능</label>
                 </div>
                 <div class="form-check">
                     <input id="notAvailable" name="rentalAvailable" value="N" type="radio"
                            class="form-check-input"
                            required="">
-                    <label class="form-check-label" for="notAvailable">불가능</label>
+                    <label class="rentalAvailable" for="notAvailable">불가능</label>
                 </div>
             </div>
             <div class="row gy-3">
                 <div class="col-md-6">
                     <label for="bookPrice" class="form-label">가격</label>
-                    <input type="text" name="bookPrice" class="form-control" id="bookPrice" placeholder="">
+                    <input type="text" name="bookPrice" value="${mode == 'edit' ? bookDetail.price
+                    : ''}" class="form-control" id="bookPrice" placeholder="">
                     <div class="invalid-feedback">
                         Name on card is required
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label for="bookCount" class="form-label">재고수</label>
-                    <input type="text" name="bookCount" class="form-control" id="bookCount" placeholder=""
+                    <input type="text" name="bookCount"
+                           value="${mode == 'edit' ? bookDetail.bookCount : ''}"
+                           class="form-control" id="bookCount" placeholder=""
                            required="">
                     <div class="invalid-feedback">
                         Expiration date required
@@ -426,32 +430,40 @@
                 </div>
                 <div class="col-md-3">
                     <label for="pageCount" class="form-label">쪽수</label>
-                    <input type="text" name="pageCount" class="form-control" id="pageCount" placeholder="">
+                    <input type="text" name="pageCount"
+                           value="${mode == 'edit' ? bookDetail.pageCount : ''}"
+                           class="form-control" id="pageCount" placeholder="">
                 </div>
                 <div class="col-md-3">
                     <label for="weight" class="form-label">무게</label>
-                    <input type="text" name="weight" class="form-control" id="weight" placeholder="">
+                    <input type="text" name="weight"
+                           value="${mode == 'edit' ? bookDetail.weight : ''}"
+                           class="form-control" id="weight" placeholder="">
                     <div class="invalid-feedback">
                         필수 항목 입니다.
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label for="bookSize" class="form-label">크기</label>
-                    <input type="text" name="bookSize" class="form-control" id="bookSize" placeholder="">
+                    <input type="text" name="bookSize"
+                           value="${mode == 'edit' ? bookDetail.bookSize : ''}"
+                           class="form-control" id="bookSize" placeholder="">
                     <div class="invalid-feedback">
                         Security code required
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label for="averageRating" class="form-label">평점</label>
-                    <input type="text" name="averageRating"class="form-control" id="averageRating" placeholder="">
+                    <input type="text" name="averageRating" value="${mode == 'edit' ? bookDetail.averageRating
+                     : ''}" class="form-control" id="averageRating" placeholder="">
                     <div class="invalid-feedback">
                         Security code required
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label for="reviewCount" class="form-label">리뷰수</label>
-                    <input type="text" name="reviewCount" class="form-control" id="reviewCount" placeholder="">
+                    <input type="text" name="reviewCount" value="${mode == 'edit' ? bookDetail.reviewCount :
+                     ''}" class="form-control" id="reviewCount" placeholder="">
                     <div class="invalid-feedback">
                         Security code required
                     </div>
@@ -459,52 +471,90 @@
                 <div class="col-md-6 mt-4">
                     <label for="starRating1"></label><input type="number" id="starRating1"
                                                             style="margin-right: 15px"
+                                                            value="${mode == 'edit' ? bookDetail.star1Count : ''}"
                                                             name="starRating1" placeholder="별 1개 비율"
                                                             min="0" max="100">
                     <label for="starRating2"></label><input type="number" id="starRating2"
                                                             style="margin-right: 15px"
+                                                            value="${mode == 'edit' ? bookDetail.star2Count : ''}"
                                                             name="starRating2" placeholder="별 2개 비율"
                                                             min="0" max="100">
                     <label for="starRating3"></label><input type="number" id="starRating3"
                                                             style="margin-right: 15px"
+                                                            value="${mode == 'edit' ? bookDetail.star3Count : ''}"
                                                             name="starRating3" placeholder="별 3개 비율"
                                                             min="0" max="100">
                     <label for="starRating4"></label><input type="number" id="starRating4"
                                                             style="margin-right: 15px"
+                                                            value="${mode == 'edit' ? bookDetail.star4Count : ''}"
                                                             name="starRating4" placeholder="별 4개 비율"
                                                             min="0" max="100">
                     <label for="starRating5"></label><input type="number" id="starRating5"
                                                             style="margin-right: 15px"
+                                                            value="${mode == 'edit' ? bookDetail.star5Count : ''}"
                                                             name="starRating5" placeholder="별 5개 비율"
                                                             min="0" max="100">
                 </div>
             </div>
             <hr class="my-4">
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+            <button class="w-50 btn btn-primary btn-lg" id="addBookButton" type="submit">저장</button>
         </form>
     </div>
 </main>
 <script>
-
   $(document).ready(function () {
     // 책 추가 버튼 클릭 시
-    $('#addBookButton').on('click', function () {
+    $('#addBookButton').on('click', function (e) {
+      e.preventDefault(); // 폼 기본 제출 방지
+
       var formData = new FormData();
       var bookData = {
-        title: $('#bookTitle').val(),
-        author: $('#bookAuthor').val(),
-        publisher: $('#bookPublisher').val(),
+        book: $('#book').val(),
+        author: $('#author').val(),
+        publisher: $('#publisher').val(),
         price: $('#bookPrice').val(),
-        isbn13: $('#bookIsbn13').val()
+        isbn13: $('#isbn13').val(),
+        bookDescription: $('#bookDescription').val(),
+        weight: $('#weight').val(),
+        bookSize: $('#bookSize').val(),
+        pageCount: $('#pageCount').val(),
+        averageRating: $('#averageRating').val(),
+        reviewCount: $('#reviewCount').val(),
+        publicationDate: $('#publicationDate').val(),
+        bookCount: $('#bookCount').val(),
+        star5Count: $('#starRating5').val(),
+        star4Count: $('#starRating4').val(),
+        star3Count: $('#starRating3').val(),
+        star2Count: $('#starRating2').val(),
+        star1Count: $('#starRating1').val(),
+        rentalAvailable: $('input[name="rentalAvailable"]:checked').val(),
+        categories: selectedCategories.map(asdf => asdf.categoryId)
       };
 
-      formData.append('bookData', JSON.stringify(bookData));
 
-      // 파일 처리
-      var fileInput = $('#fileInput')[0].files[0];
-      if (fileInput) {
-        formData.append('file', fileInput);
+      // 업로드 방식 처리 (URL 또는 파일)
+      var imageUploadType = $('input[name="imageUploadType"]:checked').val();
+      formData.append('imageUploadType', imageUploadType);
+
+      if (imageUploadType === 'url') {
+        var photoUrl = $('#photoUrl').val();
+        if (photoUrl) {
+          formData.append('photoUrl', photoUrl);
+        } else {
+          alert("URL을 입력하세요");
+          return;
+        }
+      } else if (imageUploadType === 'file') {
+        var fileInput = $('#fileInput')[0].files[0];
+        if (fileInput) {
+          formData.append('file', fileInput);
+        } else {
+          alert("파일을 선택하세요");
+          return;
+        }
       }
+
+      formData.append('bookData', JSON.stringify(bookData));
 
       $.ajax({
         url: '/ajax/book/add',
@@ -522,21 +572,39 @@
     });
 
     // 책 수정 버튼 클릭 시
-    $('#editBookButton').on('click', function () {
+    $('#editBookButton').on('click', function (e) {
+      e.preventDefault(); // 폼 기본 제출 방지
+
       var formData = new FormData();
       var bookData = {
-        title: $('#bookTitle').val(),
-        author: $('#bookAuthor').val(),
-        publisher: $('#bookPublisher').val(),
+        book: $('#book').val(),
+        author: $('#author').val(),
+        publisher: $('#publisher').val(),
         price: $('#bookPrice').val(),
-        isbn13: $('#bookIsbn13').val()
+        isbn13: $('#isbn13').val()
       };
       formData.append('bookData', JSON.stringify(bookData));
 
-      // 파일 처리
-      var fileInput = $('#fileInput')[0].files[0];
-      if (fileInput) {
-        formData.append('file', fileInput);
+      // 업로드 방식 처리
+      var imageUploadType = $('input[name="imageUploadType"]:checked').val();
+      formData.append('imageUploadType', imageUploadType);
+
+      if (imageUploadType === 'url') {
+        var photoUrl = $('#photoUrl').val();
+        if (photoUrl) {
+          formData.append('photoUrl', photoUrl);
+        } else {
+          alert("URL을 입력하세요");
+          return;
+        }
+      } else if (imageUploadType === 'file') {
+        var fileInput = $('#fileInput')[0].files[0];
+        if (fileInput) {
+          formData.append('file', fileInput);
+        } else {
+          alert("파일을 선택하세요");
+          return;
+        }
       }
 
       $.ajax({
@@ -554,10 +622,11 @@
       });
     });
 
+    // 폼 제출 시 기본 동작 방지 및 별점 유효성 검사
     $('#bookForm').on('submit', function (e) {
       e.preventDefault();
 
-      // 별점 비율 값을 가져와 합산
+      var isValid = this.checkValidity();
       var starRating1 = parseInt($('#starRating1').val()) || 0;
       var starRating2 = parseInt($('#starRating2').val()) || 0;
       var starRating3 = parseInt($('#starRating3').val()) || 0;
@@ -566,66 +635,13 @@
 
       var total = starRating1 + starRating2 + starRating3 + starRating4 + starRating5;
 
-      // 합이 100 또는 0이어야 유효성 통과
-      if (total === 100 || total === 0) {
-        $('#errorMessage').hide();  // 오류 메시지 숨기기
-        this.submit();  // 폼 제출
+      if (isValid && (total === 100 || total === 0)) {
+        this.submit();  // 유효성 검사를 통과하면 폼 제출
       } else {
         $('#errorMessage').show();  // 오류 메시지 표시
       }
     });
-
-    // 책 삭제 버튼 클릭 시
-    $('#deleteBookButton').on('click', function () {
-      var isbn13 = $('#bookIsbn13').val();
-
-      $.ajax({
-        url: '/ajax/book/' + isbn13,
-        type: 'DELETE',
-        success: function (response) {
-          alert('책이 성공적으로 삭제되었습니다.');
-        },
-        error: function () {
-          alert('책 삭제에 실패했습니다.');
-        }
-      });
-    });
   });
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const forms = document.querySelectorAll('.needs-validation')
-
-    Array.from(forms).forEach(form => {
-      form.addEventListener('submit', event => {
-        // 기본 HTML5 유효성 검사
-        if (!form.checkValidity()) {
-          event.preventDefault();
-          event.stopPropagation();
-          form.classList.add('was-validated');
-          return; // HTML5 유효성 검사 통과 못하면 바로 종료
-        }
-
-        // 별점 비율 추가 유효성 검사
-        var starRating1 = parseInt(document.getElementById('starRating1').value) || 0;
-        var starRating2 = parseInt(document.getElementById('starRating2').value) || 0;
-        var starRating3 = parseInt(document.getElementById('starRating3').value) || 0;
-        var starRating4 = parseInt(document.getElementById('starRating4').value) || 0;
-        var starRating5 = parseInt(document.getElementById('starRating5').value) || 0;
-
-        var total = starRating1 + starRating2 + starRating3 + starRating4 + starRating5;
-
-        if (total !== 100 && total !== 0) {
-          event.preventDefault();
-          event.stopPropagation();
-          document.getElementById('errorMessage').style.display = 'block';  // 오류 메시지 표시
-        } else {
-          document.getElementById('errorMessage').style.display = 'none';  // 오류 메시지 숨기기
-        }
-        form.classList.add('was-validated');  // 폼 제출 전 유효성 검사 시각적 피드백
-      }, false)
-    })
-  });
-
 </script>
 
 <script>
@@ -660,7 +676,7 @@
 
   // 카테고리 목록을 쉼표로 구분하여 텍스트 필드에 표시하는 함수
   function updateCategoryTextField() {
-    document.getElementById('address').value = selectedCategories.map(
+    document.getElementById('categories').value = selectedCategories.map(
         category => category.categoryName).join(', ');
   }
 
@@ -777,6 +793,7 @@
       reader.readAsDataURL(files[0]);
     }
   });
+
   function showInvalidFeedback(elementId) {
     const element = document.getElementById(elementId);
     const feedback = element.querySelector('.invalid-feedback');
@@ -859,9 +876,9 @@
 
     // 숫자만 입력되었는지 확인
     const yearValid = /^[0-9]{4}$/.test(year); // 4자리 숫자
-    const monthValid = /^[0-9]{2}$/.test(month) && parseInt(month, 10) >= 1 && parseInt(month, 10) <= 12; // 2자리 숫자, 1~12 사이
+    const monthValid = /^[0-9]{2}$/.test(month) && parseInt(month, 10) >= 1 && parseInt(month, 10)
+        <= 12; // 2자리 숫자, 1~12 사이
     const dayValid = /^[0-9]{2}$/.test(day) && parseInt(day, 10) >= 1 && parseInt(day, 10) <= 31; // 2자리 숫자, 1~31 사이
-
 
     // 검증 결과에 따른 처리
     if (!yearValid) {
@@ -885,6 +902,25 @@
     }
   });
 </script>
+<script>
+  $(document).ready(function () {
+    $('input[name="imageUploadType"]').on('change', function () {
+      if ($(this).val() === 'url') {
+        $('#photoUrl').prop('required', true);  // URL 필드에 required 적용
+        $('#fileInput').prop('required', false);  // 파일 필드에서 required 제거
+        $('#imageUrlInput').show();
+        $('#imageFileInput').hide();
+      } else {
+        $('#photoUrl').prop('required', false);  // URL 필드에서 required 제거
+        $('#fileInput').prop('required', true);  // 파일 필드에 required 적용
+        $('#imageUrlInput').hide();
+        $('#imageFileInput').show();
+      }
+    });
+  });
+</script>
+
+
 <jsp:include page="../includes/footer.jsp"/>
 <script src="/resources/js/booklist_ajax.js"></script>
 <script src="/resources/js/category_ajax.js"></script>

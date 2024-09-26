@@ -66,7 +66,7 @@
 </style>
 </head>
 <body>
-	<form class="findId" id="findIdForm" method="post">
+	<form class="findId" id="findIdForm" method="post" action="/library/findPwResult">
 		<div class="logo_wrap"><span>비밀번호 찾기</span></div>
 		<div class="id_inputBox">
 			<input type="text" name="id" id="id" class="id_input" placeholder="아이디">
@@ -78,7 +78,7 @@
 			<input type="email" name="email" id="email" class="email_input" placeholder="이메일">
 		</div>
 		<div class="login_button_wrap">
-			<button type="button" class="findPw_button" onclick="location.href='/library/findPwResult'">비밀번호 찾기</button>
+			<button type="submit" class="findPw_button" >비밀번호 찾기</button>
 		</div>
 	</form>
 </body>

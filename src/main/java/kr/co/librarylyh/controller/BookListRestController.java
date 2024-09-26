@@ -1,6 +1,7 @@
 package kr.co.librarylyh.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -88,22 +89,40 @@ public class BookListRestController {
   }
 
   @PostMapping("/book/add")
-  public ResponseEntity<String> addBook(@RequestParam("bookData") String bookData,
-      @RequestParam("file") MultipartFile file) {
-    try {
-      // 책 정보 변환
-      BookListVO book = new ObjectMapper().readValue(bookData, BookListVO.class);
+  public ResponseEntity<String> addBook(
+      @RequestParam("bookData") String bookData,
+      @RequestParam("imageUploadType") String imageUploadType,
+      @RequestParam(value = "photoUrl", required = false) String photoUrl,
+      @RequestParam(value = "file", required = false) MultipartFile file) {
 
-      // 파일 처리
-      if (!file.isEmpty()) {
-        String savedFileName = handleFileUpload(file);
-        book.setPhoto(savedFileName);  // 이미지 파일 이름 설정
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      objectMapper.registerModule(new JavaTimeModule());
+
+      // JSON을 VO로 변환
+      BookListVO bookListVO = objectMapper.readValue(bookData, BookListVO.class);
+
+      // 업로드 방식에 따라 photo 필드 처리
+      if ("url".equals(imageUploadType) && photoUrl != null) {
+        // URL 방식으로 이미지 처리
+        bookListVO.setPhoto(photoUrl);
+      } else if ("file".equals(imageUploadType) && file != null) {
+        // 파일 업로드 방식으로 이미지 처리
+        String savedFileName = handleFileUpload(file);  // 파일 저장 후 저장된 파일명 가져옴
+        bookListVO.setPhoto(savedFileName);
       }
 
+      long isbn13 = Long.parseLong(String.valueOf(bookListVO.getIsbn13()));
+      bookListVO.setIsbn13(isbn13);
+      log.info(isbn13);
+
+
       // 책 정보 추가
-      service.add(book);
+      service.add(bookListVO);
       return new ResponseEntity<>("success", HttpStatus.CREATED);
+
     } catch (Exception e) {
+      e.printStackTrace();
       return new ResponseEntity<>("fail", HttpStatus.BAD_REQUEST);
     }
   }
@@ -132,6 +151,7 @@ public class BookListRestController {
       service.modify(updatedBook);
       return new ResponseEntity<>("success", HttpStatus.OK);
     } catch (Exception e) {
+      e.printStackTrace();
       return new ResponseEntity<>("fail", HttpStatus.BAD_REQUEST);
     }
   }
