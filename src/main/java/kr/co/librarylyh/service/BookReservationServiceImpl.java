@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.co.librarylyh.domain.UserVO;
 import kr.co.librarylyh.domain.bookReservationVO;
-import kr.co.librarylyh.mapper.UserMapper;
 import kr.co.librarylyh.mapper.bookReservationMapper;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
