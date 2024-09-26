@@ -11,26 +11,30 @@
     font-style: normal;
     color: #000;
   }
+
   .home2 {
     width: 100%;
     height: 50vh;
   }
+
   .supercon {
     padding: 200px;
   }
+
   .manage {
     margin-bottom: 1vh;
   }
 
   .bookform {
     background-color: #fff;
-
     border: 1px solid rgb(159, 159, 160);
     border-radius: 20px;
     padding: 2rem .7rem .7rem .7rem;
     text-align: center;
     font-size: 1.125rem;
     max-width: 320px;
+    max-height: 323px;
+    margin-bottom: 130px;
   }
 
   .bookform-title {
@@ -106,6 +110,152 @@
     background: #0d45a5;
   }
 
+  #preview img {
+    max-width: 600px;
+    height: auto;
+    border: 2px solid #a1a1a1;
+  }
+
+  .toast-container {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .toast-message {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    display: inline-block;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .toast-message.show {
+    opacity: 1;
+  }
+
+  /* From Uiverse.io by Yaya12085 */
+  .dateform {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 300px;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: solid #c5c4c4;
+  }
+
+  .datetitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: black
+  }
+
+  .datemessage {
+    color: #a3a3a3;
+    font-size: 14px;
+    margin-top: 4px;
+    text-align: center
+  }
+
+  .dateinputs {
+    margin-top: 10px
+  }
+
+  .dateinputs input {
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    border: none;
+    border-bottom: 1.5px solid #d2d2d2;
+    margin: 0 10px;
+  }
+
+  .dateinputs input:focus {
+    border-bottom: 1.5px solid royalblue;
+    outline: none;
+  }
+
+  .dateaction {
+    margin-top: 24px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: royalblue;
+    color: white;
+    cursor: pointer;
+    align-self: end;
+  }
+  .rebutton {
+    --main2-focus: #2d8cf0;
+    --font2-color: #323232;
+    --bg2-color-sub: #dedede;
+    --bg2-color: #eee;
+    --main2-color: #323232;
+    position: relative;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--main2-color);
+    box-shadow: 4px 4px var(--main2-color);
+    background-color: var(--bg2-color);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .rebutton, .rebutton__icon, .rebutton__text {
+    transition: all 0.2s;
+  }
+
+  .rebutton .rebutton__text {
+    transform: translateX(30px);
+    color: var(--font2-color);
+    font-weight: 600;
+  }
+
+  .rebutton .rebutton__icon {
+    position: absolute;
+    transform: translateX(109px);
+    height: 100%;
+    width: 39px;
+    background-color: var(--bg2-color-sub);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rebutton .resvg {
+    width: 20px;
+    fill: var(--main2-color);
+  }
+
+  .rebutton:hover {
+    background: var(--bg2-color);
+  }
+
+  .rebutton:hover .rebutton__text {
+    color: transparent;
+  }
+
+  .rebutton:hover .rebutton__icon {
+    width: 148px;
+    transform: translateX(0);
+  }
+
+  .rebutton:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px var(--main2-color);
+  }
 </style>
 <head>
     <title>도서 관리</title>
@@ -132,11 +282,10 @@
     <button type="button" class="btn btn-primary" onclick='backtolist()'>
         뒤로가기
     </button>
-    <div class="row g-5">
-        <div class="col-md-5 col-lg-4">
-        </div>
-        <div class="col-md-7 col-lg-8">
-            <form class="needs-validation was-validated" enctype="multipart/form-data" novalidate="">
+    <button type="button" id="deleteBookButton" class="btn btn-outline-danger">책 삭제</button>
+    <div class="row">
+        <form class="needs-validation was-validated" enctype="multipart/form-data" novalidate="">
+            <div class="row">
                 <div class="bookform">
                     <span class="bookform-title">Upload your file</span>
                     <p class="bookform-paragraph">
@@ -148,162 +297,198 @@
                         <input type="file" name="file" accept="image/*" required="" id="fileInput">
                     </label>
                 </div>
-                <div class="row g-3">
-                    <div class="col-sm-6">
-                        <label for="bookTitle" class="form-label">제목</label>
-                        <input type="text" class="form-control" id="bookTitle" placeholder=""
-                               value="" required="">
-                        <div class="invalid-feedback">
-                            필수 항목 입니다.
-                        </div>
-                    </div>
-                    <div class="manage col-sm-6">
-                        <label for="bookAuthor" class="form-label">작가</label>
-                        <input type="text" class="form-control" id="bookAuthor" placeholder=""
-                               value="" required="">
-                        <div class="invalid-feedback">
-                            필수 항목 입니다.
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="bookPublisher" class="form-label">출판사</label>
-                        <input type="text" class="form-control" id="bookPublisher" placeholder=""
-                               value="" required="">
-                        <div class="invalid-feedback">
-                            필수 항목 입니다.
-                        </div>
-                    </div>
-                    <div class="manage col-sm-6">
-                        <label for="publicationDate" class="form-label">발행일</label>
-                        <input type="text" class="form-control" id="publicationDate" placeholder=""
-                               value="" required="">
-                        <div class="invalid-feedback">
-                            필수 항목 입니다.
-                        </div>
-                    </div>
-                    <div class="manage col-12">
-                        <label for="bookDescription" class="form-label">책 소개 <span
-                                class="text-body-secondary">(선택)</span></label>
-                        <input type="text" class="form-control" id="bookDescription">
-                    </div>
-
-
-                    <div class="manage col-12">
-                        <label for="address" class="form-label">카테고리</label>
-                        <input type="text" class="form-control" id="address" required="">
-                        <div class="invalid-feedback">
-                            필수 항목 입니다.
-                        </div>
-                    </div>
-                    <div id="categoryListContainer">
-                        <!-- 추가된 카테고리들이 이곳에 표시 -->
-                    </div>
-                    <div class="btn-group" role="group">
-                        <button id="dropdownMenuButton" type="button"
-                                class="btn btn-secondary dropdown-toggle"
-                                data-toggle="dropdown" aria-expanded="false">
-                            카테고리
-                        </button>
-                        <ul id="categoryDropdownContainer" class="dropdown-menu">
-                        </ul>
-                        <div id="subMenuWrapper">
-                        </div>
-                    </div>
-                    <button id="addCategoryButton" type="button">카테고리 추가</button>
-
-
-
-                    <div class="manage col-12">
-                        <label for="isbn13" class="form-label">ISBN13</label>
-                        <input type="text" class="form-control" id="isbn13"
-                               placeholder="Apartment or suite" required="">
-                        <div class="invalid-feedback">
-                            필수 항목 입니다.
-                        </div>
+                <div id="preview" style="padding: 20px;"></div>
+            </div>
+  <%--          <div class="dateform">
+                <div class="datetitle">발행일 입력</div>
+                <p class="datemessage">년&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp월&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp일&nbsp</p>
+                <div class="dateinputs">
+                    <input id="input2" type="text" maxlength="4" placeholder="yyyy" pattern="\d{4}"> <!-- 연도 -->
+                    <input id="input1" type="text" maxlength="2" placeholder="MM" pattern="\d{2}"> <!-- 월 -->
+                    <input id="input3" type="text" maxlength="2" placeholder="dd" pattern="\d{2}"> <!-- 일 -->
+                </div>
+                <label for="hiddenDateInput"><input type="hidden" id="hiddenDateInput" name="publicationDate" required></label>
+                <button class="dateaction">확인</button>
+                <div id="customInput">
+                    <div class="invalid-feedback" style="display: none;">필수 항목 입니다.</div>
+                </div>
+            </div>--%>
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <label for="bookTitle" class="form-label">제목</label>
+                    <input type="text" name="bookTitle" class="form-control" id="bookTitle" placeholder=""
+                           value="" required="">
+                    <div class="invalid-feedback">
+                        필수 항목 입니다.
                     </div>
                 </div>
-                <hr class="my-4">
-                <h4 class="mb-3">대여 가능 여부</h4>
-                <div class="my-3">
-                    <div class="form-check">
-                        <input id="available" name="rentalAvailable" type="radio"
-                               class="form-check-input" checked="" required="">
-                        <label class="form-check-label" for="available">가능</label>
-                    </div>
-                    <div class="form-check">
-                        <input id="notAvailable" name="rentalAvailable" type="radio" class="form-check-input"
-                               required="">
-                        <label class="form-check-label" for="notAvailable">불가능</label>
+                <div class="manage col-sm-6">
+                    <label for="bookAuthor" class="form-label">작가</label>
+                    <input type="text" name="bookAuthor" class="form-control" id="bookAuthor" placeholder=""
+                           value="" required="">
+                    <div class="invalid-feedback">
+                        필수 항목 입니다.
                     </div>
                 </div>
-                <div class="row gy-3">
-                    <div class="col-md-6">
-                        <label for="bookPrice" class="form-label">가격</label>
-                        <input type="text" class="form-control" id="bookPrice" placeholder="">
-                        <div class="invalid-feedback">
-                            Name on card is required
-                        </div>
+                <div class="col-sm-6">
+                    <label for="bookPublisher" class="form-label">출판사</label>
+                    <input type="text" name="bookPublisher" class="form-control" id="bookPublisher" placeholder=""
+                           value="" required="">
+                    <div class="invalid-feedback">
+                        필수 항목 입니다.
                     </div>
-                    <div class="col-md-3">
-                        <label for="bookCount" class="form-label">재고수</label>
-                        <input type="text" class="form-control" id="bookCount" placeholder=""
-                               required="">
-                        <div class="invalid-feedback">
-                            Expiration date required
-                        </div>
+                </div>
+                <div class="manage col-sm-6">
+                    <label for="publicationDate" class="form-label">발행일</label>
+                    <input type="date" name="publicationDate" class="form-control" id="publicationDate" placeholder=""
+                           value="" required="">
+                    <div class="invalid-feedback">
+                        필수 항목 입니다.
                     </div>
-                    <div class="col-md-3">
-                        <label for="pageCount" class="form-label">쪽수</label>
-                        <input type="text" class="form-control" id="pageCount" placeholder="">
-
+                </div>
+                <div class="manage col-12">
+                    <label for="bookDescription" class="form-label">책 소개 <span
+                            class="text-body-secondary">(선택)</span></label>
+                    <input type="text" class="form-control" name="bookDescription" id="bookDescription">
+                </div>
+                <div class="manage col-12">
+                    <label for="address" class="form-label">카테고리</label>
+                    <input type="text" class="form-control" id="address" readonly required="">
+                    <div class="invalid-feedback">
+                        필수 항목 입니다.
                     </div>
-                    <div class="col-md-3">
+                </div>
+                <div id="categoryListContainer">
+                    <!-- 카테고리 드롭다운 메뉴가 여기에 표시 -->
+                </div>
+                <div class="btn-group" role="group">
+                    <button id="dropdownMenuButton" type="button"
+                            class="btn btn-secondary dropdown-toggle"
+                            data-toggle="dropdown" aria-expanded="false">
+                        카테고리
+                    </button>
+                    <ul id="categoryDropdownContainer" class="dropdown-menu">
+                    </ul>
+                    <div id="subMenuWrapper">
+                    </div>
+                </div>
+                <div id="toastContainer" class="toast-container"></div>
+                <button id="addCategoryButton" type="button" style="margin-left: 20px;">카테고리 추가</button>
+                <div class="reset" style="display: flex; justify-content: flex-end; margin-left: 20px">
+                    <button id="resetButton" type="button" class="rebutton" style="outline: none;
+                        ">
+                        <span class="rebutton__text">메뉴 리셋</span>
+                        <span class="rebutton__icon"><svg class="resvg" height="48" viewBox="0 0 48 48"
+                                                          width="48" xmlns="http://www.w3.org/2000/svg"><path
+                                d="M35.3 12.7c-2.89-2.9-6.88-4.7-11.3-4.7-8.84 0-15.98 7.16-15.98 16s7.14 16 15.98 16c7.45 0 13.69-5.1 15.46-12h-4.16c-1.65 4.66-6.07 8-11.3 8-6.63 0-12-5.37-12-12s5.37-12 12-12c3.31 0 6.28 1.38 8.45 3.55l-6.45 6.45h14v-14l-4.7 4.7z"></path><path
+                                d="M0 0h48v48h-48z" fill="none"></path></svg></span>
+                    </button>
+                </div>
+                <div class="manage col-12 mt-3">
+                    <label for="isbn13" class="form-label">ISBN13</label>
+                    <input type="text" name="isbn13" class="form-control" id="isbn13"
+                           placeholder="" required="">
+                    <div class="invalid-feedback">
+                        필수 항목 입니다.
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <h4 class="mb-3">대여 가능 여부</h4>
+            <div class="my-3">
+                <div class="form-check">
+                    <input id="available" name="rentalAvailable" type="radio"
+                           class="form-check-input" value="Y" checked="" required="">
+                    <label class="form-check-label" for="available">가능</label>
+                </div>
+                <div class="form-check">
+                    <input id="notAvailable" name="rentalAvailable" value="N" type="radio"
+                           class="form-check-input"
+                           required="">
+                    <label class="form-check-label" for="notAvailable">불가능</label>
+                </div>
+            </div>
+            <div class="row gy-3">
+                <div class="col-md-6">
+                    <label for="bookPrice" class="form-label">가격</label>
+                    <input type="text" name="bookPrice" class="form-control" id="bookPrice" placeholder="">
+                    <div class="invalid-feedback">
+                        Name on card is required
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="bookCount" class="form-label">재고수</label>
+                    <input type="text" name="bookCount" class="form-control" id="bookCount" placeholder=""
+                           required="">
+                    <div class="invalid-feedback">
+                        Expiration date required
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="pageCount" class="form-label">쪽수</label>
+                    <input type="text" name="pageCount" class="form-control" id="pageCount" placeholder="">
+                </div>
+                <div class="col-md-3">
                     <label for="weight" class="form-label">무게</label>
-                    <input type="text" class="form-control" id="weight" placeholder="">
+                    <input type="text" name="weight" class="form-control" id="weight" placeholder="">
                     <div class="invalid-feedback">
                         필수 항목 입니다.
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label for="bookSize" class="form-label">크기</label>
-                    <input type="text" class="form-control" id="bookSize" placeholder="">
+                    <input type="text" name="bookSize" class="form-control" id="bookSize" placeholder="">
                     <div class="invalid-feedback">
                         Security code required
                     </div>
                 </div>
                 <div class="col-md-3">
-                <label for="averageRating" class="form-label">평점</label>
-                <input type="text" class="form-control" id="averageRating" placeholder="">
-                <div class="invalid-feedback">
-                    Security code required
-                </div>
+                    <label for="averageRating" class="form-label">평점</label>
+                    <input type="text" name="averageRating"class="form-control" id="averageRating" placeholder="">
+                    <div class="invalid-feedback">
+                        Security code required
+                    </div>
                 </div>
                 <div class="col-md-3">
-                <label for="reviewCount" class="form-label">리뷰수</label>
-                <input type="text" class="form-control" id="reviewCount" placeholder="">
-                <div class="invalid-feedback">
-                    Security code required
+                    <label for="reviewCount" class="form-label">리뷰수</label>
+                    <input type="text" name="reviewCount" class="form-control" id="reviewCount" placeholder="">
+                    <div class="invalid-feedback">
+                        Security code required
+                    </div>
                 </div>
+                <div class="col-md-6 mt-4">
+                    <label for="starRating1"></label><input type="number" id="starRating1"
+                                                            style="margin-right: 15px"
+                                                            name="starRating1" placeholder="별 1개 비율"
+                                                            min="0" max="100">
+                    <label for="starRating2"></label><input type="number" id="starRating2"
+                                                            style="margin-right: 15px"
+                                                            name="starRating2" placeholder="별 2개 비율"
+                                                            min="0" max="100">
+                    <label for="starRating3"></label><input type="number" id="starRating3"
+                                                            style="margin-right: 15px"
+                                                            name="starRating3" placeholder="별 3개 비율"
+                                                            min="0" max="100">
+                    <label for="starRating4"></label><input type="number" id="starRating4"
+                                                            style="margin-right: 15px"
+                                                            name="starRating4" placeholder="별 4개 비율"
+                                                            min="0" max="100">
+                    <label for="starRating5"></label><input type="number" id="starRating5"
+                                                            style="margin-right: 15px"
+                                                            name="starRating5" placeholder="별 5개 비율"
+                                                            min="0" max="100">
                 </div>
-                <div class="col-md-6">
-                    <label for="starRating1"></label><input type="number" id="starRating1" name="starRating1" placeholder="별 1개 비율" min="0" max="100">
-                    <label for="starRating2"></label><input type="number" id="starRating2" name="starRating2" placeholder="별 2개 비율" min="0" max="100">
-                    <label for="starRating3"></label><input type="number" id="starRating3" name="starRating3" placeholder="별 3개 비율" min="0" max="100">
-                    <label for="starRating4"></label><input type="number" id="starRating4" name="starRating4" placeholder="별 4개 비율" min="0" max="100">
-                    <label for="starRating5"></label><input type="number" id="starRating5" name="starRating5" placeholder="별 5개 비율" min="0" max="100">
-                </div>
-        </div>
-        <hr class="my-4">
-        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+            </div>
+            <hr class="my-4">
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
         </form>
-    </div>
     </div>
 </main>
 <script>
 
-  $(document).ready(function() {
+  $(document).ready(function () {
     // 책 추가 버튼 클릭 시
-    $('#addBookButton').on('click', function() {
+    $('#addBookButton').on('click', function () {
       var formData = new FormData();
       var bookData = {
         title: $('#bookTitle').val(),
@@ -327,17 +512,17 @@
         data: formData,
         contentType: false,
         processData: false,
-        success: function(response) {
+        success: function (response) {
           alert('책이 성공적으로 추가되었습니다.');
         },
-        error: function() {
+        error: function () {
           alert('책 추가에 실패했습니다.');
         }
       });
     });
 
     // 책 수정 버튼 클릭 시
-    $('#editBookButton').on('click', function() {
+    $('#editBookButton').on('click', function () {
       var formData = new FormData();
       var bookData = {
         title: $('#bookTitle').val(),
@@ -360,16 +545,16 @@
         data: formData,
         contentType: false,
         processData: false,
-        success: function(response) {
+        success: function (response) {
           alert('책 정보가 성공적으로 수정되었습니다.');
         },
-        error: function() {
+        error: function () {
           alert('책 정보 수정에 실패했습니다.');
         }
       });
     });
 
-    $('#bookForm').on('submit', function(e) {
+    $('#bookForm').on('submit', function (e) {
       e.preventDefault();
 
       // 별점 비율 값을 가져와 합산
@@ -391,16 +576,16 @@
     });
 
     // 책 삭제 버튼 클릭 시
-    $('#deleteBookButton').on('click', function() {
+    $('#deleteBookButton').on('click', function () {
       var isbn13 = $('#bookIsbn13').val();
 
       $.ajax({
         url: '/ajax/book/' + isbn13,
         type: 'DELETE',
-        success: function(response) {
+        success: function (response) {
           alert('책이 성공적으로 삭제되었습니다.');
         },
-        error: function() {
+        error: function () {
           alert('책 삭제에 실패했습니다.');
         }
       });
@@ -456,7 +641,6 @@
     return data ? JSON.parse(data) : null;
   }
 
-  // 'onCategorySelected' 함수에서 세션 스토리지 데이터 활용
   function onCategorySelected(categoryId) {
     const categoryData = getCategoryDataFromSessionStorage();
 
@@ -466,7 +650,6 @@
       if (selectedCategory) {
         currentLowestCategoryId = selectedCategory.categoryId;
         currentLowestCategoryName = selectedCategory.categoryName;
-
       } else {
         console.error('해당 카테고리 ID를 찾을 수 없습니다:', categoryId);
       }
@@ -475,7 +658,11 @@
     }
   }
 
-
+  // 카테고리 목록을 쉼표로 구분하여 텍스트 필드에 표시하는 함수
+  function updateCategoryTextField() {
+    document.getElementById('address').value = selectedCategories.map(
+        category => category.categoryName).join(', ');
+  }
 
   // UI에 카테고리 목록을 업데이트하는 함수
   function updateCategoryListUI() {
@@ -483,25 +670,28 @@
     container.innerHTML = ''; // 기존 목록 초기화
 
     // 카테고리 목록을 표시
-    selectedCategories.forEach(category => {
+    selectedCategories.forEach((category, index) => {
       const item = document.createElement('div');
       item.textContent = category.categoryName; // 화면에 카테고리 이름 표시
-      container.appendChild(item);
 
       // 제거 버튼 추가
       const removeButton = document.createElement('button');
       removeButton.textContent = '제거';
       removeButton.addEventListener('click', function () {
-        removeCategory(category.categoryId); // 제거 함수 호출
+        removeCategory(index); // 제거 함수 호출
       });
       item.appendChild(removeButton);
+      container.appendChild(item);
     });
+
+    // 텍스트 필드 업데이트
+    updateCategoryTextField();
   }
 
   // 카테고리 목록에서 제거하는 함수
-  function removeCategory(categoryId) {
-    selectedCategories = selectedCategories.filter(category => category.categoryId !== categoryId);
-    updateCategoryListUI(); // UI 업데이트
+  function removeCategory(index) {
+    selectedCategories.splice(index, 1); // 배열에서 해당 카테고리 제거
+    updateCategoryListUI(); // UI와 텍스트 필드 업데이트
   }
 
   // 부모 요소인 categoryDropdownContainer에 이벤트 위임 적용 (1차 카테고리)
@@ -525,7 +715,7 @@
   });
 
   // '카테고리 추가' 버튼 클릭 시 호출될 함수
-  document.getElementById('addCategoryButton').onclick = function() {
+  document.getElementById('addCategoryButton').onclick = function () {
     if (currentLowestCategoryId && currentLowestCategoryName) {
 
       let shouldAdd = true;
@@ -538,25 +728,27 @@
 
         if (isExactMatch) {
           // 카테고리가 정확히 일치하는 경우
-          alert('이미 추가된 카테고리와 동일한 카테고리입니다.');
+          showToast('이미 추가된 카테고리와 동일한 카테고리입니다.');
           shouldAdd = false;
         } else if (isParentCategory) {
           // 하위 카테고리인 경우, 상위 카테고리를 교체
           selectedCategories = selectedCategories.filter(c => c.categoryId !== category.categoryId);
         } else if (isSubCategory) {
           // 상위 카테고리 추가를 막음
-          alert('하위 카테고리가 이미 추가되어 있으므로 상위 카테고리를 추가할 수 없습니다.');
+          showToast('하위 카테고리가 이미 추가되어 있으므로 상위 카테고리를 추가할 수 없습니다.');
           shouldAdd = false;
         }
       });
+
       // 카테고리 추가
       if (shouldAdd) {
-        selectedCategories.push({ categoryId: currentLowestCategoryId, categoryName: currentLowestCategoryName });
+        selectedCategories.push(
+            {categoryId: currentLowestCategoryId, categoryName: currentLowestCategoryName});
       }
 
-      updateCategoryListUI(); // UI 업데이트
+      updateCategoryListUI(); // UI와 텍스트 필드 업데이트
     } else {
-      alert('카테고리를 선택해주세요.');
+      showToast('카테고리를 선택해주세요.');
     }
   };
 
@@ -564,9 +756,135 @@
   function backtolist() {
     history.back();
   }
-
 </script>
 
+<script>
+  document.getElementById('fileInput').addEventListener('change', function (event) {
+    var files = event.target.files;
+    if (files && files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        var imgElement = document.createElement('img');
+        imgElement.src = e.target.result;
+        imgElement.alt = "Uploaded Image";
+
+        var previewContainer = document.getElementById('preview');
+        previewContainer.innerHTML = '';  // 기존의 프리뷰를 삭제
+        previewContainer.appendChild(imgElement);
+      };
+
+      reader.readAsDataURL(files[0]);
+    }
+  });
+  function showInvalidFeedback(elementId) {
+    const element = document.getElementById(elementId);
+    const feedback = element.querySelector('.invalid-feedback');
+
+    // invalid 클래스 추가하여 오류 메시지 표시
+    element.classList.add('is-invalid');
+    feedback.style.display = 'block';  // 오류 메시지 보이게 설정
+  }
+
+  function hideInvalidFeedback(elementId) {
+    const element = document.getElementById(elementId);
+    const feedback = element.querySelector('.invalid-feedback');
+
+    // invalid 클래스 제거하여 오류 메시지 숨기기
+    element.classList.remove('is-invalid');
+    feedback.style.display = 'none';  // 오류 메시지 숨기기
+  }
+
+</script>
+<script>
+  // Toast 메시지를 생성하는 함수
+  function showToast(message) {
+    const toastContainer = document.getElementById('toastContainer');
+
+    // Toast 메시지 생성
+    const toast = document.createElement('div');
+    toast.className = 'toast-message';
+    toast.textContent = message;
+
+    // Toast를 컨테이너에 추가
+    toastContainer.appendChild(toast);
+
+    // 잠시 후에 표시
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 100);
+
+    // 3초 후에 자동으로 사라지게 설정
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove(); // DOM에서 제거
+      }, 500); // 사라지는 애니메이션을 위해 약간의 시간 추가
+    }, 3000); // 3초 후에 Toast 닫힘
+  }
+
+</script>
+<script>
+  $(document).on("keyup", "input[name^=starRating]", function () {
+    var val = $(this).val();
+
+    if (val.replace(/[0-9]/g, "").length > 0) {
+      $(this).val('');
+    }
+
+    if (val < 1) {
+      $(this).val('0');
+    }
+
+    if (val > 100) {
+      $(this).val('100');
+    }
+  });
+</script>
+<script>
+  document.querySelector('.dateaction').addEventListener('click', function (event) {
+    event.preventDefault(); // 기본 제출 막기
+
+    let year = document.getElementById('input2').value;
+    let month = document.getElementById('input1').value;
+    let day = document.getElementById('input3').value;
+
+    if (month.length === 1) {
+      month = '0' + month;
+    }
+
+    if (day.length === 1) {
+      day = '0' + day;
+    }
+
+    // 숫자만 입력되었는지 확인
+    const yearValid = /^[0-9]{4}$/.test(year); // 4자리 숫자
+    const monthValid = /^[0-9]{2}$/.test(month) && parseInt(month, 10) >= 1 && parseInt(month, 10) <= 12; // 2자리 숫자, 1~12 사이
+    const dayValid = /^[0-9]{2}$/.test(day) && parseInt(day, 10) >= 1 && parseInt(day, 10) <= 31; // 2자리 숫자, 1~31 사이
+
+
+    // 검증 결과에 따른 처리
+    if (!yearValid) {
+      // 연도 검증 실패 시 토스트 메시지 출력
+      showToast('연도는 4자리 숫자여야 합니다.');
+    }
+
+    if (!monthValid) {
+      // 월 검증 실패 시 토스트 메시지 출력
+      showToast('월은 01~12 사이의 숫자여야 합니다.');
+    }
+
+    if (!dayValid) {
+      // 일 검증 실패 시 토스트 메시지 출력
+      showToast('일은 01~31 사이의 숫자여야 합니다.');
+    }
+
+    // 모든 검증을 통과한 경우
+    if (yearValid && monthValid && dayValid) {
+      showToast('유효한 날짜입니다.');
+    }
+  });
+</script>
 <jsp:include page="../includes/footer.jsp"/>
 <script src="/resources/js/booklist_ajax.js"></script>
 <script src="/resources/js/category_ajax.js"></script>

@@ -259,9 +259,9 @@ $(document).ready(function(e){
 
     var formData = new FormData();
     
-    var inputFile = $("input[name='uploadFile']");
+    var inputFile = $("input[name='uploadFile']"); // 업로드 파일 확인
     
-    var files = inputFile[0].files;
+    var files = inputFile[0].files; // 업로드 된 파일 배열로 저장(파일 여러개 업로드일 경우)
     
     for(var i = 0; i < files.length; i++){
 

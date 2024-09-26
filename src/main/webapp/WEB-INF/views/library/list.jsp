@@ -223,7 +223,7 @@
 		    
 		    var str ='';
 		    
-		    if(elementsTextExt == "jpg" || elementsTextExt == "png" || elementsTextExt == "jpeg"){
+		    if(elementsTextExt == "jpg" || elementsTextExt == "png" || elementsTextExt == "jpeg"){ // (이미지파일)확장자 체크
 		    	
 		        str = `<svg xmlns='http://www.w3.org/2000/svg' width="16" height="16" fill="currentColor" class="fileImage" viewBox="0 0 16 16">
 	                  <path d='M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0'/>

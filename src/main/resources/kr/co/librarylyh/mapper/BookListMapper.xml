@@ -92,14 +92,20 @@
     VALUES (#{isbn13}, #{bookDescription, jdbcType=CLOB}, #{pageCount}, #{weight}, #{bookSize}, #{star1Count}, #{star2Count}, #{star3Count}, #{star4Count}, #{star5Count})
   ]]>
   </insert>
-  <!-- 카테고리 + 책 복합 테이블에 추가 -->
-  <insert id="insertBookCategory">
+  <!-- 책과 카테고리를 book_category_tbl에 여러 개 저장 -->
+  <insert id="insertBookCategories">
     <![CDATA[
-    INSERT INTO book_category_tbl
-    (isbn13, categoryId)
-    VALUES (#{isbn13}, #{categoryId})
+    INSERT INTO book_category_tbl (isbn13, categoryId)
+    VALUES
   ]]>
+    <foreach collection="categoryIds" item="categoryId" separator=",">
+      <![CDATA[
+      (#{isbn13}, #{categoryId})
+    ]]>
+    </foreach>
   </insert>
+
+
 
 
   <!-- 책 조회 (카테고리 정보는 따로) -->
@@ -128,10 +134,21 @@
     <!-- 책을 삭제 -->
   </delete>
 
-  <!-- 자동검색 기능용 제목검색 쿼리 -->
+  <!-- 자동검색 기능용 제목검색 -->
   <select id="searchTitles" parameterType="string" resultType="kr.co.librarylyh.domain.BookListVO">
     <![CDATA[ SELECT book, author FROM book_tbl WHERE LOWER(book) LIKE '%' || LOWER(#{query}) || '%' AND ROWNUM <= 5 ORDER BY book ASC ]]>
     <!-- 책 제목을 검색하고, 최대 5개의 결과를 출력 -->
+  </select>
+
+  <!-- ISBN 중복 확인 -->
+  <select id="checkIsbnExists" resultType="int">
+    SELECT COUNT(*)
+    FROM book_tbl
+    WHERE isbn13 = #{isbn13}
+  </select>
+
+  <select id="getBookByIsbn" parameterType="Long" resultType="BookListVO">
+    SELECT * FROM book_tbl WHERE isbn13 = #{isbn13}
   </select>
 
 </mapper>

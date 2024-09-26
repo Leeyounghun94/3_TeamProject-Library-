@@ -56,7 +56,6 @@ public class BoardController {
 		
 		model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
 		
-		
 	}
 	
 	@PostMapping("/board/register")

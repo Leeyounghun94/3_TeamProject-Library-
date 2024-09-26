@@ -313,9 +313,7 @@ ul.adminChat li{
 						var replyULAdmin = $(".adminChat");
 					    var authorityValue = '<%=session.getAttribute("userAuthority") != null ? session.getAttribute("userAuthority") : "" %>' ; // 세션 계정 등급 확인
 
-
-
-						showList(1);
+						showList(1); // 댓글 리스트를 보여줌
 						likeCheck(); // 좋아요 함수 호출
 						adminCheck(); // 관리자 로그인 체크
 						
@@ -413,7 +411,8 @@ ul.adminChat li{
 		
 							var likeSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
 							var likeBno = '<c:out value="${board.bno}"/>';
-							var likeChk = '<c:out value="${likeChk.userId}"/>'; // model을 통해 들어온 likeChk 값을 받음,  bno는 list로 부터 전달 받음 list 자바 스크립트 .move쪽에서 넘어옴
+							var likeChk = '<c:out value="${likeChk.userId}"/>';
+							// model을 통해 들어온 likeChk 값을 받음,  bno는 list로 부터 전달 받음 list 자바 스크립트 .move쪽에서 넘어옴
 
 							if(!likeSessionUserId || likeSessionUserId.trim() === "" ){
 								console.log("로그인 아이디 확인 : "+likeSessionUserId); 
@@ -423,7 +422,7 @@ ul.adminChat li{
 								alert("로그인 먼저 진행해 주세요.");
 								return false;
 								
-							}else if (likeSessionUserId != likeChk){ // 빈 하트 일 경우 
+							}else if (likeSessionUserId != likeChk){ // 좋아요 없을 경우 (빈 하트 일 경우) 
 							$.ajax({
 								url: '/library/likeUp', // boardController 의 likeUp 호출
 								data: {likeUserId : likeSessionUserId, bno : likeBno}, // 각각 변수 대입
@@ -436,7 +435,7 @@ ul.adminChat li{
 								 }
 							}); // end ajax
 							
-							}else if (likeSessionUserId == likeChk){ // 색칠 하트일 경우
+							}else if (likeSessionUserId == likeChk){ // 좋아요 된 경우(색칠 하트일 경우)
 								$.ajax({
 								url: '/library/likeDown', // boardController 의 likeDown 호출
 								data: {likeUserId : likeSessionUserId, bno : likeBno}, // 각각 변수 대입
@@ -458,7 +457,7 @@ ul.adminChat li{
 						var pageNum = 1;
 						var replyPageFooter = $(".panel-footer");
 
-						function showReplyPage(replyCnt) {
+						function showReplyPage(replyCnt) { // 댓글 페이징
 
 							var endNum = Math.ceil(pageNum / 10.0) * 10;
 							var startNum = endNum - 9;
@@ -478,8 +477,7 @@ ul.adminChat li{
 
 							if (prev) {
 								str += "<li class='page-item'><a class='page-link' href='"
-										+ (startNum - 1)
-										+ "'>Previous</a></li>";
+										+ (startNum - 1) + "'>Previous</a></li>";
 							}
 
 							for (var i = startNum; i <= endNum; i++) {
@@ -500,7 +498,7 @@ ul.adminChat li{
 							console.log(str);
 
 							replyPageFooter.html(str);
-						}
+						} // end showReplyPage
 
 						replyPageFooter.on("click", "li a", function(e) {
 							e.preventDefault();
@@ -538,7 +536,6 @@ ul.adminChat li{
 								alert("로그인 먼저 진행해 주세요.");
 								return false;
 							}else{
-							
 								
 							modal.find("input").val(""); // 입력값을 찾음(위 변수 참고)
 							
@@ -625,7 +622,6 @@ ul.adminChat li{
 						});
 						
 						//댓글 수정/삭제 버튼 클릭 
-						//$(".editDelReply").on("click","li", "small"	function(e) 
 							$(".chat").on("click", ".editDelReply", function(e){
 							
 							

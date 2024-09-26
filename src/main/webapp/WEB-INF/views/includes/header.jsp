@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Course</title>
+<title>BOOKLIPSE</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="description" content="Course Project">
@@ -17,7 +17,6 @@
 <link rel="stylesheet" type="text/css" href="/resources/plugins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" type="text/css" href="/resources/styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="/resources/styles/responsive.css">
-
 </head>
 <body>
 
@@ -33,6 +32,9 @@
 					<img src="/resources/images/book_log.png">
 					<span><a href="/library/home" >Booklipse</a></span>
 				</div>
+			       <div style="margin-left: 20%;">
+			    <jsp:include page="../includes/developHelper.jsp"/>
+			  </div>
 			</div>
 
 			<!-- Main Navigation -->
@@ -40,11 +42,12 @@
 				<div class="main_nav">
 					<ul class="main_nav_list">
 						<li class="main_nav_item"><a href="/library/home">HOME</a></li>
-						<li class="main_nav_item"><a href="#">국내도서</a></li>
-						<li class="main_nav_item"><a href="courses.html">베스트</a></li>
-						<li class="main_nav_item"><a href="elements.html">신상품</a></li>
-						<li class="main_nav_item"><a href="news.html">도서대여</a></li>
-						<li class="main_nav_item"><a href="/library/list">게시판</a></li>	
+						<li class="main_nav_item"><a href="/library/booklist">전체 도서</a></li>
+						<li class="main_nav_item"><a href="/library/list">고객 게시판</a></li>
+						<li class="main_nav_item"><a href="/library/reservation/ReservationMain">도서 및 열람실 예약</a></li>
+						<c:if test="${user.authority == 1 }">
+                     <li class="main_nav_item"><a href="/library/admin/main">Admin</a></li>
+                     </c:if>	
 					</ul>
 				</div>
 			</nav>
@@ -65,9 +68,8 @@
 					<a href="/library/logout" id="logout_button">로그아웃</a>
 				</div>
 			</c:if>
-			<c:if test="${user.authority == 1 }">
-				<div><a href="/library/admin/main">어드민페이지</a></div>
-			</c:if>
+			
+			
 		</span>
 		</div>
 

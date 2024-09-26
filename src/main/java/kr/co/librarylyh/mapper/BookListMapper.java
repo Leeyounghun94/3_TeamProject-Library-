@@ -32,5 +32,6 @@ public interface BookListMapper {
 
 	public List<BookListVO> searchTitles(@RequestParam("query") String query);
 
+	BookListVO getBookByIsbn(Long isbn13);
 }
 

@@ -46,31 +46,7 @@ create table board_tbl(
 insert into board_tbl(title, category, content, bno, regdate, nickName)
 values ('테스트제목1', '테스트카테', '테스트내용', '1', '2020-01-01', 'kkk');
 
--- BOOK 테이블 생성
-create table book_tbl(
 
-	isbn13 varchar2(13) primary key,
-	book varchar2(100),
-	author varchar2(100),
-	publisher varchar2(50),
-	price number(10,2),
-	photo varchar2(100)
-
-);
-
-
-insert into book_tbl(isbn13, book, author, publisher, price, photo) values
-('4567894567894', '마도서', '작가님', '넥슨', '5000', '사진1');
-insert into book_tbl(isbn13, book, author, publisher, price, photo) values
-('4561231234564', '책이라는것은', '머저리1', '넥슨', '6000', '사진2');
-insert into book_tbl(isbn13, book, author, publisher, price, photo) values
-('7894561231113', '남괴', '작가님', '힝힝', '5000', '사진4');
-insert into book_tbl(isbn13, book, author, publisher, price, photo) values
-('7777789456114', '이걸책이라고만듦?', '작가아님', '넥슨', '7000', '사진5');
-
-select * from book_tbl;
-
-drop table book_tbl;
 
 -- Cart 테이블 생성
 
