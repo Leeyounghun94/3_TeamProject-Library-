@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +30,7 @@
 			<div class="logo_container">
 				<div class="logo">
 					<img src="/resources/images/book_log.png">
-					<span>Booklipse</span>
+					<span><a href="/library/home" >Booklipse</a></span>
 				</div>
 			</div>
 
@@ -36,22 +38,35 @@
 			<nav class="main_nav_container">
 				<div class="main_nav">
 					<ul class="main_nav_list">
-						<li class="main_nav_item"><a href="/library/home">Home</a></li>						
-						<li class="main_nav_item"><a href="#">전체 카테고리</a></li>
-						<li class="main_nav_item"><a href="#">국내도서</a></li>
-						<li class="main_nav_item"><a href="courses.html">베스트</a></li>
-						<li class="main_nav_item"><a href="elements.html">신상품</a></li>
-						<li class="main_nav_item"><a href="news.html">도서대여</a></li>
-						<li class="main_nav_item"><a href="/library/board/list">게시판</a></li>
-						<li class="main_nav_item"><a href="/library/reservation/ReservationMain">예약</a></li>
-						<li class="main_nav_item"><a href="/library/reservation/RsUpdate">예약 수정 (임시)</a></li>
+						<li class="main_nav_item"><a href="/library/home">HOME</a></li>
+						<li class="main_nav_item"><a href="/library/booklist">도서 목록</a></li>
+						<li class="main_nav_item"><a href="/library/list">고객 게시판</a></li>
+						<li class="main_nav_item"><a href="/library/reservation/ReservationMain">예약</a></li>	
+
+         			
 					</ul>
 				</div>
 			</nav>
 		</div>
 		<div class="header_side d-flex flex-row justify-content-center align-items-center">
 			<!-- <img src="/resources/images/profile.svg"> -->
-			<span>로그인</span>
+		<span>
+			<!-- 로그인 하지 않은 상태 -->
+			<c:if test = "${user == null }">
+			<a href= "/library/login">로그인</a> 
+			</c:if>
+			<!-- 로그인 한 상태 -->
+			<c:if test="${user != null }">
+				<div class="login_success_area">
+					<span><a href="/library/myPage">${user.nickName }</a></span>
+				</div>
+				<div class ="logout_button" >
+					<a href="/library/logout" id="logout_button">로그아웃</a>
+				</div>
+			</c:if>
+			
+			
+		</span>
 		</div>
 
 		<!-- Hamburger -->
@@ -99,3 +114,4 @@
 		</div>
 
 	</div>
+	

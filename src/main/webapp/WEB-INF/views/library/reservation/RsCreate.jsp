@@ -56,38 +56,44 @@
 		</div><!-- <div class="container"> -->
 	</div><!-- <div class="popular page_section"> -->
 
-
+<div id="bookDetail" data-isbn13="${bookDetail.isbn13}">
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-4">
 		</div>
 		<div class="col-md-4">
-			<form role="form">
-				<div class="form-group">
-					 
+			<form role="form" action="/reservation/RsCreate" method="post">
+				
+				<div class="form-group">			 
 					<label for="BookUser">예약자</label>
-					<input type="text" class="form-control" id="" />
+					<input type="text" class="form-control" name="name" /> 
 				</div>
+				
 				<div class="form-group">					 
 					<label for="BookName">도서명</label>
-					<input type="text" class="form-control" id="" />
+					<input type="text" class="form-control" name="isbn13" />
 				</div>
+				
 				<div class="form-group">					 
 					<label for="BookWriter">저자</label>
-					<input type="text" class="form-control" id="" />
+					<input type="text" class="form-control" <c:out value="${bookDetail.author}"/> />
 				</div>
+				
 				<div class="form-group">					 
 					<label for="BookPublisher">출판사</label>
-					<input type="text" class="form-control" id="" />
+					<input type="text" class="form-control" <c:out value="${bookDetail.publisher}"/> />
 				</div>
+				
 				<div class="form-group">					 
 					<label for="BookPrice">가격</label>
-					<input type="text" class="form-control" id="" />
+					<input type="text" class="form-control" <c:out value="${book.price}"/> />
 				</div>
+				
 				<div class="form-group">					 
 					<label for="RsStart-day">예약 시작 일자</label>
 					<input type="date" class="form-control" id="" />
 				</div>
+				
 				<div class="form-group">					 
 					<label for="RsEnd-day">예약 종료 일자</label>
 					<input type="date" class="form-control" id="" />
@@ -102,7 +108,7 @@
 		</div>
 	</div>
 </div>
-
+</div>
 
 
 

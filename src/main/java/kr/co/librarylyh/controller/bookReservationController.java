@@ -8,16 +8,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.librarylyh.domain.BookListVO;
 import kr.co.librarylyh.domain.CategoryVO;
 import kr.co.librarylyh.domain.Paging;
+import kr.co.librarylyh.domain.UserVO;
 import kr.co.librarylyh.domain.bookReservationVO;
 import kr.co.librarylyh.service.BookListService;
 import kr.co.librarylyh.service.BookReservationService;
@@ -29,6 +32,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RequestMapping("/library/*")	// http://localhost:80/library/???
 @AllArgsConstructor
+@SessionAttributes("u_id")
 public class bookReservationController {
 
 	// 도서 예약 컨트롤러
@@ -56,17 +60,25 @@ public class bookReservationController {
 
 	
 	@GetMapping("/reservation/RsUpdate")
-	public void RsUpdate() {// MyPage -> 나의 예약 정보
+	public void RsUpdate() {// MyPage -> 나의 예약 정보 - 예약 변경/취소
 					
 	}
 	
 	
 	// 예약 신청하기
 	@PostMapping("/reservation/RsCreate")
-	public String RsCreate(bookReservationVO vo, RedirectAttributes rttr, Model model) {
+	public String RsCreate(Model model, @ModelAttribute BookListVO bookvo, @ModelAttribute UserVO uservo) {
 		
-		log.info("bookReservationController.RsCreate 메서드 실행");		
-		service.rsRegister(vo);		
+		model.addAttribute("isbn13", bookvo);
+		model.addAttribute("author", bookvo);
+		model.addAttribute("publisher", bookvo);
+		model.addAttribute("price", bookvo);
+		
+		model.addAttribute("name", uservo);
+		
+		
+		log.info("bookReservationController.RsCreate 메서드 실행");	
+
 		return "redirect:/reservation/RsCreate";
 
 	}
@@ -103,6 +115,7 @@ public class bookReservationController {
 		// 기본 검색 조건에 맞는 모든 책 목록 가져오기
 		List<BookListVO> bookList = bookService.getListWithFiltersAndPaging(pge, searchParams);
 		model.addAttribute("bookList", bookList);
+		
 		
 		log.info("bookReservationController.RsList 메서드 실행");
 		

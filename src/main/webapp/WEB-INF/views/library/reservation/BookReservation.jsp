@@ -98,7 +98,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star-fill" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M8.16 4.1a.178.178 0 0 0-.32 0l-.634 1.285a.18.18 0 0 1-.134.098l-1.42.206a.178.178 0 0 0-.098.303L6.58 6.993c.042.041.061.1.051.158L6.39 8.565a.178.178 0 0 0 .258.187l1.27-.668a.18.18 0 0 1 .165 0l1.27.668a.178.178 0 0 0 .257-.187L9.368 7.15a.18.18 0 0 1 .05-.158l1.028-1.001a.178.178 0 0 0-.098-.303l-1.42-.206a.18.18 0 0 1-.134-.098z"/>
 </svg>
-					<strong>예약/대출 안내</strong>
+					<strong>예약/대여 안내</strong>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star-fill" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M8.16 4.1a.178.178 0 0 0-.32 0l-.634 1.285a.18.18 0 0 1-.134.098l-1.42.206a.178.178 0 0 0-.098.303L6.58 6.993c.042.041.061.1.051.158L6.39 8.565a.178.178 0 0 0 .258.187l1.27-.668a.18.18 0 0 1 .165 0l1.27.668a.178.178 0 0 0 .257-.187L9.368 7.15a.18.18 0 0 1 .05-.158l1.028-1.001a.178.178 0 0 0-.098-.303l-1.42-.206a.18.18 0 0 1-.134-.098z"/>
 </svg>
@@ -107,11 +107,11 @@
 				
 
 				
-* 본인이 대출하려는 도서가 다른 회원이 대출 중일 경우, 예약하여 해당 도서 반납 시 우선 대출하는 서비스입니다.
+* 본인이 대여하려는 도서가 다른 회원이 대여 중일 경우, 예약하여 해당 도서 반납 시 우선 대여하는 서비스입니다.
 <br>
-* 예약하신 도서가 반납되면 입력되어 있는 회원정보를 토대로 대출안내 SMS가 발송되며, <strong>공지 드린 해당 일까지 대출하지 않은 책은 예약이 자동 취소됩니다.</strong>
+* 예약하신 도서가 반납되면 입력되어 있는 회원정보를 토대로 대여 안내 SMS가 발송되며, <strong>공지 드린 해당 일까지 대여하지 않은 책은 예약이 자동 취소됩니다.</strong>
 <br>
-<strong>* SMS 통보 후 3일 이내에 대출을 하지 않을 경우 예약이 자동 취소됩니다.</strong>
+<strong>* SMS 통보 후 3일 이내에 대여를 하지 않을 경우 예약이 자동 취소됩니다.</strong>
 <br>
 * 예약 내역 조회와 예약 취소는 마이페이지에서 확인할 수 있습니다.
 <br>
@@ -358,7 +358,7 @@
 											<th>저자</th>
 											<th>출판사</th>
 											<th>가격</th>
-											<th>상세보기</th>
+											<th>자세히</th>
 										
 										</tr>
 									</thead>
@@ -372,7 +372,7 @@
 										 	<td>${vo.author}</td>
 										 	<td>${vo.publisher}</td>
 										 	<td>${vo.price}</td>										 									 	
-										 	<td><button type="button" class="btn btn-outline-warning btn" onclick="window.location.href='/library/read/${isbn13}'" data-isbn13="${bookDetail.isbn13}">자세히</button>	
+										 	<td><button type="button" class="btn btn-outline-warning btn" onclick="window.location.href='/library/read/${vo.isbn13}'">상세보기</button>	
 										
 										</tr>
 									

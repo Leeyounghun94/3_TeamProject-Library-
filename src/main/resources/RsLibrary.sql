@@ -1,4 +1,8 @@
 
+drop table member_tbl;
+drop table board_tbl;
+drop table cart_tbl;
+
 
 -- member 테이블 생성
 create table member_tbl(
@@ -91,3 +95,22 @@ create sequence seq_reservation; -- 예약 테이블 자동 번호 객체 생성
 select * from reservation_tbl;
 
 drop table reservation_tbl;
+
+
+
+
+-- Seat 테이블 생성
+
+
+create table seat_tbl (
+		
+		sno number(10),
+		seat_name varchar2(20),
+		status number(1),
+		userNo number(10),
+		u_id varchar2(20) primary key,
+		regNo number(10),
+		seatS_Day date default sysdate,
+		seatE_Day date default sysdate
+
+);
