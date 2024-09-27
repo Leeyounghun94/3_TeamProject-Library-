@@ -1,12 +1,15 @@
 package kr.co.librarylyh.controller;
 
 import kr.co.librarylyh.domain.UserVO;
+import kr.co.librarylyh.service.MailSendService;
 import kr.co.librarylyh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
+import java.util.Random;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,7 +32,9 @@ public class UserController {
     @Autowired
 	private UserService service;
    
-
+    @Autowired
+    private MailSendService mailService;
+    
 
     @GetMapping({"/agreementForm", "/login", "/join"})
     public void replace() {
@@ -42,6 +49,16 @@ public class UserController {
     	
     	return "redirect:/library/login";
     } 
+    
+ // 이메일 인증 메서드
+ 	@GetMapping("/mailCheck")
+ 	@ResponseBody
+ 	public String mailCheck(String email) {
+ 		log.info("이메일 데이터 전송");
+ 		log.info("이메일 : " + email);
+ 		
+ 		return mailService.joinEmail(email);
+ 	}
     
     // 아이디 중복 검사
     @PostMapping("/idCheck") 

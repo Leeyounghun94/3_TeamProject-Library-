@@ -15,4 +15,6 @@ public class UserVO {
 	private String newPw;
 	private String nickName;
 	private int authority;
+	private String regDate;
+	private int point;
 }

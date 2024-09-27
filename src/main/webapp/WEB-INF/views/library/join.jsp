@@ -3,7 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <html>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script><meta name="viewport" content="width=device-width, initial-scale=1.0">
+ -->
 <jsp:include page="../includes/header.jsp" />
 <style>
 .wrapper {
@@ -11,6 +12,13 @@
 	/* background-color:black; */
 	width: 40%;
 	margin:auto;
+}
+
+.correct{
+    color : green;
+}
+.incorrect{
+    color : red;
 }
 
 /* .email {
@@ -55,7 +63,7 @@
     padding-left: 10px;
     
 }
-.mail_checkBtn{
+/* .mail_checkBtn{
 	width: 50px;
     height: 32px;
     font-size: 15px;
@@ -63,7 +71,7 @@
     border-radius: 15px;
     outline: none;
     padding-left: 10px;
-}
+} */
 /* 중복 아이디가 존재하지 않는 경우 */
 .id_check1 {
 	color: green;
@@ -117,6 +125,14 @@
 }
 .final_email_ck {
 	display: none;
+}
+
+#mail_check_input_box_false{
+    background-color:#ebebe4;
+}
+ 
+#mail_check_input_box_true{
+    background-color:white;
 }
 </style>
 
@@ -185,21 +201,18 @@
     		<div class="email_wrap" style="padding-bottom:20px;">
     			<div class="title">이메일</div>
     			<div class="email_input_box">
-    				<input type="text" class="email_input" name="email">
+    				<input type="email" class="email_input" name="email" id="email_input">
     			</div>
+    			<div class="mail_input_box_warn"> <!-- 인증번호 박스 -->
+    				<div class="mail_check_input_box" id="mail_check_input_box_false">
+    					<input class="mail_check_input" type="text" disabled="disabled" id="mail_check_input">
+    				</div>
+    				
+    			</div>
+    			<div class="clearfix"></div>
+    			<span id="mail_check_input_box_warn"></span>
     			<span class="final_email_ck">이메일을 입력해주세요.</span>
-    			<span class="mail_input_box_warn"></span>
-    			<!-- <div class="mail_input_box">
-    				<div class="mail_check">
-    					<input type="text" class="mailCheck" placeholder="인증번호 작성">
-    				</div>
-    				<div class="mail_check" >
-    					<div class="mail_check_button">
-    						<span>인증번호 전송</span>
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
-    			</div>  -->   			
+    			<span class="mail_input_box_warn"></span>			
     		</div>
     	</div>
     <div>
@@ -212,11 +225,15 @@
   			<label for="email_ch">Email</label>
     </div>
    
-    <div style="padding-left:130px;">
-    	<input type="submit" value="취소" class="btn btn-secondary" >
+   
+	</form>
+	<div class="mail_check_btn">
+    					<button class="mail_check_btn" id="mail_check_btn">인증번호 전송</button>
+    				</div>
+	 <div style="padding-left:130px;">
+    	<input type="submit" value="취소" class="btn btn-secondary" onclick="location.href='/library/home'">
     	<input type="submit" value="가입" class="btn btn-primary" name="join_btn">	
     </div>
-	</form>
 </div> 
  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -237,6 +254,7 @@
                             </div>
                             <!-- /.modal -->
 </body>
+<jsp:include page="../includes/footer.jsp" />
 <script type="text/javascript">
 var idCheck = false;		// 아이디
 var idckCheck = false;		// 아이디 중복 검사(중복이 없는 경우)
@@ -252,10 +270,11 @@ var birthCheck = false;		// 생년월일
 var phoneCheck = false;		// 전화번호
 var emailCheck = false;		// 이메일
 
-
+var code = "";	// 이메일전송 인증번호 저장 코드
 
 $(document).ready(function(){
 	// 회원가입 버튼
+	
 	$(".join_btn").click(function(){
 		/* 입력값 변수 */
 		var id = $('.id_input').val();
@@ -339,6 +358,7 @@ $(document).ready(function(){
 			emailCheck = true;
 		}
 		
+		
 		if(idCheck&&idckCheck&&pwCheck&&pwckCheck&&pwckcorCheck&&nickCheck&&nickCheck_ck&&nameCheck&birthCheck&&phoneCheck&&emailCheck){
 			$("#joinForm").attr("action", "/library/join");
 			$("#joinForm").submit();
@@ -418,7 +438,39 @@ $('.id_input').on("propertychange change keyup paste input", function(){
 	}
 });
 
+$("#mail_check_btn").click(function(){
+	const email = $("#email_input").val();
+	console.log(email);
+	const checkInput = $("#mail_check_input")
+	
+	$.ajax({
+		type:"GET",
+		url: '<c:url value ="/library/mailCheck?email="/>'+email, 
+		success:function(data){
+			console.log("data : " + data);
+			checkInput.attr('disabled', false);
+			code =data;
+			alert("인증번호가 전송되었습니다.");
+		}
+	});
+});
+
+$("#mail_check_input").blur(function(){
+	const inputCode = $(this).val();
+	const $resultMsg = $(".mail_check_input_box_warn");
+	
+	if(inputCode === code) {
+		$resultMsg.html("인증번호가 일치합니다.");
+		$resultMsg.css('color', 'green');
+		$('.mail_check_btn').attr('disabled', true);
+		$('.email_input').attr('readonly', true);
+	} else {
+		$resultMsg.html("인증번호가 불일치합니다. 다시 확인해주세요.");
+		$resultMsg.css('color', 'red');
+	}
+});
+
 
 </script>
-<jsp:include page="../includes/footer.jsp" />
+
 </html>

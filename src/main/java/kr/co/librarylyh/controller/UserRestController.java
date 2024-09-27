@@ -42,4 +42,12 @@ public class UserRestController {
 		return new ResponseEntity<>("success", HttpStatus.OK);
 
 	}
+	
+	@PutMapping(value="/findPwResult")
+	public ResponseEntity<String> findPw(@RequestBody UserVO user){
+		
+		service.pwUpdate(user);
+		
+		return null;
+	}
 }
