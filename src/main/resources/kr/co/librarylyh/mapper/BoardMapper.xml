@@ -31,6 +31,13 @@
 			select * from tbl_board where bno > 0 
 		]]>
 	</select>
+	
+	<!-- 요청 도서 목록 가져오기 2024 09 30  -->
+	<select id="getRequestBookList" resultType="kr.co.librarylyh.domain.BookRequestVO">
+		<![CDATA[
+			select * from tbl_requestBook where r_bookUserId = #{r_bookUserId} 
+		]]>
+	</select>
 
 	
  	<insert id="insertSelectKey">
@@ -43,6 +50,18 @@
 		insert into tbl_board (bno,title,content, category, nickName, boardUserId)
 		values (#{bno},	#{title}, #{content}, #{category}, #{nickName}, #{boardUserId})
 	</insert>
+	
+ 	<insert id="insertSelectKeyRequest"><!-- 희망도서 요청 게시글 입력 2024 09 30 -->
+		<!-- selectKey는 DB에 명령을 한번만 보내며, 우선 입력한 값의 결과값을 다음 쿼리로 바로 return 시켜주는 것 -->
+		<selectKey keyProperty="r_bookBno" order="BEFORE"
+			resultType="long">
+			select seq_requestBook.nextval from dual
+		</selectKey>
+
+		insert into tbl_requestBook (r_bookBno, r_bookTitle, r_bookAuthor, r_bookCategory, r_bookCompany, r_bookUserId, r_bookUserNickName)
+		values (#{r_bookBno}, #{r_bookTitle}, #{r_bookAuthor}, #{r_bookCategory}, #{r_bookCompany}, #{r_bookUserId}, #{r_bookUserNickName})
+	</insert>
+		
 	
 	<select id="read" resultType="kr.co.librarylyh.domain.BoardVO">
 		select * from tbl_board where bno =	#{bno}

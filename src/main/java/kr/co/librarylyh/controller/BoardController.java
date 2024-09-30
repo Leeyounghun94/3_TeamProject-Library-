@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.librarylyh.domain.BoardAttachVO;
 import kr.co.librarylyh.domain.BoardVO;
+import kr.co.librarylyh.domain.BookRequestVO;
 import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.PageDTO;
 import kr.co.librarylyh.service.BoardService;
@@ -86,6 +87,11 @@ public class BoardController {
 		
 	}
 	
+	@GetMapping("/listRequest") // 도서 요청 게시판
+	public void listRequest() {
+		
+	}
+	
 	
 	@PostMapping("/board/register") // 새글 작성
 	public String register(BoardVO board, RedirectAttributes rttr) {
@@ -123,6 +129,30 @@ public class BoardController {
 		
 	}
 	
+	@PostMapping("/listRequest") // 새글 작성 요청 도서 2024 09 30
+	public String registerBookRequest(BookRequestVO requestBoard, RedirectAttributes rttr) {
+
+		log.info("==========================");
+
+		log.info("register: " + requestBoard);
+
+		if (requestBoard.getAttachListRequest() != null) { // 첨부 파일이 있을 경우
+
+			requestBoard.getAttachListRequest().forEach(attach -> log.info(attach));
+
+		}
+
+		log.info("==========================");
+
+		service.registerRequest(requestBoard); // 보드 객체를 사용하여 글을 등록하고
+		
+		
+		rttr.addFlashAttribute("result", requestBoard.getR_bookBno()); // 번호를 가지고 모달창에 완료 문구띄우기
+		
+			return "redirect:/library/listRequest";
+			
+	}// end registerBookRequest
+
 
 	@GetMapping({ "/board/get", "/board/modify" })
 	public void get(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, Model model) throws Exception {
@@ -199,7 +229,7 @@ public class BoardController {
 	}
 	
 	
-	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) // 첨부파일 리스트를 가져옴
 	@ResponseBody
 	public ResponseEntity<List<BoardAttachVO>> getAttachList(Long bno) {
 

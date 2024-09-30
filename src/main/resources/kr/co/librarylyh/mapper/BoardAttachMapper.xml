@@ -11,6 +11,12 @@
 		#{fileType}, #{bno} )
 	</insert>
 	
+	<insert id="insertRequest"> <!-- 희망도서 첨부파일 2024 09 30 -->
+		insert into tbl_requestBookAttach (r_uuid, r_uploadPath, r_fileName,
+		r_fileType, r_bno)
+		values (#{r_uuid}, #{r_uploadPath}, #{r_fileName}, #{r_fileType}, #{r_bno} )
+	</insert>	
+	
 <update id="insertBoard">
     update tbl_board
     set fileName = #{fileName}

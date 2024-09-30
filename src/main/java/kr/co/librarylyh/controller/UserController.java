@@ -1,12 +1,14 @@
 package kr.co.librarylyh.controller;
 
 import kr.co.librarylyh.domain.UserVO;
+import kr.co.librarylyh.service.BoardService;
 import kr.co.librarylyh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpSession;
 public class UserController {
     @Autowired
 	private UserService service;
+    private BoardService boardService;
     
     
     @GetMapping("/home")
@@ -118,10 +121,24 @@ public class UserController {
     
     @GetMapping("/myPage")
     public String myPage() {
+    	
     	return "/library/myPage";
     }
-
     
+    // 요청 도서 목록 2024 09 30
+    @GetMapping("/myBookRequest") 
+    public void myBookRequest(HttpServletRequest request, Model model) {
+    	
+    	// String id = (String) session.getAttribute("user");
+    	HttpSession session = request.getSession();
+    	
+    	String id = (String) session.getAttribute("userId"); // 로그인 시 발생한 세션 : userId 따로 분리
+
+    	model.addAttribute("r_bookList", boardService.getRequestBookList(id));
+    	
+    }
+
+
     @GetMapping("/modify")
     public void modifyForm(HttpSession session, ModelMap map) {
     	session.removeAttribute("msg");

@@ -3,10 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../../includes/header.jsp"%>
-<link rel="stylesheet" type="text/css"
-	href="/resources/styles/news_styles.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/styles/news_responsive.css">
+<link rel="stylesheet" type="text/css" href="/resources/styles/news_styles.css">
+<link rel="stylesheet" type="text/css" href="/resources/styles/news_responsive.css">
 
 
 
@@ -238,8 +236,7 @@ ul.adminChat li{
 										<div class="panel-footer"></div>
 									</div>
 								</div>
-								<!-- ./ end row -->
-							</div>
+							</div><!-- ./ end row -->
 						</div>
 					</div>
 				</div>
@@ -306,8 +303,7 @@ ul.adminChat li{
 <script type="text/javascript" src="/resources/js/reply.js">
 	/* 외부파일 include 용 */
 </script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
 </script>
 <!-- JQuery 사용 -->
 
@@ -768,38 +764,38 @@ ul.adminChat li{
 
 							var bno = '<c:out value="${board.bno}"/>';
 
-							$.getJSON("/library/getAttachList",{ bno : bno }, function(arr) {
+							$.getJSON("/library/getAttachList",{ bno : bno }, function(arr) { // getAttachList를 bno 조건을 통해 가져옴
 
-												console.log(arr);
+							console.log("arr 이 뭔지 확인 : "+arr);
 
-												var str = "";
+							var str = "";
 
-												$(arr).each(function(i,	attach) {
+							$(arr).each(function(i,	attach) {
 
-																	//image type
-																	if (attach.fileType) { // 이미지 파일의 경우 썸네일을 출력
-																		var fileCallPath = encodeURIComponent(attach.uploadPath	+ "/s_"	+ attach.uuid+ "_" + attach.fileName);
+							//image type
+								if (attach.fileType) { // 이미지 파일의 경우 썸네일을 출력
+								var fileCallPath = encodeURIComponent(attach.uploadPath	+ "/s_"	+ attach.uuid+ "_" + attach.fileName);
 
-																		str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
-																		str += "<img src='/display?fileName="+ fileCallPath	+ "'>";
-																		str += "</div>";
-																		str	+ "</li>";
+									str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
+									str += "<img src='/display?fileName="+ fileCallPath	+ "'>";
+									str += "</div>";
+									str	+ "</li>";
 
-																	} else { // 아닐 경우 파일 그림 출력
+								} else { // 아닐 경우 파일 그림 출력
+	
+									str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
+									str += "<span> "+ attach.fileName+ "</span><br/>";
+									str += "<img src='/resources/img/attach.png'></a>";
+									str += "</div>";
+									str	+ "</li>";
+									}
+								});
 
-																		str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
-																		str += "<span> "+ attach.fileName+ "</span><br/>";
-																		str += "<img src='/resources/img/attach.png'></a>";
-																		str += "</div>";
-																		str	+ "</li>";
-																	}
-																});
+								$(".uploadResult ul").html(str);
 
-												$(".uploadResult ul").html(str);
+								});//end getjson
 
-											});//end getjson
-
-						})();//end function
+								})();//end function
 
 						$(".uploadResult").on("click", "li", function(e) {
 
@@ -807,8 +803,7 @@ ul.adminChat li{
 
 									var liObj = $(this);
 
-									var path = encodeURIComponent(liObj
-											.data("path")
+									var path = encodeURIComponent(liObj.data("path")
 											+ "/"
 											+ liObj.data("uuid")
 											+ "_"
@@ -819,13 +814,12 @@ ul.adminChat li{
 												new RegExp(/\\/g), "/"));
 									} else {
 										//download 
-										self.location = "/download?fileName="
-												+ path
+										self.location = "/download?fileName=" + path
 									}
 
 								});
 
-						function showImage(fileCallPath) {
+						function showImage(fileCallPath) { // 페이지 상단에 이미지 썸네일 출력
 
 							alert(fileCallPath);
 
@@ -838,9 +832,9 @@ ul.adminChat li{
 								height : '100%'
 							}, 1000);
 
-						}
+						}// end showImage
 
-						$(".bigPictureWrapper").on("click", function(e) {
+						$(".bigPictureWrapper").on("click", function(e) { // 이미지 클릭시 원본 이미지 출력
 							$(".bigPicture").animate({
 								width : '0%',
 								height : '0%'
@@ -850,7 +844,7 @@ ul.adminChat li{
 							}, 1000);
 						});
 
-					});
+					});// end $(".bigPictureWrapper").on("click", function(e)
 </script>
 
 

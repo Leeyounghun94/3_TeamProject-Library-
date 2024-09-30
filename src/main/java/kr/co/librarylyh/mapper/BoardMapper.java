@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import kr.co.librarylyh.domain.BoardVO;
+import kr.co.librarylyh.domain.BookRequestVO;
 import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.LikeVO;
 
@@ -17,10 +18,14 @@ public interface BoardMapper {
 	public List<BoardVO> getListWithPagingListFree(Criteria cri); // 게시판 분류 자유게시물 출력 2024 09 28
 	
 	public List<BoardVO> getListWithPagingListQnA(Criteria cri); // 게시판 분류 질문답변 게시물 출력 2024 09 28
+	
+	public List<BookRequestVO> getRequestBookList(String r_bookUserId); // 요청게시물 가져오기 2024 09 30
 
 	// public void insert(BoardVO board);
 
 	public Integer insertSelectKey(BoardVO board); // 게시글 등록
+	
+	public Integer insertSelectKeyRequest(BookRequestVO bookRequest); // 희망 도서요청 게시글 등록 2024 09 30
 
 	public BoardVO read(Long bno); // 특정 게시글 읽기
 

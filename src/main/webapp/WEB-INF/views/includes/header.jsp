@@ -75,6 +75,7 @@
 					        <a href="/library/list">기존 게시판</a><br>
 					        <a href="/library/listFree">자유 게시판</a><br>
 					        <a href="/library/listQnA">Q&A 게시판</a><br>
+					        <a href="/library/listRequest">도서 요청</a><br>
 					      </div>
 					    </div> <!-- 메뉴 네비게이터 변경 2024 09 28 -->
 						

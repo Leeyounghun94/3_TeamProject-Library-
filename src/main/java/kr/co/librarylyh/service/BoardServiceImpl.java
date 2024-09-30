@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.librarylyh.domain.BoardAttachVO;
 import kr.co.librarylyh.domain.BoardVO;
+import kr.co.librarylyh.domain.BookRequestVO;
 import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.LikeVO;
 import kr.co.librarylyh.mapper.BoardAttachMapper;
@@ -44,20 +45,27 @@ public class BoardServiceImpl implements BoardService {
 		}
 		board.getAttachList().forEach(attach -> { // 첨부파일 이름 및 경로 첨부파일_테이블에 저장
 			attach.setBno(board.getBno());
-			attachMapper.insert(attach);
+			attachMapper.insert(attach); // BoardAttachVO.java의 insert
 			attachMapper.insertBoard(attach); // 첨부파일 이름 및 경로 게시글_테이블에 저장
 		});
 	}
-
-	/* @Override
-	public BoardVO get(Long bno) {
-
-		log.info("get......" + bno);
-
-		return mapper.read(bno);
-
-	}*/
 	
+	public void registerRequest(BookRequestVO bookRequest) { // 희망 도서 요청 파일 값 2024 09 30
+
+		log.info("register......" + bookRequest);
+
+		mapper.insertSelectKeyRequest(bookRequest); // 희망도서 게시글 추가
+
+		if (bookRequest.getAttachListRequest() == null || bookRequest.getAttachListRequest().size() <= 0) {
+			return;
+		}
+		bookRequest.getAttachListRequest().forEach(attach -> { // 첨부파일 이름 및 경로 첨부파일_테이블에 저장
+			attach.setR_bno(bookRequest.getR_bookBno()); // 추가된 희망도서의 bno값을 attach에 다 넣어줌 (set)
+			attachMapper.insertRequest(attach); // 요청한 도서 번호를 이용하여, 그 번호에 적용된 첨부파일 경로 입력
+		});
+	}
+
+
 	//게시물 조회수
 	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@Override
@@ -131,6 +139,12 @@ public class BoardServiceImpl implements BoardService {
 		log.info("get List with criteria: " + cri);
 
 		return mapper.getListWithPagingListQnA(cri);
+	}
+	
+	@Override
+	public List<BookRequestVO> getRequestBookList(String r_bookUserId) { // 게시글 분류 질문답변 게시판 2024 09 28
+
+		return mapper.getRequestBookList(r_bookUserId);
 	}
 	
 

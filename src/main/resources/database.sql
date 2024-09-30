@@ -82,6 +82,54 @@ alter table tbl_reply add constraint fk_reply_board foreign key (bno) references
 ---------------------------------------------------------------------------------------------------
 
 
+--------------------------------- 희망 도서 요청 전용 쿼리 모음 2024 09 30 ---------------------------------
+
+---------------------------------------------------------- 희망 도서 테이블
+
+select * from tbl_requestBook; -- tbl_requestBook 테이블 조회
+
+create table tbl_requestBook (
+
+	r_bookTitle varchar2(200) not null, -- 요청 도서 제목
+	r_bookAuthor varchar2(200) not null, -- 요청 도서 저자
+	r_bookCategory varchar2(200) not null, -- 요청 도서 카테고리
+	r_bookCompany varchar2(200) not null, -- 요청 도서 출판사
+	
+	r_bookUserId varchar2(200) not null, -- 도서 요청 유저 아이디
+	r_bookUserNickName varchar2(200) not null, -- 도서 요청 유저 닉네임
+	r_bookBno number(10,0) not null, -- 도서 요청 글 번호
+	
+	r_bookRegdate date default sysdate, -- 
+  	r_bookUpdatedate date default sysdate
+	
+)
+---------------------- tbl_requestBook 시퀀스 -------------------------------------
+create sequence seq_requestBook; -- 도서요청 글 번호 시퀀스 
+-----------------------------------------------------------------------------------
+---------------------- tbl_requestBook 제약 조건 ----------------------------------
+alter table tbl_requestBook add constraint pk_requestBook primary key (r_bookBno);
+-----------------------------------------------------------------------------------
+
+----------------------------------------------------------- 희망 도서 첨부 파일
+create table tbl_requestBookAttach(
+	r_uuid varchar2(100) not null,
+	r_uploadPath varchar2(200) not null,
+	r_fileName varchar2(100) not null,
+	r_filetype char(1) default 'I',
+	r_bno number(10,0)
+)
+
+select * from tbl_requestBookAttach;
+
+---------------------- tbl_requestBookAttach 제약 조건 ---------------------------------
+alter table tbl_requestBook add constraint pk_requestBook primary key (r_bookBno)
+alter table tbl_requestBookAttach add constraint fk_requestBook_Attach foreign key (r_bno) references tbl_requestBook(r_bookBno)
+----------------------------------------------------------------------------------------------------
+
+
+
+
+
 
 -------------------------------------이 아래에는 추가할 내용이 따로 없습니다.-----------------------------------------------------
 
