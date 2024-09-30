@@ -212,7 +212,7 @@
     			<div class="clearfix"></div>
     			<span id="mail_check_input_box_warn"></span>
     			<span class="final_email_ck">이메일을 입력해주세요.</span>
-    			<span class="mail_input_box_warn"></span>			
+    			<span class="mail_check_input_box_warn" id="mail_check_input_box_warn"></span>			
     		</div>
     	</div>
     <div>
@@ -457,8 +457,9 @@ $("#mail_check_btn").click(function(){
 
 $("#mail_check_input").blur(function(){
 	const inputCode = $(this).val();
-	const $resultMsg = $(".mail_check_input_box_warn");
-	
+	const $resultMsg = $("#mail_check_input_box_warn");
+	console.log("입력한 인증번호: "+inputCode)
+	console.log("인증번호 : " + code)
 	if(inputCode === code) {
 		$resultMsg.html("인증번호가 일치합니다.");
 		$resultMsg.css('color', 'green');

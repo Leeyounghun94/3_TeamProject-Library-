@@ -24,7 +24,7 @@ public class MailSendService {
 	
 	public String joinEmail(String email) {
 		makeRandomNum();
-		String setFrom = "audals0712@gmail.com";		// 보내는 이메일 주소
+		String setFrom = "";		// 보내는 이메일 주소
  		String toMail = email;							// 수신 받을 이메일
  		String title = "회원가입 인증 이메일 입니다.";	// 이메일 제목
  		String content = 								// 이메일 내용

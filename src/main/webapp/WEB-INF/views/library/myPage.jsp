@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -61,6 +62,11 @@
                         <label>이메일</label>
                         <input type="text" id="email" name="email" readonly="readonly"
                             value="${user.email}">
+                    </div>
+                    
+                    <div class="myPage-row">
+                        <label>가입일</label>
+                        <input class="regDate" name="regDate" value='<fmt:formatDate pattern="yyyy/MM/dd" value="${user.regDate }"/>' readonly="readonly" />
                     </div>
                     
                 </form>

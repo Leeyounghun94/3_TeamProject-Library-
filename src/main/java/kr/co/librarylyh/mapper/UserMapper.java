@@ -28,8 +28,8 @@ public interface UserMapper {
 	// 회원 로그인
 	public UserVO login(UserVO user);
 	
-	// 비밀번호 확인
-	public int checkPw(String id);
+	// 마이페이지 - 비밀번호 확인
+	public int checkPw(UserVO user);
 	
 	// 비밀번호 변경
 	public int updatePw(String pw);
@@ -39,6 +39,7 @@ public interface UserMapper {
 		
 	// 유저 비밀번호 찾기
 	public int findUserPw(UserVO user);
+
 	
 	// 비밀번호 업데이트
 	public UserVO pwUpdate(UserVO user);
@@ -54,6 +55,8 @@ public interface UserMapper {
 	public int update(UserVO user); // 회원 정보 수정
 	
 	public int delete(String u_id); // 회원 탈퇴
+
+	
 	
 	
 }	

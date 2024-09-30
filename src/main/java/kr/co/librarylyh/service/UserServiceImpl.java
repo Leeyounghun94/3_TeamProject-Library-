@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService{
     public UserVO login(UserVO user) {
 
         UserVO loginUser = mapper.login(user);
-
+        log.info("login : " + loginUser);
         return loginUser;
     }
 
@@ -102,5 +102,14 @@ public class UserServiceImpl implements UserService{
 		// 회원정보 업데이트
 		
 	}
+
+	@Override
+	public int checkPw(UserVO user) {
+		// 현재 비밀번호 확인
+		log.info("sdfssdfsafee나와라");
+		return mapper.checkPw(user);
+	}
+
+	
 
 }

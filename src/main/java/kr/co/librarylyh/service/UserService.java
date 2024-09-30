@@ -44,7 +44,10 @@ public interface UserService {
 	
 	// 유저 비밀번호 찾기
 	public int findUserPw(UserVO user);
-		
+	
+	// 마이페이지 - 현재 비밀번호 확인
+	public int checkPw(UserVO user);
+	
 	// 비밀번호 업데이트
 	public UserVO pwUpdate(UserVO user);
 	

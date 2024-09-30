@@ -1,48 +1,88 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>      
+<%@ include file="../../includes/header.jsp" %>      
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+.changePw{
+	text-align: center;	
+	margin: 150px 0;
+}
+.name_inputBox, .pw_inputBox, .id_inputBox, .pw1_inputBox, .pw2_inputBox{
+	border: 0;
+	height:50px;
+	padding: 10px 14px;	
+	display: block;
+	width : 500px;
+	margin : auto;	
+}
+.id_input, .name_input, .pw_input, .pw1_input, .pw2_input{
+	width: 500px;
+    height: 50px;
+    font-size: 20px;
+    border: 0;
+    border-radius: 15px;
+    outline: none;
+    margin: auto;
+    padding-left: 10px;
+    background-color: rgb(233,233,233);
+}
+.pw_button_wrap{
+	margin-top: 40px;
+	text-align: center;
+	padding-bottom: 30px;
+}
+.login_button{
+	width: 200px;
+    height: 50px;
+    background-color: #ebde83;
+    font-size: 30px;
+    font-weight: 900;
+    color: black;
+    margin : auto;
+    border: 0;
+    
+}
+.findPw_submit, .findPw_back{
+	width: 200px;
+    height: 50px;
+    background-color: #ebde83;
+    font-size: 30px;
+    font-weight: 900;
+    color: black;
+    margin : auto;
+    border: 0;	
+}
+/* 페이지 로고 */
+.logo_wrap{
+	text-align: center;	
+	margin: 150px 0;	
+}
+.logo_wrap>span{
+	font-size : 50px;
+	font-weight: 900;
+}
+p {
+	font-size : 18px;
+	font-weight: 900;
+}
+</style>
 </head>
 <body>
-	<div class="container">
-		<h1>비밀번호 수정 폼</h1>
-		<form action="login.jsp" method="post" id="myForm">
-			<div>
-				<label for="pwd">기존 비밀번호</label>
-				<input type="password" name="pw" id="pw" />
-			</div>
-			<button type="submit" id="checkPw">비밀번호 확인</button>
-			<button type="reset">리셋</button>
-		</form>
-	</div>
+	<form class="changePw" id="changePwForm" method="post" action="/library/myPage/newPw">
+		<div class="logo_wrap"><span>비밀번호 변경</span></div>
+		<div class="id_inputBox">
+			<input type="text" name="id" id="id" class="id_input" placeholder="아이디">
+		</div>
+		<div class="pw_inputBox">
+			<input type="password" name="pw" id="pw" class="pw_input" placeholder="비밀번호">
+		</div>
+		<div class="pw_button_wrap">
+			<button type="button" class="findPw_back" onclick="location.href='/library/myPage'">이전으로</button>
+			<button type="submit" class="findPw_submit" >본인인증</button>
+		</div>
+	</form>
 </body>
-<script type="text/javascript">
-$(document).on('click', '#checkPw', function(){
-	const checkPassword = $('#pw').val
-	if(!checkPassword || checkPassword.trim() === "") {
-		alert("비밀번호를 입력하시오");
-	} else {
-		$a.ajax({
-			type: 'get',
-			url: '/library/checkPw',
-			data: {'checkPassword' : checkPassword},
-			datatype: "text"
-		}).done(function(result){
-			console.log(result);
-			if(result){
-				console.log("비밀번호 일치");
-				window.location.href="/library.myPage/updatePw";
-			} else if(!result) {
-				console.log("비밀번호 불일치");
-				alert("비밀번호가 맞지 않습니다.");
-				window.location.reload();
-			}
-		}).fail(function(error){
-			alert(JSON.stringify(error));
-		})
-	}
-});
-</script>
+<%@ include file="../../includes/footer.jsp" %>  
 </html>

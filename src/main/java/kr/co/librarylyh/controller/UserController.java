@@ -166,7 +166,8 @@ public class UserController {
     	user.setName(name);
     	user.setEmail(email);
     	int search=service.findUserPw(user);
- 	
+    	log.info("search 결과 : " + search);
+    	log.info("user info : " + user);
     	model.addAttribute("search", search);
     	
     	
