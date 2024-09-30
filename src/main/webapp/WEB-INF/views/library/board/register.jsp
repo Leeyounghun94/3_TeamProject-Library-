@@ -121,10 +121,9 @@
     	 	</div>
         	<div class="input-group mb-3">
   			<label class="input-group-text" for="inputGroupSelect01">카테고리</label>
-  			<select class="form-select" id="inputGroupSelect01" name="category">
-    			<option selected>선택</option>
+  			<select class="form-select" id="inputGroupSelect01" name="category" placeholder="카테고리를 입력해주세요.">
     			<option value="자유">자유</option>
-    			<option value="Q&A">Q&A</option>
+    			<option value="QnA">QnA</option>
   			</select>
 			</div>
           <div class="form-group">
@@ -259,9 +258,9 @@ $(document).ready(function(e){
 
     var formData = new FormData();
     
-    var inputFile = $("input[name='uploadFile']");
+    var inputFile = $("input[name='uploadFile']"); // 업로드 파일 확인
     
-    var files = inputFile[0].files;
+    var files = inputFile[0].files; // 업로드 된 파일 배열로 저장(파일 여러개 업로드일 경우)
     
     for(var i = 0; i < files.length; i++){
 

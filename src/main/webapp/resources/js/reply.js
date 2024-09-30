@@ -12,7 +12,7 @@ var replyService = (function() {
          $.ajax({
             type : 'post', // @PostMapping
             url : '/replies/new', // http://localhost:80/replies/new
-            data : JSON.stringify(reply), // Json으로 받아 객체로 넘김
+            data : JSON.stringify(reply),  // Json으로 받아 객체로 넘김
             contentType : 'application/json; charset=utf-8',
             success : function(result, status, xhr){
                // result : 결과

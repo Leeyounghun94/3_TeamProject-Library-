@@ -6,8 +6,8 @@
 
 <insert id="insert">
 	<![CDATA[
-		insert into tbl_reply (rno, bno, reply, replyer, authority)
-		values(seq_reply.nextval, #{bno}, #{reply}, #{replyer}, #{authority})
+		insert into tbl_reply (rno, bno, reply, replyer, authority, replyerUserId)
+		values(seq_reply.nextval, #{bno}, #{reply}, #{replyer}, #{authority}, #{replyerUserId})
 	]]> <!-- sql 파일의 부등호 계산을 db에서 하게끔 처리 -->
 </insert> <!-- result = 성공 1 | 실패 0 -->
 
@@ -33,10 +33,10 @@
 <!-- 페이징 + bno를 이용한 리스트 출력용 -->
 <select id="getListWithPaging" resultType="kr.co.librarylyh.domain.ReplyVO">
 	<![CDATA[
-		select  rno, bno, reply, replyer, replydate, updatedate, authority
+		select  rno, bno, reply, replyer, replydate, updatedate, authority, replyerUserId
  		from (
     	select /*+INDEX(tbl_reply idx_reply) */ 
-     	rownum rn,  rno, bno, reply, replyer, replyDate, updatedate, authority
+     	rownum rn,  rno, bno, reply, replyer, replyDate, updatedate, authority, replyerUserId
     	from tbl_reply
     	where bno =  #{bno}
     	and rno > 0

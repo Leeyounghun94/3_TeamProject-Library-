@@ -77,15 +77,80 @@
       where 
   ]]>
 
+   
   <include refid="criteria"></include> 
-
+  
   <![CDATA[
       
-      rownum <= #{pageNum} * #{amount}
+  rownum <= #{pageNum} * #{amount}
       )
   where rn > (#{pageNum} -1) * #{amount}
   ]]>
 </select>
+
+<!-- 게시글 분류 자유게시판 2024 09 28 -->
+<select id="getListWithPagingListFree" resultType="kr.co.librarylyh.domain.BoardVO">
+  <![CDATA[
+  select 
+    bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+  from 
+    (
+    select /*+INDEX_DESC(tbl_board pk_board) */
+      rownum rn, bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+    from 
+      tbl_board
+    where
+  ]]>
+
+  <!-- 검색 조건이 있을 때만 criteria 포함 -->
+   <include refid="criteria" />
+
+
+  <!-- 자유게시판 조건 추가 -->
+  <![CDATA[
+    category = '자유' AND
+  ]]> 
+
+  <![CDATA[
+    rownum <= #{pageNum} * #{amount}
+    )
+  where rn > (#{pageNum} - 1) * #{amount}
+  ]]>
+</select>
+<!-- end 게시글 분류 자유게시판 2024 09 28 -->
+
+<!-- 게시글 분류 질문 답변게시판 2024 09 28 -->
+<select id="getListWithPagingListQnA" resultType="kr.co.librarylyh.domain.BoardVO">
+  <![CDATA[
+  select 
+    bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+  from 
+    (
+    select /*+INDEX_DESC(tbl_board pk_board) */
+      rownum rn, bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+    from 
+      tbl_board
+    where
+  ]]>
+
+  <!-- 검색 조건이 있을 때만 criteria 포함 -->
+   <include refid="criteria" />
+
+
+  <!-- 자유게시판 조건 추가 -->
+  <![CDATA[
+    category = 'QnA' AND
+  ]]> 
+
+  <![CDATA[
+    rownum <= #{pageNum} * #{amount}
+    )
+  where rn > (#{pageNum} - 1) * #{amount}
+  ]]>
+</select>
+<!-- end 게시글 분류 자유게시판 2024 09 28 -->
+
+
   
 
 	<select id="getTotalCount" resultType="int">
@@ -96,6 +161,33 @@
 		bno > 0
 		
 	</select>
+	
+	<select id="getTotalCountListFree" resultType="int"> <!-- 게시글 분류 자유게시글 카운트 2024 09 28 -->
+	  select count(*) from tbl_board where
+	   <!-- 검색 조건이 있을 때만 criteria 포함 -->
+    <include refid="criteria" />
+	  <!-- 자유게시판 조건 추가 -->
+	  <![CDATA[
+	   category = '자유'
+	  ]]> 
+	  <![CDATA[
+	    AND bno > 0
+	  ]]>
+	</select><!-- end 게시글 분류 자유게시글 카운트 2024 09 28 -->
+	
+	<select id="getTotalCountListQnA" resultType="int"> <!-- 게시글 분류 자유게시글 카운트 2024 09 28 -->
+	  select count(*) from tbl_board where
+	   <!-- 검색 조건이 있을 때만 criteria 포함 -->
+    <include refid="criteria" />
+	  <!-- 자유게시판 조건 추가 -->
+	  <![CDATA[
+	   category = 'QnA'
+	  ]]> 
+	  <![CDATA[
+	    AND bno > 0
+	  ]]>
+	</select><!-- end 게시글 분류 자유게시글 카운트 2024 09 28 -->
+	
 	
 	<update id="updateReplyCnt">
 	<![CDATA[  

@@ -18,6 +18,29 @@
 <link rel="stylesheet" type="text/css" href="/resources/styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="/resources/styles/responsive.css">
 
+<style>/* 2024 09 28 게시판 드롭다운 메뉴 */
+.dropdown{
+  position : relative;
+  display : inline-block;
+}
+
+.dropdown-content{
+  display : none;
+  position : absolute;
+  z-index : 1; /*다른 요소들보다 앞에 배치*/
+}
+
+.dropdown-content a{
+  display : block;
+  background-color:white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+</style>
+
+
 </head>
 <body>
 
@@ -44,7 +67,17 @@
 						<li class="main_nav_item"><a href="courses.html">베스트</a></li>
 						<li class="main_nav_item"><a href="elements.html">신상품</a></li>
 						<li class="main_nav_item"><a href="news.html">도서대여</a></li>
-						<li class="main_nav_item"><a href="/library/list">게시판</a></li>	
+						
+						<!-- 메뉴 네비게이터 변경 2024 09 28 -->
+					    <div class="dropdown">
+						<li class="main_nav_item"><a>게시판</a></li>	
+						<div class="dropdown-content"><br>
+					        <a href="/library/list">기존 게시판</a><br>
+					        <a href="/library/listFree">자유 게시판</a><br>
+					        <a href="/library/listQnA">Q&A 게시판</a><br>
+					      </div>
+					    </div> <!-- 메뉴 네비게이터 변경 2024 09 28 -->
+						
 					</ul>
 				</div>
 			</nav>

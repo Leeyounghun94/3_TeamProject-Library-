@@ -22,11 +22,18 @@ public interface BoardService {
 	// public List<BoardVO> getList();
 
 	public List<BoardVO> getList(Criteria cri); // 게시물 가져오기.
-
 	
+	public List<BoardVO> getListListFree(Criteria cri); // 게시판 분류 자유 게시물 가져오기. 2024 09 28 
+	
+	public List<BoardVO> getListListQnA(Criteria cri); // 게시판 분류 질문답변 게시물 가져오기. 2024 09 28 
+
 	public int getTotal(Criteria cri); // 게시글 수 카운트
 	
-	public List<BoardAttachVO> getAttachList(Long bno);
+	public int getTotalListFree(Criteria cri); // 게시판 분류 자유 게시글 수 카운트 2024 09 28 
+	
+	public int getTotalListQnA(Criteria cri); // 게시판 분류 질문답변 게시글 수 카운트 2024 09 28 
+	
+	public List<BoardAttachVO> getAttachList(Long bno); 
 	
 	//게시글 좋아요 여부
 	

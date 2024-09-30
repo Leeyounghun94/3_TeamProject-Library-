@@ -254,6 +254,7 @@ ul.adminChat li{
 	<input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
 	<input type='hidden' name='keyword'	value='<c:out value="${cri.keyword}"/>'>
 	<input type='hidden' name='type' value='<c:out value="${cri.type}"/>'>
+	<input type='hidden' id='category' name='category' value='<c:out value="${board.category}"/>'><!-- 게시판별 카테고리 구별 2024 09 28 -->
 </form>
 
 <!-- 댓글 좋아요 눌렀을 때 -->
@@ -272,15 +273,21 @@ ul.adminChat li{
 			
 			<div class="modal-body"> <!-- 댓글 작성을 누르면 나오는 창 -->
 				<div class="form-group">
-					<label>댓글 내용</label> <input class="form-control" name='reply' value='New Reply!!!!'>
+					<label>댓글 내용</label> <input class="form-control" name='reply'>
 				</div>
 				<div class="form-group">
-					<label>작성자</label> <input class="form-control" name='replyer' value="replyer" >
+					<label>닉네임</label> <input type=text class="form-control" name='replyer' value='<c:out value="${user.nickName}"/>' readonly>
 				</div>
+
 				<div class="form-group">
 					<label>Reply Date</label> <input class="form-control" name='replyDate' value='2018-01-01 13:13'>
 				</div>
+				<!-- 댓글 작성자 아이디 입력 2024 09 29 -->
+				<div class="form-group">
+					<label>아이디체크</label> <input type='hidden' class="form-control" name='replyerUserId' value='<c:out value="${user.id}"/>' readonly>
+				</div>
 			</div> <!-- end 댓글 작성을 누르면 나오는 창 -->
+			<!-- end modal body 2024 09 29 -->
 			
 			<div class="modal-footer">
 				<button id='modalModBtn' type="button" class="btn btn-warning">Modify</button>
@@ -313,9 +320,7 @@ ul.adminChat li{
 						var replyULAdmin = $(".adminChat");
 					    var authorityValue = '<%=session.getAttribute("userAuthority") != null ? session.getAttribute("userAuthority") : "" %>' ; // 세션 계정 등급 확인
 
-
-
-						showList(1);
+						showList(1); // 댓글 리스트를 보여줌
 						likeCheck(); // 좋아요 함수 호출
 						adminCheck(); // 관리자 로그인 체크
 						
@@ -343,7 +348,8 @@ ul.adminChat li{
 						            var replyHtml = "<li class='left clearfix' data-rno='"+list[i].rno+"'>";
 						            replyHtml += "<div class='replyBox'><strong class='primary-font'>" + list[i].replyer + "</strong>";
 						            replyHtml += "<small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small>";
-						            replyHtml += "<small class='editDelReply'>&nbsp&nbsp&nbsp&nbsp수정/삭제</small>";
+						            replyHtml += "<small class='editDelReply'>&nbsp&nbsp&nbsp&nbsp수정/삭제</small>"; 
+						            replyHtml += "<input type='hidden' class='replyerUserId' value='"+list[i].replyerUserId+"'>";  // 수정
 						            replyHtml += "<p>" + list[i].reply + "</p></div></li>";
 						            
 						            var adminHtml = "<li class='left clearfix' data-rno='" + list[i].rno + "'>";
@@ -413,7 +419,8 @@ ul.adminChat li{
 		
 							var likeSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
 							var likeBno = '<c:out value="${board.bno}"/>';
-							var likeChk = '<c:out value="${likeChk.userId}"/>'; // model을 통해 들어온 likeChk 값을 받음,  bno는 list로 부터 전달 받음 list 자바 스크립트 .move쪽에서 넘어옴
+							var likeChk = '<c:out value="${likeChk.userId}"/>';
+							// model을 통해 들어온 likeChk 값을 받음,  bno는 list로 부터 전달 받음 list 자바 스크립트 .move쪽에서 넘어옴
 
 							if(!likeSessionUserId || likeSessionUserId.trim() === "" ){
 								console.log("로그인 아이디 확인 : "+likeSessionUserId); 
@@ -423,7 +430,7 @@ ul.adminChat li{
 								alert("로그인 먼저 진행해 주세요.");
 								return false;
 								
-							}else if (likeSessionUserId != likeChk){ // 빈 하트 일 경우 
+							}else if (likeSessionUserId != likeChk){ // 좋아요 없을 경우 (빈 하트 일 경우) 
 							$.ajax({
 								url: '/library/likeUp', // boardController 의 likeUp 호출
 								data: {likeUserId : likeSessionUserId, bno : likeBno}, // 각각 변수 대입
@@ -436,7 +443,7 @@ ul.adminChat li{
 								 }
 							}); // end ajax
 							
-							}else if (likeSessionUserId == likeChk){ // 색칠 하트일 경우
+							}else if (likeSessionUserId == likeChk){ // 좋아요 된 경우(색칠 하트일 경우)
 								$.ajax({
 								url: '/library/likeDown', // boardController 의 likeDown 호출
 								data: {likeUserId : likeSessionUserId, bno : likeBno}, // 각각 변수 대입
@@ -458,7 +465,7 @@ ul.adminChat li{
 						var pageNum = 1;
 						var replyPageFooter = $(".panel-footer");
 
-						function showReplyPage(replyCnt) {
+						function showReplyPage(replyCnt) { // 댓글 페이징
 
 							var endNum = Math.ceil(pageNum / 10.0) * 10;
 							var startNum = endNum - 9;
@@ -478,8 +485,7 @@ ul.adminChat li{
 
 							if (prev) {
 								str += "<li class='page-item'><a class='page-link' href='"
-										+ (startNum - 1)
-										+ "'>Previous</a></li>";
+										+ (startNum - 1) + "'>Previous</a></li>";
 							}
 
 							for (var i = startNum; i <= endNum; i++) {
@@ -500,7 +506,7 @@ ul.adminChat li{
 							console.log(str);
 
 							replyPageFooter.html(str);
-						}
+						} // end showReplyPage
 
 						replyPageFooter.on("click", "li a", function(e) {
 							e.preventDefault();
@@ -518,6 +524,7 @@ ul.adminChat li{
 						var modal = $(".modal");
 						var modalInputReply = modal.find("input[name='reply']");
 						var modalInputReplyer = modal.find("input[name='replyer']");
+						var modalInputReplyerUserId = modal.find("input[name='replyerUserId']");// 유저 아이디 체크용 2024 09 29
 						var modalInputReplyDate = modal.find("input[name='replyDate']");
 						
 
@@ -530,7 +537,7 @@ ul.adminChat li{
 							modal.modal('hide');
 						});
 
-						$("#addReplyBtn").on("click", function(e) { // 댓글 작성 modal
+						$("#addReplyBtn").on("click", function(e) { // 댓글 작성 창을 보여줌
 							
 						    var loginSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>'; // 세션의 유저 ID
 						    console.log(loginSessionUserId);
@@ -538,10 +545,8 @@ ul.adminChat li{
 								alert("로그인 먼저 진행해 주세요.");
 								return false;
 							}else{
-							
 								
-							modal.find("input").val(""); // 입력값을 찾음(위 변수 참고)
-							
+							//modal.find("input").val(""); // input val을 초기화를 삭제 하여 value값 정상 입력 2024 09 29
 							
 							modalInputReplyDate.closest("div").hide(); // 작성일.hide()
 							modal.find("button[id !='modalCloseBtn']").hide();// close 누르면 hide()
@@ -579,20 +584,20 @@ ul.adminChat li{
 								//관리자 댓글 조회 클릭 이벤트 처리 
 								$(".adminChat").on("click","li",function(e) {
 
-													var rno = $(this).data("rno");
+									var rno = $(this).data("rno");
 
-													replyService.get(rno, function(reply) {
+									replyService.get(rno, function(reply) {
 
-															modalInputReply.val(reply.reply);
-															modalInputReplyer.val(reply.replyer);
-															modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
-															modal.data("rno", reply.rno);
-															modal.find("button[id !='modalCloseBtn']").hide();
-															modalModBtn.show();
-															modalRemoveBtn.show();
-															$(".modal").modal("show");
-													});
-												});
+										modalInputReply.val(reply.reply);
+										modalInputReplyer.val(reply.replyer);
+										modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
+										modal.data("rno", reply.rno);
+										modal.find("button[id !='modalCloseBtn']").hide();
+										modalModBtn.show();
+										modalRemoveBtn.show();
+										$(".modal").modal("show");
+									});
+							});
 
 						    } else {
 						        return; // 권한이 없으면 아무것도 하지 않음
@@ -604,6 +609,7 @@ ul.adminChat li{
 							var reply = { // modal 입력창에서 받은 갑 입력
 								reply : modalInputReply.val(),
 								replyer : modalInputReplyer.val(),
+								replyerUserId : modalInputReplyerUserId.val(), // 유저 아이디 추가 2024 09 29
 								bno : bnoValue,
 								authority : authorityValue // 권한도 넘어가게 함.
 
@@ -625,35 +631,45 @@ ul.adminChat li{
 						});
 						
 						//댓글 수정/삭제 버튼 클릭 
-						//$(".editDelReply").on("click","li", "small"	function(e) 
 							$(".chat").on("click", ".editDelReply", function(e){
 							
 							
 							var SessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
-
+							var sessionAuthority = '<c:out value = "${user.authority}"/>';
 							if(!SessionUserId || SessionUserId.trim() === "" ){
 								
 								alert("로그인 먼저 진행해 주세요.");
 								
 								return false;
 							}else{
-											//var rno = $(this).data("rno");
-											var rno = $(this).closest("li").data("rno")
+								var CreplyerUserId = $(this).closest("li").find(".replyerUserId").val();  // 수정
+							        console.log("CreplyerUserId 값 확인 : " + CreplyerUserId);
+								
+								if(SessionUserId == CreplyerUserId || sessionAuthority == '1'){
+									
+									//var rno = $(this).data("rno");
+									var rno = $(this).closest("li").data("rno");
 
-											replyService.get(rno, function(reply) {
+									replyService.get(rno, function(reply) {
 
-													modalInputReply.val(reply.reply);
-													modalInputReplyer.val(reply.replyer);
-													modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
-													modal.data("rno", reply.rno);
-													modal.find("button[id !='modalCloseBtn']").hide();
-													modalModBtn.show();
-													modalRemoveBtn.show();
-													$(".modal").modal("show");
-											});// end replyService.get
-							}
-											
-										});// end .chat on click
+											modalInputReply.val(reply.reply);
+											modalInputReplyer.val(reply.replyer);
+											modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
+											modal.data("rno", reply.rno);
+											modal.find("button[id !='modalCloseBtn']").hide();
+											modalModBtn.show();
+											modalRemoveBtn.show();
+											$(".modal").modal("show");
+									});// end replyService.get
+									
+								}else{
+									alert("댓글 작성자만 수정 가능합니다.");
+									return false;
+								}//end inside else
+								
+							}//end outside else
+								
+						});// end .chat on click
 						
 
 						modalModBtn.on("click", function(e) {
@@ -718,11 +734,29 @@ ul.adminChat li{
 
 		});
 
-		$("button[data-oper='list']").on("click", function(e) {
+		$("button[data-oper='list']").on("click", function(e) { // category 별 리스트 되돌아가기 변경 
+			
+			var listTypeCheck = '<c:out value="${board.category}"/>'; // 게시글의 카테고리 체크
+			
+			   switch(listTypeCheck) {
+		        case '자유':
+		            operForm.find("#bno").remove();
+		            operForm.attr("action", "/library/listFree");
+		            operForm.submit();
+		            break;
 
-			operForm.find("#bno").remove();
-			operForm.attr("action", "/library/list")
-			operForm.submit();
+		        case 'QnA':
+		            operForm.find("#bno").remove();
+		            operForm.attr("action", "/library/listQnA");
+		            operForm.submit();
+		            break;
+
+		        default:
+		            operForm.find("#bno").remove();
+		            operForm.attr("action", "/library/list");
+		            operForm.submit();
+		            break;
+		    }
 
 		});
 	});

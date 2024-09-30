@@ -73,20 +73,30 @@ public class BoardServiceImpl implements BoardService {
 
 		log.info("modify......" + board);
 
-		attachMapper.deleteAll(board.getBno());
-
-		boolean modifyResult = mapper.update(board) == 1;
+		attachMapper.deleteAll(board.getBno()); // 수정 버튼 시 기존 첨부파일 삭제 (해당 게시글의 tbl_attach의 데이터 삭제)
 		
-		if (modifyResult && board.getAttachList().size() > 0) {
+		log.info("삭제 성공......" + attachMapper);
+		
+		boolean modifyResult = mapper.update(board) == 1; // 기입 된 내용 수정(제목, 내용, 카테고리등.. update) 후 업로드 결과 boolean
+		
+		log.info("업데이트 성공(글수정 쿼리)......" + modifyResult);
+		
+		log.info("첨부파일 변화 확인......" + board.getAttachList());
+		
+		if (modifyResult && board.getAttachList() != null && board.getAttachList().size() > 0) { // 수정되 었고(modifyResult = 1), 첨부파일 리스트 사이즈 둘 다 1보다 클 경우
 
-			board.getAttachList().forEach(attach -> {
-
-				attach.setBno(board.getBno());
-				attachMapper.insert(attach);
+			board.getAttachList().forEach(attach -> { // 첨부파일 수만큼( 여러 파일 첨부)
+				
+				log.info("board....리스트출력 확인" + board ); // 리스트 출력 확인
+				
+				attach.setBno(board.getBno()); // attach에 bno를 추가 (BoardAttachVO에 bno값을 넣어 줌)
+				attachMapper.insert(attach); // 첨부파일 경로 tbl_attach 에 추가
+				attachMapper.insertBoard(attach); // 첨부파일 변경시 이미지 들어가게끔
 			}); // end if 
+			return modifyResult;
 		}
-
-		return modifyResult;
+		attachMapper.insertBoardNoImage(board.getBno()); // 첨부파일 삭제 경우 .no 입력하여 제목우측 이미지 제거
+		return modifyResult; // 첨부파일이 없을 경우 boolean 결과 값만 반환
 	}
 
 	@Override
@@ -106,12 +116,43 @@ public class BoardServiceImpl implements BoardService {
 
 		return mapper.getListWithPaging(cri);
 	}
+	
+	@Override
+	public List<BoardVO> getListListFree(Criteria cri) { // 게시글 분류 자유 게시판 2024 09 28
+
+		log.info("get List with criteria: " + cri);
+
+		return mapper.getListWithPagingListFree(cri);
+	}
+	
+	@Override
+	public List<BoardVO> getListListQnA(Criteria cri) { // 게시글 분류 질문답변 게시판 2024 09 28
+
+		log.info("get List with criteria: " + cri);
+
+		return mapper.getListWithPagingListQnA(cri);
+	}
+	
 
 	@Override
 	public int getTotal(Criteria cri) {
 
 		log.info("get total count");
 		return mapper.getTotalCount(cri);
+	}
+	
+	@Override
+	public int getTotalListFree(Criteria cri) { // 게시글 분류 자유 게시판 2024 09 28
+
+		log.info("get total count");
+		return mapper.getTotalCountListFree(cri);
+	}
+	
+	@Override
+	public int getTotalListQnA(Criteria cri) { // 게시글 분류 질문답변 게시판 2024 09 28
+
+		log.info("get total count");
+		return mapper.getTotalCountListQnA(cri);
 	}
 	
 	// 첨부파일 관련 

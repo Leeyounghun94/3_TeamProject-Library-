@@ -18,5 +18,7 @@ public interface BoardAttachMapper {
 	
 	public void insertBoard(BoardAttachVO vo);
 	
+	public void insertBoardNoImage(Long bno);
+	
 
 }

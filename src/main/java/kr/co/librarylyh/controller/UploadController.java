@@ -70,9 +70,9 @@ public class UploadController {
 		List<AttachFileDTO> list = new ArrayList<>();
 		String uploadFolder = "D:\\upload";
 
-		String uploadFolderPath = getFolder();
-		// make folder --------
-		File uploadPath = new File(uploadFolder, uploadFolderPath);
+		String uploadFolderPath = getFolder(); // 첨부파일 저장 폴더 생성
+		
+		File uploadPath = new File(uploadFolder, uploadFolderPath);// 파일 저장 경로 설정
 
 		if (uploadPath.exists() == false) {
 			uploadPath.mkdirs();
@@ -92,9 +92,9 @@ public class UploadController {
 			log.info("only file name: " + uploadFileName);
 			attachDTO.setFileName(uploadFileName);
 
-			UUID uuid = UUID.randomUUID();
+			UUID uuid = UUID.randomUUID(); // 파일 이름 중복방지 UUID 생성
 
-			uploadFileName = uuid.toString() + "_" + uploadFileName;
+			uploadFileName = uuid.toString() + "_" + uploadFileName; // 파일 이름에 UUID 추가
 
 			try {
 				File saveFile = new File(uploadPath, uploadFileName);
@@ -104,7 +104,7 @@ public class UploadController {
 				attachDTO.setUploadPath(uploadFolderPath);
 
 				// check image type file
-				if (checkImageType(saveFile)) {
+				if (checkImageType(saveFile)) { // 저장하는 파일의 형태가 이미지 일 경우 썸네일 생성
 
 					attachDTO.setImage(true);
 

@@ -69,6 +69,6 @@
 		
 		<task:annotation-driven/> <!-- Quartz 라이브러리 설정 추가 -> 스케쥴러를 구상하기 위해 사용한다. -->
 		
-		<!-- <tx:annotation-driven/>	 어노테이션 기반으로 트랜젝션 설정 추가 --> 
+		<tx:annotation-driven/>	 <!-- 어노테이션 기반으로 트랜젝션 설정 추가 --> 
 	
 </beans>

@@ -13,9 +13,13 @@
 	
 <update id="insertBoard">
     update tbl_board
-    set uuid = #{uuid}, 
-        uploadPath = #{uploadPath}, 
-        fileName = #{fileName}
+    set fileName = #{fileName}
+    where bno = #{bno}
+</update>
+
+<update id="insertBoardNoImage"> <!-- 첨부파일 제거시 우측 이미지 삭제 2024 09 28 -->
+    update tbl_board
+    set fileName = '.no'
     where bno = #{bno}
 </update>
 

@@ -43,22 +43,6 @@ public class ReplyController { // Rest 방식의 컨트롤러로 구현 + ajax �
 		// 삼항 연산자나 if로 리턴을 할때 정상 처리인지 오류 값인지를 전달 해야 한다.
 	}
 	
-/*	//http://localhost:80/replies/pages/11/1 -> xml
-	//http://localhost:80/replies/pages/11/1.json -> json
-	@GetMapping(value = "/pages/{bno}/{page}.json",
-				produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<List<ReplyVO>> getList(@PathVariable("page") int page, @PathVariable("bno") Long bno){
-		
-		log.info("ReplyController.getList() 메서드 실행");
-		log.info("페이지 번호 : " + page);
-		log.info("찾을 번호 : " + bno);
-		Criteria cri = new Criteria(page, 10); // 현재 페이지와 리스트 개수를 전달
-		log.info("Criteria : " + cri);
-		
-		return new ResponseEntity<>(service.getList(cri, bno), HttpStatus.OK); // 200 정상
-		
-		//[{"rno":7,"bno":11,"reply":"댓글11","replyer":"kkw","replyDate":1724723545000,"updateDate":1724723545000},{"rno":14,"bno":11,"reply":"댓글11","replyer":"kkw","replyDate":1724723559000,"updateDate":1724723559000},{"rno":18,"bno":11,"reply":"댓글11","replyer":"kkw","replyDate":1724723570000,"updateDate":1724723570000},{"rno":22,"bno":11,"reply":"댓글11","replyer":"kkw","replyDate":1724723586000,"updateDate":1724723586000},{"rno":23,"bno":11,"reply":"매퍼댓글테스트","replyer":"매퍼kkw","replyDate":1724724697000,"updateDate":1724724697000}]
-	}*/
 	
 	//http://localhost:80//replies/4
 	@GetMapping(value="/{rno}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

@@ -13,6 +13,10 @@ public interface BoardMapper {
 	public List<BoardVO> getList();
 
 	public List<BoardVO> getListWithPaging(Criteria cri);
+	
+	public List<BoardVO> getListWithPagingListFree(Criteria cri); // 게시판 분류 자유게시물 출력 2024 09 28
+	
+	public List<BoardVO> getListWithPagingListQnA(Criteria cri); // 게시판 분류 질문답변 게시물 출력 2024 09 28
 
 	// public void insert(BoardVO board);
 
@@ -25,6 +29,10 @@ public interface BoardMapper {
 	public int update(BoardVO board); // 게시글 수정
 
 	public int getTotalCount(Criteria cri); // 게시글 수 카운트
+	
+	public int getTotalCountListFree(Criteria cri); // 게시판 분류 자유 게시글 수 카운트 2024 09 28
+	
+	public int getTotalCountListQnA(Criteria cri); // 게시판 분류 질문답변 게시글 수 카운트 2024 09 28
 	
 	public void updateReplyCnt(@Param("bno") Long bno, @Param("amount") int amount);
 	

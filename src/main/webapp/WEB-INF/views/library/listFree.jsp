@@ -46,12 +46,9 @@
          <div class="home_background prlx" style="background-image:url(/resources/images/courses_background.jpg)"></div>
       </div>
       <div class="home_content">
-         <h1><b>게시판</b></h1>
+         <h1><b>자유 게시판</b></h1>
       </div>
    </div>
-	
-	
-
 	
 	<!-- Popular -->
 
@@ -60,12 +57,13 @@
 			<div class="row">
 				<div class="col">
 					<div class="section_title text-center">
-						<h1>게시판</h1>
+						<h1>자유 게시판</h1>
 					</div>
 				</div>
 			</div>
 		</div><!-- <div class="container"> -->
 	</div><!-- <div class="popular page_section"> -->
+	
 					
 	<div class="col-lg-12">
 		<div class="panel panel-default" style="padding-left:10%;">
@@ -110,7 +108,7 @@
 				<div class='row'>
 					<div class="col-lg-12">
 
-						<form id='searchForm' action="/library/list" method='get' align="end">
+						<form id='searchForm' action="/library/listFree" method='get' align="end">
 							<select name='type'>
 								<option value=""
 									<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
@@ -131,8 +129,7 @@
 							<input type='text' class="text" name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
 							<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
 							<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
-							
-
+							<input type='hidden' name='category' value='<c:out value="${ pageMaker.cri.category}"/>'><!-- 게시판 분류 2024 09 28 -->
 		
 							<button class='btn btn-warning'>검색</button>
 						</form>
@@ -159,12 +156,13 @@
 			</div>
 			<!-- endpanel-heading -->
 
-			<!-- 페이지 번호 클릭시 함께 전달 되는 데이터 -->
-			<form id='actionForm' action="/library/list" method='get'><!-- Jstl  -->
+			<!-- 페이지 번호 클릭시 함께 전달 되는 데이터 2024 09 28 수정-->
+			<form id='actionForm' action="/library/listFree" method='get'><!-- Jstl  -->
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 				<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'>
 				<input type='hidden' name='keyword'	value='<c:out value="${ pageMaker.cri.keyword }"/>'>
+				<input type='hidden' name='category' value='<c:out value="자유"/>'>	<!-- 게시글을 눌러 상세 페이지 보기 또한 같이 전달됨 2024 09 28 -->
 			</form>
 
 			<!-- Modal  추가 -->
@@ -201,9 +199,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		
-
-		
+			
 		var elements = document.getElementsByClassName("fileName");
 
 		// 각 요소에 대해 반복하면서 처리

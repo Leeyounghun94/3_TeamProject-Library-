@@ -13,6 +13,7 @@ public class PageDTO {
 
   private int total;
   private Criteria cri;
+  private String category; // 게시글 분류 2024 09 28
 
   public PageDTO(Criteria cri, int total) {
 
@@ -29,13 +30,11 @@ public class PageDTO {
       this.endPage = realEnd;
     }
 
-    this.prev = this.startPage > 1;
+    this.prev = this.startPage > 1; // 이전 페이지 영역 버튼 (ex 11~20 > 1~10 페이지 이동)
 
-    this.next = this.endPage < realEnd;
+    this.next = this.endPage < realEnd; // 다음 페이지 영역 버튼
     
   } // end PageDTO
-  
-  
   
 }
 

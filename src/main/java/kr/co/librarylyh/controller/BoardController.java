@@ -44,7 +44,7 @@ public class BoardController {
 
 	}
 
-	@GetMapping("/list")
+	@GetMapping("/list") // 메인(기존) 게시판
 	public void list(Criteria cri, Model model, Long bno) {
 
 	    
@@ -56,10 +56,38 @@ public class BoardController {
 		
 		model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
 		
+	}
+	
+	@GetMapping("/listFree") // 자유 게시판
+	public void listFree(Criteria cri, Model model, Long bno) {
+		
+	    
+		model.addAttribute("list", service.getListListFree(cri)); // 게시물 리스트
+
+		int total = service.getTotalListFree(cri); // 총 게시물 수
+
+		log.info("total: " + total);
+		
+		model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
 		
 	}
 	
-	@PostMapping("/board/register")
+	@GetMapping("/listQnA") // 질문답변(QnA) 게시판
+	public void listQnA(Criteria cri, Model model, Long bno) {
+		
+	    
+		model.addAttribute("list", service.getListListQnA(cri)); // 게시물 리스트
+
+		int total = service.getTotalListQnA(cri); // 총 게시물 수
+
+		log.info("total: " + total);
+		
+		model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
+		
+	}
+	
+	
+	@PostMapping("/board/register") // 새글 작성
 	public String register(BoardVO board, RedirectAttributes rttr) {
 
 		log.info("==========================");
@@ -78,8 +106,21 @@ public class BoardController {
 		
 		
 		rttr.addFlashAttribute("result", board.getBno()); // 그 글을 떙겨오면 몇번 값인지 알수있음
+		
+		String pathreturn = board.getCategory(); // 게시판 분류 2024 09 29
 
-		return "redirect:/library/list"; // 게시물을 등록하고 그 값을 list로 보낸다 + list 페이지로 이동 된다.
+		
+		if(pathreturn.equals("자유")) { // 게시물 분류에 따른 경로 변경 2024 09 28
+			
+			return "redirect:/library/listFree";
+			
+		}else if(pathreturn.equals("QnA")) {
+			
+			return "redirect:/library/listQnA";
+			
+		}
+			return "redirect:/library/list";
+		
 	}
 	
 
@@ -99,6 +140,7 @@ public class BoardController {
 	
 	@PostMapping("/board/modify")
 	public String modify(BoardVO board, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
+		
 		log.info("modify:" + board);
 
 		if (service.modify(board)) {
@@ -109,12 +151,25 @@ public class BoardController {
 		rttr.addAttribute("amount", cri.getAmount());
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
+		rttr.addAttribute("category", cri.getCategory());
+		
+		String pathreturn = board.getCategory();
 
-		return "redirect:/library/list";
+		
+		if(pathreturn.equals("자유")) { // 게시물 분류에 따른 경로 변경 2024 09 28
+			
+			return "redirect:/library/listFree";
+			
+		}else if(pathreturn.equals("QnA")) {
+			
+			return "redirect:/library/listQnA";
+			
+		}
+			return "redirect:/library/list";
 	}
 
 	@PostMapping("/board/remove")
-	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr) {
+	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr, BoardVO board) { // 게시물 분류 2024 09 29
 
 		log.info("remove..." + bno);
 
@@ -127,8 +182,22 @@ public class BoardController {
 
 			rttr.addFlashAttribute("result", "success");
 		}
-		return "redirect:/library/list" + cri.getListLink();
+		
+		String pathreturn = board.getCategory();
+		
+		if(pathreturn.equals("자유")) { // 게시물 분류에 따른 경로 변경 2024 09 29
+			
+			return "redirect:/library/listFree"+ cri.getListLink();
+			
+		}else if(pathreturn.equals("QnA")) {
+			
+			return "redirect:/library/listQnA"+ cri.getListLink();
+			
+		}
+			return "redirect:/library/list" + cri.getListLink(); 
+			
 	}
+	
 	
 	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody

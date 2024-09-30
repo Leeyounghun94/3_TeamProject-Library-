@@ -65,6 +65,21 @@
 			@RunWith(SpringJUnit4ClassRunner.class)	// 메서드별 테스트용(junit4) 
 			@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")	// 참고할 파일
 			@Log4j2	-->	
+			
+		<!-- 메일인증API https://mvnrepository.com/artifact/javax.mail/mail 
+      	<dependency>
+          	<groupId>javax.mail</groupId>
+          	<artifactId>mail</artifactId>
+          	<version>1.4.7</version>
+      	</dependency> -->
+      	
+      	<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support 
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency> -->
+
 	
 		<dependency>  <!--dto 객체 자동화 lombok 설정-->
 		 <groupId>org.projectlombok</groupId> 
@@ -126,20 +141,20 @@
 		    <version>1.3.3</version>
 		</dependency>
 
-		<!-- 스프링 트랜젝션 처리용 https://mvnrepository.com/artifact/org.springframework/spring-tx 
+		<!-- 스프링 트랜젝션 처리용 https://mvnrepository.com/artifact/org.springframework/spring-tx -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-tx</artifactId>
 		    <version>${org.springframework-version}</version>
-		</dependency> 게시글 조회수 구현 중 아래꺼 사용-->
+		</dependency> <!-- 게시글 조회수 구현 중 아래꺼 사용-->
 		
 		<!-- 트랜젝션 START -->
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-tx 
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-tx</artifactId>
 		    <version>3.1.1.RELEASE</version>
-		</dependency>
+		</dependency> -->
 		<!-- 트랜젝션 END -->
 		
 

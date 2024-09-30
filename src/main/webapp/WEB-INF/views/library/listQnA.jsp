@@ -46,7 +46,7 @@
          <div class="home_background prlx" style="background-image:url(/resources/images/courses_background.jpg)"></div>
       </div>
       <div class="home_content">
-         <h1><b>게시판</b></h1>
+         <h1><b>질문답변(QnA) 게시판</b></h1>
       </div>
    </div>
 	
@@ -60,7 +60,7 @@
 			<div class="row">
 				<div class="col">
 					<div class="section_title text-center">
-						<h1>게시판</h1>
+						<h1>질문답변(QnA) 게시판</h1>
 					</div>
 				</div>
 			</div>
@@ -160,11 +160,12 @@
 			<!-- endpanel-heading -->
 
 			<!-- 페이지 번호 클릭시 함께 전달 되는 데이터 -->
-			<form id='actionForm' action="/library/list" method='get'><!-- Jstl  -->
+			<form id='actionForm' action="/library/listQnA" method='get'><!-- Jstl  -->
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 				<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'>
 				<input type='hidden' name='keyword'	value='<c:out value="${ pageMaker.cri.keyword }"/>'>
+				<input type='hidden' name='category' value='<c:out value="QnA"/>'>	<!-- 게시글을 눌러 상세 페이지 보기 또한 같이 전달됨 2024 09 28 -->				
 			</form>
 
 			<!-- Modal  추가 -->
