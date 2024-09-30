@@ -59,7 +59,7 @@
 					<img class="card-img-top" src="/resources/images/Book.png" alt="https://unsplash.com/@kellybrito">
                        <div class="section_title text-center">                         
                             <div class="featurs-content text-center" style="border:1px gray; color:gray;">
-                               <a href="#" onclick="location.href='BookReservation'"><h1>도서 예약/대여</h1></a>
+                               <a href="#" onclick="location.href='BookReservation'" id=bookBtn ><h1>도서 예약/대여</h1></a>
                             </div>
                         </div>
                     </div><!-- 도서 예약/대출 end -->
@@ -71,7 +71,7 @@
                         <div class="section_title text-center">                          
                             <div class="featurs-content text-center">
                                 
-                                <a href="#" onclick="location.href='StudyReservation'"><h1>열람실 예약</h1></a>
+                                <a data-toggle="modal" data-target="#myModal" href="#myModal" onclick="location.href='StudyReservation'"><h1>열람실 예약</h1></a>
                             </div>
                         </div>
                     </div><!-- 열람실 예약 end -->
@@ -102,7 +102,42 @@
 				
 				</div>
 			</div>
-		</div>		
+		</div>	
+		
+		
+		<!-- Modal  추가 -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">로그인 필요</h4>
+						</div>
+						<div class="modal-body">로그인 하셔야 서비스 이용이 가능 합니다.</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">확인</button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>
+			<!-- /.modal -->
+		
+		
+		
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+</script>			
 					
 <%@ include file="../../includes/footer.jsp" %>
 </body>

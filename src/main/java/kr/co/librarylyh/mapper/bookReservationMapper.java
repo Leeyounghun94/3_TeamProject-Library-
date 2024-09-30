@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-
-
+import kr.co.librarylyh.domain.BookListVO;
+import kr.co.librarylyh.domain.CartVO;
 import kr.co.librarylyh.domain.bookReservationVO;
 
 public interface bookReservationMapper {
@@ -29,5 +29,18 @@ public interface bookReservationMapper {
 	// 예약 삭제하기 - 번호를 받아 삭제
 	public int rsDelete(Long rsNum);
 	
+	// 예약 삭제하기 2 - 번호와 isbn13 두 개 값을 받아서 삭제
+	public int rsDel(Long rsNum, Long isbn13);
+
+
+	
+	//장바구니 연계
+	
+	public void clearBasket(String user_id);
+
+	public List<BookListVO> getBasketItems(String user_id);
+
+	public void insertReservation(String user_id, Long isbn13);
+
 
 }

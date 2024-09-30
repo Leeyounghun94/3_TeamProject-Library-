@@ -7,15 +7,15 @@
 <mapper namespace="kr.co.librarylyh.mapper.bookReservationMapper">
 
 
-
-
 <insert id="rsInsert">
 
 <![CDATA[
-insert into reservation_tbl (rsNum, u_id, isbn13, rsStartDay, rsEndDay)
-values (seq_reservation.nextval, #{u_id}, #{isbn13}, #{rsStartDay}, #{rsEndDay})
+insert into reservation_tbl (rsNum, user_id, isbn13, rsStartDay, rsEndDay)
+values (#{rsNum}, #{user_id}, #{isbn13}, #{rsStartDay}, #{rsEndDay})
 ]]>
 </insert> <!-- 날짜형식을 todate   -->
+
+
 
 <select id="rsList" resultType="kr.co.librarylyh.domain.bookReservationVO">
 
@@ -38,11 +38,11 @@ select * from reservation_tbl where rsNum = #{rsNum}
 
 <![CDATA[
 update reservation_tbl set 
-u_id = #{u_id},
+user_id = #{user_id},
 isbn13 = #{isbn13},
 rsNum = #{rsNum},
 rsStartDay = #{rsStartDay}, 
-rsEndDay = #{rsEndDay}
+rsEndDay = sysdate
 where rsNum = #{rsNum} and isbn13 = #{isbn13}	
 ]]>
 
@@ -53,5 +53,12 @@ where rsNum = #{rsNum} and isbn13 = #{isbn13}
 delete from reservation_tbl where rsNum = #{rsNum}
 ]]>
 </delete>
+
+<delete id="rsDel">
+<![CDATA[
+delete from reservation_tbl where rsNum = #{rsNum} and isbn13 = #{isbn13}
+]]>
+</delete>
+
 
 </mapper>

@@ -1,11 +1,15 @@
 package kr.co.librarylyh.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.librarylyh.domain.BookListVO;
+import kr.co.librarylyh.domain.CartVO;
 import kr.co.librarylyh.domain.bookReservationVO;
+import kr.co.librarylyh.mapper.CartMapper;
 import kr.co.librarylyh.mapper.bookReservationMapper;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -21,6 +25,9 @@ public class BookReservationServiceImpl implements BookReservationService {
 	
 	@Setter(onMethod_ = @Autowired)
 	private bookReservationMapper rsMapper;
+	
+	@Setter(onMethod_ = @Autowired)
+	private CartMapper cartMapper;
 		
 	
 	@Override
@@ -44,19 +51,85 @@ public class BookReservationServiceImpl implements BookReservationService {
 		return rsMapper.rsRead(rsNum);
 	}
 
-
-	@Override
-	public boolean rsRemove(Long rsNum) {
-		log.info("BookReservationServiceImpl.rsRemove 메서드 실행");
-		return rsMapper.rsDelete(rsNum) == 1;
-	}
-
-	
 	@Override
 	public boolean rsModify(Long rsNum, Long isbn13) {
 		log.info("BookReservationServiceImpl.rsModify 메서드 실행");
 		return rsMapper.rsUpdate(rsNum, isbn13) == 1;
 	}
+
+	
+	@Override
+	public boolean rsRemove(Long rsNum) {
+		log.info("BookReservationServiceImpl.rsRemove 메서드 실행");
+		return rsMapper.rsDelete(rsNum) == 1;
+	}
+	
+	@Override
+	public boolean rsDel(Long rsNum, Long isbn13) {
+		log.info("BookReservationServiceImpl.rsDel 메서드 실행");
+
+		return rsMapper.rsDel(rsNum, isbn13) == 1;
+	}
+
+	
+	
+	@Override
+	public boolean confirmReservation(String user_id) {
+		 
+		try {
+             List<BookListVO> basketItems = rsMapper.getBasketItems(user_id);
+             for (BookListVO book : basketItems) {
+            	 rsMapper.insertReservation(user_id, book.getIsbn13());
+             }
+             rsMapper.clearBasket(user_id); // 장바구니 비우기
+             return true; // 예약 성공
+         } catch (Exception e) {
+             return false; // 예약 실패
+         }
+	}
+     
+		
+	
+
+	@Override
+	public void addToBasket(String isbn13) {
+		log.info("BookReservationServiceImpl.addToBasket 메서드 실행");
+		cartMapper.cartInsert(null);
+	}
+
+	@Override
+	public List<CartVO> listBasketItems() {
+		log.info("BookReservationServiceImpl.listBasketItems 메서드 실행");
+		return cartMapper.cartList();
+	}
+
+	@Override
+	public boolean removeFromBasket(String isbn13) {
+		log.info("BookReservationServiceImpl.removeFromBasket 메서드 실행");
+		return cartMapper.clearBasket(isbn13) == 1;
+	}
+
+	@Override
+	public String cartBookRs(String user_id) {
+		log.info("BookReservationServiceImpl.cartBookRs 메서드 실행");
+		
+
+		 // 장바구니의 도서 목록 조회
+        List<BookListVO> basketItems = rsMapper.getBasketItems(user_id);
+
+        // 예약 테이블에 도서 삽입
+        for (BookListVO book : basketItems) {
+        	rsMapper.insertReservation(user_id, book.getIsbn13());
+        }
+
+        // 장바구니에서 해당 도서 삭제
+        rsMapper.clearBasket(user_id);
+
+        return "예약이 확정되었습니다!";
+	}
+
+	
+
 
 
 

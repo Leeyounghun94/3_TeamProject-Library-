@@ -1,0 +1,72 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- JSTL 코어 태그 -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%> <!-- JSTL 포매팅 태그 -->
+<%@ include file="../../includes/header.jsp" %>   
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div class="home2">
+    <div class="home_background_container prlx_parent">
+        <div class="home_background prlx2"
+             style="background-image:url(/resources/images/courses_background.jpg)"></div>
+    </div>
+</div>
+
+	<!-- Popular -->
+	<div class="popular page_section">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+				<br><br><br><br>		
+					<div class="section_title text-center">					
+						<h1>장바구니</h1>
+					</div>
+				</div>
+			</div>
+		</div><!-- <div class="container"> -->
+	</div><!-- <div class="popular page_section"> -->
+
+
+
+
+
+<script>
+            // 서버와 비동기로 예약 확정 요청을 보내는 함수
+            function confirmReservation(userId) {
+                $.ajax({
+                    url: "/confirmReservation", // 일반 Controller URL
+                    type: "POST",
+                    data: { user_id: userId },
+                    success: function(response) {
+                        // 서버로부터 응답이 성공적으로 왔을 때 실행
+                        if (response.success) {
+                            successMessage(); // 성공 시 successMessage() 호출
+                        } else {
+                            alert(response.message); // 실패 시 오류 메시지 출력
+                        }
+                    },
+                    error: function() {
+                        alert("서버와의 통신 오류가 발생했습니다.");
+                    }
+                });
+            }
+        
+            // 예약 성공 시 알림을 띄우는 함수
+            function successMessage() {
+                alert("예약이 완료되었습니다");
+            }
+        </script>
+        
+        <!-- 버튼 클릭 시 confirmReservation 함수 호출 -->
+        <button onclick="confirmReservation('${user_id}')">예약 확정</button>
+        
+        
+<%@ include file="../../includes/footer.jsp" %>
+</body>
+</html>

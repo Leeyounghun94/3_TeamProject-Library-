@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -64,6 +67,11 @@ public class bookReservationController {
 					
 	}
 	
+	
+	@GetMapping("/cart/cart")
+	public void cart() {
+					
+	}
 	
 	// 예약 신청하기
 	@PostMapping("/reservation/RsCreate")
@@ -123,5 +131,32 @@ public class bookReservationController {
 	}
 		
 
+	// addToBasket 메서드를 호출하여 user_id와 isbn13을 Service에 전달.
+	@PostMapping("/cart/cart")
+    @ResponseBody // 이 부분을 사용하면 JSON 형식으로 반환 가능
+    public Map<String, Object> confirmReservation(@RequestParam("user_id") String user_id) {
+        // 예약 로직 실행
+        boolean isSuccess = service.confirmReservation(user_id);
+
+        // 결과를 JSON 형태로 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", isSuccess);
+        response.put("message", isSuccess ? "예약이 완료되었습니다!" : "예약에 실패했습니다.");
+        return response;
+    }
+	
+	
+	// BookReservationController의 confirmReservation 메서드가 호출되어 Service에 요청을 전달.
+	  @PostMapping("/confirmReservation")
+      public String confirmReservation(@RequestParam("user_id") String user_id, Model model) {
+          boolean result = service.confirmReservation(user_id);
+          model.addAttribute("message", result);
+          return "reservationResult";
+      }
+	
+	
+	
+	
+	
 
 }
