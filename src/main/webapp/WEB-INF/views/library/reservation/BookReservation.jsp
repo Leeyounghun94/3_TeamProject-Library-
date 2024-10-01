@@ -414,10 +414,10 @@ $(document).ready(function() {
 var loginSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>'; // 세션의 유저 ID
 
 if(!loginSessionUserId || loginSessionUserId.trim() === ""){
-	alert("로그인후");
-	return false;
+	alert("로그인 후 이용 가능 합니다.");
+	return "/library/home";
 }else{
-	self.location = "/library/home";
+	self.location = "/library/reservation/ReservationMain";
 
 }
 

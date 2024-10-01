@@ -29,7 +29,7 @@ public interface BookReservationService {
 	
 	
 	//장바구니에 도서를 추가할 수 있는 메서드
-	public void addToBasket(String isbn13);
+	public void addToBasket(String isbn13) throws Exception;
 	
 	//현재 장바구니에 담긴 도서를 조회할 수 있는 메서드
 	public List<CartVO> listBasketItems();

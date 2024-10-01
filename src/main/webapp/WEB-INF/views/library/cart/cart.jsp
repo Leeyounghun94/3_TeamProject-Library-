@@ -34,6 +34,54 @@
 
 
 
+	<div class="jumbotron">
+		<h1>${userId}님 주문목록</h1>
+	</div>
+
+
+<table class="table text-center table-hover container">
+		<thead>
+			<tr>
+				<th>ISBN13</th>
+				<th>도서명</th>
+				<th>도서 사진</th>
+				<th>도서 가격</th>
+				<th>총 가격</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="str" items="${myOrders}">
+				<tr>
+
+					<input type="hidden" name="bookSeq" value="${str.bookSeq}">
+					<input type="hidden" name="orderSerialNum"
+						value="${str.orderSerialNum}">
+					<td>${str.bookTitle}</td>
+					<td>${str.bookOrderCnt}</td>
+
+					<td>${str.bookOrderCntPrice}</td>
+					<td>${str.orderPaymentStatus}</td>
+				</tr>
+
+				<c:set var="total" value="${total + str.bookOrderCntPrice}" />
+
+			</c:forEach>
+
+		</tbody>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script>

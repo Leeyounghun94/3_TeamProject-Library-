@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +37,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RequestMapping("/library/*")	// http://localhost:80/library/???
 @AllArgsConstructor
-@SessionAttributes("u_id")
+
 public class bookReservationController {
 
 	// 도서 예약 컨트롤러
@@ -132,9 +134,10 @@ public class bookReservationController {
 		
 
 	// addToBasket 메서드를 호출하여 user_id와 isbn13을 Service에 전달.
-	@PostMapping("/cart/cart")
+	@PostMapping("/cart/cart/{user_id}")
     @ResponseBody // 이 부분을 사용하면 JSON 형식으로 반환 가능
-    public Map<String, Object> confirmReservation(@RequestParam("user_id") String user_id) {
+    public Map<String, Object> addToBasket(@RequestParam("user_id") String user_id, Model model) {
+	
         // 예약 로직 실행
         boolean isSuccess = service.confirmReservation(user_id);
 
@@ -143,7 +146,10 @@ public class bookReservationController {
         response.put("success", isSuccess);
         response.put("message", isSuccess ? "예약이 완료되었습니다!" : "예약에 실패했습니다.");
         return response;
-    }
+		}
+	
+
+    
 	
 	
 	// BookReservationController의 confirmReservation 메서드가 호출되어 Service에 요청을 전달.

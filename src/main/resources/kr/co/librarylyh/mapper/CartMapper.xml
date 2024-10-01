@@ -49,6 +49,12 @@ where cart_id = #{cart_id}
 
 </update>
 
+<delete id="cartDelete">
+<![CDATA[
+DELETE FROM cart_tbl WHERE cart_id = {cart_id};
+]]>
+</delete>
+
 
 <delete id="clearBasket">
 <![CDATA[

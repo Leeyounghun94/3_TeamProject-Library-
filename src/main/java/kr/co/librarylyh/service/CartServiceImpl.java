@@ -23,7 +23,7 @@ public class CartServiceImpl implements CartService {
 	
 
 	@Override
-	public void CartRegister(CartVO vo) {
+	public void CartRegister(CartVO vo) throws Exception {
 		log.info("CartServiceImpl.CartRegister 메서드 실행");
 		cartMapper.cartInsert(vo);
 		
@@ -48,10 +48,20 @@ public class CartServiceImpl implements CartService {
 	}
 
 	
+	@Override
+	public boolean cartRemove(String cart_id) {
+		log.info("CartServiceImpl.cartRemove 메서드 실행");
+		return cartMapper.cartDelete(cart_id) == 1;
+	}
+	
 
 	@Override
 	public boolean clearBasket(String user_id) {
 		log.info("CartServiceImpl.cartRemove 메서드 실행");
-		return cartMapper.clearBasket(user_id) == 1;	}
+		return cartMapper.clearBasket(user_id) == 1;
+		
+	}
+
+	
 
 }

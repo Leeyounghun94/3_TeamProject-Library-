@@ -92,7 +92,7 @@ public class BookReservationServiceImpl implements BookReservationService {
 	
 
 	@Override
-	public void addToBasket(String isbn13) {
+	public void addToBasket(String isbn13) throws Exception {
 		log.info("BookReservationServiceImpl.addToBasket 메서드 실행");
 		cartMapper.cartInsert(null);
 	}
