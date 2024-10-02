@@ -128,6 +128,12 @@ public class BookReservationServiceImpl implements BookReservationService {
         return "예약이 확정되었습니다!";
 	}
 
+	@Override
+	public int RsGetTotal() {
+		log.info("BookReservationServiceImpl.RsGetTotal 메서드 실행");
+		return rsMapper.RsGetTotal();
+	}
+
 	
 
 

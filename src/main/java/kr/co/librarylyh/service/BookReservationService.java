@@ -24,6 +24,8 @@ public interface BookReservationService {
 	
 	public boolean rsDel(Long rsNum, Long isbn13);
 	
+	public int RsGetTotal(); // 페이징 처리 - 게시물 총 갯수
+	
 	
 	// 장바구니 연계
 	

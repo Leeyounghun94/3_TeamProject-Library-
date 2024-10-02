@@ -34,6 +34,18 @@ select * from reservation_tbl where rsNum = #{rsNum}
 
 </select> 
 
+<select id="RsGetTotal" resultType="int">
+<![CDATA[
+select count(*) from reservation_tbl
+]]>
+</select>
+
+
+
+
+
+
+
 <update id="rsUpdate">
 
 <![CDATA[

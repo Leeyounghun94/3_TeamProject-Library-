@@ -32,6 +32,8 @@ public interface bookReservationMapper {
 	// 예약 삭제하기 2 - 번호와 isbn13 두 개 값을 받아서 삭제
 	public int rsDel(Long rsNum, Long isbn13);
 
+	// 페이징 처리 - 게시판 총 갯수
+	public int RsGetTotal();
 
 	
 	//장바구니 연계

@@ -23,15 +23,20 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.librarylyh.domain.BookListVO;
+import kr.co.librarylyh.domain.CartVO;
 import kr.co.librarylyh.domain.CategoryVO;
+import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.Paging;
+import kr.co.librarylyh.domain.RsPageDTO;
 import kr.co.librarylyh.domain.UserVO;
 import kr.co.librarylyh.domain.bookReservationVO;
 import kr.co.librarylyh.service.BookListService;
 import kr.co.librarylyh.service.BookReservationService;
+import kr.co.librarylyh.service.CartService;
 import kr.co.librarylyh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller//스프링이 컨트롤러 역할을 제공
 @Log4j2
@@ -44,7 +49,6 @@ public class bookReservationController {
 	
 	private BookReservationService service ; // service - Reservation
 	private BookListService bookService ;	// service - BookService
-	private UserService userService ;	// service - UserService
 	
 	@GetMapping("/home")
 	public void home() {// home.jsp 연결
@@ -72,8 +76,16 @@ public class bookReservationController {
 	
 	@GetMapping("/cart/cart")
 	public void cart() {
-					
+		
+		}
+	
+	@PostMapping("/cart/cart/{isbn13}")
+	public String cartbook(Model model) {
+		
+		model.addAttribute("user_id");
+		return "library/cart/cart/";
 	}
+	
 	
 	// 예약 신청하기
 	@PostMapping("/reservation/RsCreate")
@@ -106,7 +118,7 @@ public class bookReservationController {
 			@RequestParam(value = "category_id", required = false) String category_id,
 			@RequestParam(value = "rentalAvailable", required = false) String rentalAvailable,
 			@RequestParam(value = "publicationDateFilter", required = false) String publicationDateFilter,
-			Model model) {
+			Model model, Criteria cri) {
 		
 		Paging pge = new Paging(pageNum, amount);
 		Map<String, Object> searchParams = new HashMap<>();
@@ -126,6 +138,15 @@ public class bookReservationController {
 		List<BookListVO> bookList = bookService.getListWithFiltersAndPaging(pge, searchParams);
 		model.addAttribute("bookList", bookList);
 		
+/*		// bookReservation - 페이징 처리 
+		
+		int total =service.RsGetTotal();
+		
+		RsPageDTO rsPageMake = new RsPageDTO(cri, total);		
+		
+		model.addAttribute("rsPageMaker", rsPageMake);
+*/		
+		
 		
 		log.info("bookReservationController.RsList 메서드 실행");
 		
@@ -134,10 +155,9 @@ public class bookReservationController {
 		
 
 	// addToBasket 메서드를 호출하여 user_id와 isbn13을 Service에 전달.
-	@PostMapping("/cart/cart/{user_id}")
+	@PostMapping("/cart/cart")
     @ResponseBody // 이 부분을 사용하면 JSON 형식으로 반환 가능
-    public Map<String, Object> addToBasket(@RequestParam("user_id") String user_id, Model model) {
-	
+    public Map<String, Object> confirmReservation(@RequestParam("user_id") String user_id) {
         // 예약 로직 실행
         boolean isSuccess = service.confirmReservation(user_id);
 
@@ -148,9 +168,7 @@ public class bookReservationController {
         return response;
 		}
 	
-
-    
-	
+	  
 	
 	// BookReservationController의 confirmReservation 메서드가 호출되어 Service에 요청을 전달.
 	  @PostMapping("/confirmReservation")
@@ -159,6 +177,7 @@ public class bookReservationController {
           model.addAttribute("message", result);
           return "reservationResult";
       }
+	
 	
 	
 	
