@@ -1,5 +1,6 @@
 package kr.co.librarylyh.controller;
 
+import kr.co.librarylyh.domain.BookRequestVO;
 import kr.co.librarylyh.domain.UserVO;
 import kr.co.librarylyh.service.BoardService;
 import kr.co.librarylyh.service.UserService;
@@ -7,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -129,7 +133,6 @@ public class UserController {
     @GetMapping("/myBookRequest") 
     public void myBookRequest(HttpServletRequest request, Model model) {
     	
-    	// String id = (String) session.getAttribute("user");
     	HttpSession session = request.getSession();
     	
     	String id = (String) session.getAttribute("userId"); // 로그인 시 발생한 세션 : userId 따로 분리
@@ -137,6 +140,43 @@ public class UserController {
     	model.addAttribute("r_bookList", boardService.getRequestBookList(id));
     	
     }
+    
+    // 요청 도서 목록 2024 10 30
+    @GetMapping("/adminBookRequest") 
+    public void adminBookRequest(Model model) {
+    	
+
+    	model.addAttribute("r_bookList", boardService.adminRequestBookList());
+    }
+    
+	// 요청 도서 목록 수정 2024 10 01
+	@RequestMapping(method = { RequestMethod.PUT, RequestMethod.PATCH }, //put 전체/ patch 일부 수정
+			value="/{r_bookBno}",consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE )
+	public ResponseEntity<String> editRequestBook(@RequestBody BookRequestVO Rvo, @PathVariable("r_bookBno") Long r_bookBno){
+			//					   이미 폼(form)에 있는 값			 수정할 번호
+
+		Rvo.setR_bookBno(r_bookBno); // 이미 가지고있는 객체의 rno 값을 넣음
+		
+		
+		log.info("UserController.editRequestBook() 메서드 실행 / 수정할 r_bookBno : " + Rvo);
+
+		log.info("수정할 객체 : " + Rvo);
+
+		return boardService.updateRequestBook(Rvo) == 1
+				? new ResponseEntity<>("success", HttpStatus.OK) // 200 정상
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 500 서버 오류
+	}	
+	
+	// 요청 도서 목록 삭제 2024 10 01
+	@DeleteMapping(value="/{r_bookBno}", produces = {MediaType.TEXT_PLAIN_VALUE}) // JSON으로 나올 필요가 없음
+	public ResponseEntity<String> removeRequestBook(@PathVariable("r_bookBno") Long r_bookBno){
+		
+		log.info("ReplyController.remove() 메서드 실행 / 삭제할 rno : " + r_bookBno);
+		
+		return boardService.deleteRequestBook(r_bookBno) == 1 
+				? new ResponseEntity<>("success", HttpStatus.OK) // 200 정상
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 500 서버 오류
+	}
 
 
     @GetMapping("/modify")

@@ -21,6 +21,11 @@ public interface BoardMapper {
 	
 	public List<BookRequestVO> getRequestBookList(String r_bookUserId); // 요청게시물 가져오기 2024 09 30
 
+	public int updateRequestBook(BookRequestVO Rvo); // 요청게시물 수정(번호이용) 2024 10 01
+	
+	public List<BookRequestVO> adminRequestBookList(); // 요청게시물 가져오기 2024 10 01
+
+	
 	// public void insert(BoardVO board);
 
 	public Integer insertSelectKey(BoardVO board); // 게시글 등록
@@ -30,6 +35,8 @@ public interface BoardMapper {
 	public BoardVO read(Long bno); // 특정 게시글 읽기
 
 	public int delete(Long bno); // 게시글 삭제
+	
+	public int deleteRequestBook(Long r_bookBno); // 희망 도서 요청 게시글 삭제 2024 10 01
 
 	public int update(BoardVO board); // 게시글 수정
 

@@ -13,8 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -24,6 +27,7 @@ import kr.co.librarylyh.domain.BoardVO;
 import kr.co.librarylyh.domain.BookRequestVO;
 import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.PageDTO;
+import kr.co.librarylyh.domain.ReplyVO;
 import kr.co.librarylyh.service.BoardService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -228,8 +232,8 @@ public class BoardController {
 			
 	}
 	
-	
-	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) // 첨부파일 리스트를 가져옴
+	// 첨부파일 리스트를 가져옴
+	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) 
 	@ResponseBody
 	public ResponseEntity<List<BoardAttachVO>> getAttachList(Long bno) {
 
@@ -287,6 +291,8 @@ public class BoardController {
 		
 		
 	}// end likeDown *(ajax)
+	
+
 	
 
 	

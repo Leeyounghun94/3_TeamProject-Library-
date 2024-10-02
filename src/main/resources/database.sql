@@ -98,6 +98,7 @@ create table tbl_requestBook (
 	r_bookUserId varchar2(200) not null, -- 도서 요청 유저 아이디
 	r_bookUserNickName varchar2(200) not null, -- 도서 요청 유저 닉네임
 	r_bookBno number(10,0) not null, -- 도서 요청 글 번호
+	r_bookProcedure varchar2(50), -- 도서 요청상태
 	
 	r_bookRegdate date default sysdate, -- 
   	r_bookUpdatedate date default sysdate
@@ -109,6 +110,9 @@ create sequence seq_requestBook; -- 도서요청 글 번호 시퀀스
 ---------------------- tbl_requestBook 제약 조건 ----------------------------------
 alter table tbl_requestBook add constraint pk_requestBook primary key (r_bookBno);
 -----------------------------------------------------------------------------------
+alter table tbl_requestBook add r_bookProcedure varchar2(50) default '요청됨'
+alter table tbl_requestBook add r_bookResultMsg varchar2(50) default '요청됨'
+
 
 ----------------------------------------------------------- 희망 도서 첨부 파일
 create table tbl_requestBookAttach(
@@ -181,3 +185,5 @@ select * from tbl_reply order by bno desc;
 delete from TBL_BOARD; -- 더미데이터 삭제
 
 update TBL_BOARD set category='자유' where category='선택'; -- category 칼럼의 '선택' 데이터 값을 '자유'로 변경
+
+

@@ -232,7 +232,6 @@ ul.adminChat li{
 											<!-- ./ end ul -->
 										</div>
 										<!-- /.panel .chat-panel -->
-
 										<div class="panel-footer"></div>
 									</div>
 								</div>
@@ -300,9 +299,9 @@ ul.adminChat li{
 <!-- /.modal -->
 
 
-<script type="text/javascript" src="/resources/js/reply.js">
-	/* 외부파일 include 용 */
-</script>
+<script type="text/javascript" src="/resources/js/reply.js"></script> <!-- 외부파일 include 용 --> 
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
 </script>
 <!-- JQuery 사용 -->
@@ -668,7 +667,7 @@ ul.adminChat li{
 						});// end .chat on click
 						
 
-						modalModBtn.on("click", function(e) {
+						modalModBtn.on("click", function(e) { // 수정버튼 클릭
 
 							var reply = {
 								rno : modal.data("rno"),
@@ -683,9 +682,9 @@ ul.adminChat li{
 
 							});
 
-						});
+						}); // end modalModBtn
 
-						modalRemoveBtn.on("click", function(e) {
+						modalRemoveBtn.on("click", function(e) { // 삭제 버튼 클릭
 
 							var rno = modal.data("rno");
 
@@ -697,7 +696,7 @@ ul.adminChat li{
 
 							});
 
-						});
+						});// end modalRemoveBtn
 
 					});
 </script>

@@ -13,7 +13,7 @@ public interface BoardAttachMapper {
 	
 	public void delete(String uuid);
 	
-	public List<BoardAttachVO> findByBno(Long bno); // 파일 첨부
+	public List<BoardAttachVO> findByBno(Long bno); // 파일 첨부 리스트
 	
 	public void deleteAll(Long bno); // 첨부파일 삭제
 	

@@ -22,6 +22,9 @@ public interface BoardService {
 	public boolean modify(BoardVO board); // 게시글 수정
 
 	public boolean remove(Long bno); // 게시글 삭제
+	
+	public int deleteRequestBook(Long r_bookBno); // 희망 도서 요청 게시글 삭제 2024 10 01
+
 
 	// public List<BoardVO> getList();
 
@@ -33,7 +36,11 @@ public interface BoardService {
 	
 	public List<BookRequestVO> getRequestBookList(String r_bookUserId); // 요청게시물 가져오기 2024 09 30
 
-
+	public int updateRequestBook(BookRequestVO Rvo); // 요청게시물 가져오기(번호이용) 2024 10 01
+	
+	public List<BookRequestVO> adminRequestBookList(); // [관리자]요청게시물 전체 가져오기 2024 10 01
+	
+	
 	public int getTotal(Criteria cri); // 게시글 수 카운트
 	
 	public int getTotalListFree(Criteria cri); // 게시판 분류 자유 게시글 수 카운트 2024 09 28 

@@ -38,6 +38,33 @@
 			select * from tbl_requestBook where r_bookUserId = #{r_bookUserId} 
 		]]>
 	</select>
+	
+	<!-- [관리자] 요청 도서 목록 가져오기 2024 10 01  -->
+	<select id="adminRequestBookList" resultType="kr.co.librarylyh.domain.BookRequestVO">
+		<![CDATA[
+			select * from tbl_requestBook where r_bookBno > 0
+		]]>
+	</select>
+	
+	<!-- 요청 도서 목록 수정 2024 10 01  번호를 이용하여-->
+	<update id="updateRequestBook">
+	<![CDATA[
+		update tbl_requestBook set r_bookTitle = #{r_bookTitle},
+								   r_bookAuthor = #{r_bookAuthor},
+								   r_bookCompany = #{r_bookCompany},
+								   r_bookCategory = #{r_bookCategory},
+								   r_bookProcedure = #{r_bookProcedure},
+								   r_bookResultMsg = #{r_bookResultMsg},
+								   r_bookUpdateDate = sysdate
+		where r_bookBno = #{r_bookBno}
+	]]>
+	</update>
+	
+	<!-- 요청 도서 삭제 2024 10 01  번호를 이용하여-->
+	<delete id="deleteRequestBook">
+		delete tbl_requestBook where r_bookBno = #{r_bookBno}
+	</delete>
+
 
 	
  	<insert id="insertSelectKey">

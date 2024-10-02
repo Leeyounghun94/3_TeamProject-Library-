@@ -147,7 +147,25 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.getRequestBookList(r_bookUserId);
 	}
 	
+	@Override
+	public List<BookRequestVO> adminRequestBookList() { // 게시글 분류 질문답변 게시판 2024 09 28
 
+		return mapper.adminRequestBookList();
+	}
+	
+	
+	@Override
+	public int updateRequestBook(BookRequestVO Rvo) { // 요청게시물 수정(번호이용) 2024 10 01
+		return mapper.updateRequestBook(Rvo); // userController 에서 이용중
+	}
+	
+	@Override
+	public int deleteRequestBook(Long r_bookBno) { 	// 희망 도서 요청 게시글 삭제 2024 10 01
+		return mapper.deleteRequestBook(r_bookBno); // userController 에서 이용중
+	}
+
+
+	
 	@Override
 	public int getTotal(Criteria cri) {
 
