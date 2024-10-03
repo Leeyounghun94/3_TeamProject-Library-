@@ -32,7 +32,7 @@
 	<!-- 로그인 체크 -->
 	<select id="login" resultType="kr.co.librarylyh.domain.UserVO" >
 		<![CDATA[
-			select u_id, name, birth, phone, email, id, pw, nickName, authority from member_tbl where id = #{id} and pw = #{pw}
+			select u_id, name, birth, phone, email, id, pw, nickName, authority, point from member_tbl where id = #{id} and pw = #{pw}
 		]]>
 	</select>
 	
@@ -69,6 +69,26 @@
 		]]>
 	</select>
 	
+	<update id="updateLastVisitAndPoint" >
+    	update member_tbl 
+    	set point = #{point}, lastVisitDate = #{lastVisitDate}
+    	where id = #{id}
+	</update>
+	
+	<select id="getTotalMyRequest" resultType="int">
+		<![CDATA[
+		select count(*) from tbl_requestBook where		
+		r_bookBno > 0 and r_bookUserId = #{r_bookUserId} 
+		]]>
+		
+	</select>
+	
+		<select id="getTotalAdminRequest" resultType="int">
+		<![CDATA[
+		select count(*) from tbl_requestBook
+		]]>
+		
+	</select>
 
 	
 	

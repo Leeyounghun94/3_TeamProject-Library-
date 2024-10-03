@@ -1,12 +1,16 @@
 package kr.co.librarylyh.controller;
 
+import kr.co.librarylyh.domain.BookPointVO;
 import kr.co.librarylyh.domain.BookRequestVO;
+import kr.co.librarylyh.domain.Criteria;
+import kr.co.librarylyh.domain.PageDTO;
 import kr.co.librarylyh.domain.UserVO;
 import kr.co.librarylyh.service.BoardService;
 import kr.co.librarylyh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,7 +37,20 @@ public class UserController {
     
     
     @GetMapping("/home")
-    public void home() {
+    public void home(HttpServletRequest request, Model model) throws Exception{ // 일단 개발 중단
+    	
+    	/*HttpSession session = request.getSession();
+    	
+    	String userU_id = (String) session.getAttribute("userU_id");
+    	
+    	UserVO Uvo = service.read(userU_id);
+    	
+    	int userPoint = Uvo.getPoint();
+    	
+    	log.info("userPoint값 확인 : " + userPoint);
+    	
+    	model.addAttribute("userPoint", userPoint); //redirect는 클라이언트가 새로운 자료를 요청하기 때문에 model에 저장된 데이터는 유지 안됨
+    	 */
     }
     
     
@@ -52,6 +69,22 @@ public class UserController {
 		log.info("회원가입 테스트");
     	
     	service.join(user); // 회원가입 쿼리 실행
+    	String joinUserId = user.getId();
+    	boardService.userJoinPoint(joinUserId); // 회원가입시 1000포인트 증정
+    	
+    	String bookPointHistory = "회원가입 포인트 증가";
+    	
+    	BookPointVO vo = new BookPointVO();
+    	
+    	vo.setBookPoint(1000);
+    	vo.setBookPointTotal(user.getPoint() + 1000);
+    	vo.setBookPointHistory(bookPointHistory);
+    	vo.setBookPointUserId(joinUserId);
+    	vo.setBookPointNickName(user.getNickName());
+    	
+    	boardService.allPointHistory(vo); // 게시글 작성 로그 기록
+    	
+    	
     	
     	return "redirect:/library/login";
     } 
@@ -72,7 +105,7 @@ public class UserController {
     	}
     }
     
- // 닉네임 중복 검사
+    // 닉네임 중복 검사
     @PostMapping("/nickNameCheck") 
     @ResponseBody
     public String nickName_check(String nickName) throws Exception{
@@ -94,7 +127,8 @@ public class UserController {
         
     	HttpSession session = request.getSession();
     	UserVO loginUser = service.login(user);
-        
+
+       
     	if(loginUser == null) {
     		int result = 0;
     		rttr.addFlashAttribute("result", result);
@@ -104,11 +138,20 @@ public class UserController {
     	session.setAttribute("user", loginUser);
     	
     	String userId = loginUser.getId();//// add_게시판 아이디 확인용 2024 09 23
-    	session.setAttribute("userId", userId);/// add_게시판 아이디 확인용  2024 09 23
+    	session.setAttribute("userId", userId);/// add_게시판 아이디 확인용  2024 09 23 // 요청 도서 목록 아이디 대입 2024 09 30
     	String userNickName = loginUser.getNickName(); // add_ 게시판 닉네임 확인용 2024 09 23
     	session.setAttribute("userNickName", userNickName); // add_ 게시판 닉네임 확인용 2024 09 23
     	int userAuthority = loginUser.getAuthority(); // add_ 게시판 관리자 권한 확인(관리자 답글용) 2024 09 24
     	session.setAttribute("userAuthority", userAuthority); // add_ 게시판 관리자 권한 확인(관리자 답글용) 2024 09 24
+    	String userU_id = loginUser.getU_id(); // 포인트 총량 가져오기 2024 10 02
+    	session.setAttribute("userU_id", userU_id); // 포인트 총량 가져오기 2024 10 02
+    	
+    	int userPoint = loginUser.getPoint(); 
+    	
+    	UserVO Uvo = service.read(userU_id);
+    	
+    	service.updateLastVisitAndPoint(Uvo);
+    	
     	
         return "redirect:/library/home";
     }
@@ -129,24 +172,34 @@ public class UserController {
     	return "/library/myPage";
     }
     
+    
     // 요청 도서 목록 2024 09 30
     @GetMapping("/myBookRequest") 
-    public void myBookRequest(HttpServletRequest request, Model model) {
+    @RequestMapping(value = "myBookRequest", method = RequestMethod.GET)
+    public void myBookRequest(HttpServletRequest request, Model model, @Param("cri") Criteria cri, @Param("id") String id) {
     	
     	HttpSession session = request.getSession();
     	
-    	String id = (String) session.getAttribute("userId"); // 로그인 시 발생한 세션 : userId 따로 분리
+    	id = (String) session.getAttribute("userId"); // 로그인 시 발생한 세션 : userId 따로 분리
 
-    	model.addAttribute("r_bookList", boardService.getRequestBookList(id));
+    	model.addAttribute("r_bookList", boardService.getRequestBookList(id, cri));
+    	
+    	int total = service.getTotalMyRequest(id); // 총 게시물 수
+    	
+    	model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
     	
     }
     
-    // 요청 도서 목록 2024 10 30
+    // [관리자] 요청 도서 목록 2024 09 30
     @GetMapping("/adminBookRequest") 
-    public void adminBookRequest(Model model) {
-    	
+    public void adminBookRequest(Model model, Criteria cri) {
 
-    	model.addAttribute("r_bookList", boardService.adminRequestBookList());
+    	
+    	model.addAttribute("r_bookList", boardService.adminRequestBookList(cri));
+    	int total = service.getTotalAdminRequest();
+    	
+    	model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
+    	
     }
     
 	// 요청 도서 목록 수정 2024 10 01

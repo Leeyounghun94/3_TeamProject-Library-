@@ -63,6 +63,7 @@
                         <input type="text" id="email" name="email" readonly="readonly"
                             value="${user.email}">
                     </div>
+                    
 
 
                     <button class="myPage-submit" >수정하기</button>

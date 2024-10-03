@@ -1,10 +1,10 @@
---------------------------------------------- 좋아요 테이블
+-------------------------------------------------------------------- 좋아요 테이블
 create table tbl_like (
 	bno number(10,0) default 0,
 	userId varchar2(200)
 )
 
---------------------------------------------- 첨부파일 테이블
+----------------------------------------------------------------------------- 첨부파일 테이블
 create table tbl_attach (
 	uuid varchar2(100) not null,
 	uploadPath varchar2(200) not null,
@@ -18,7 +18,7 @@ alter table tbl_attach add constraint pk_attach primary key (uuid);
 alter table tbl_attach add constraint fk_board_attach foreign key (bno) references tbl_board(bno);
 --------------------------------------------------------------------------------------------------
 
---------------------------------------------- 게시판 테이블
+----------------------------------------------------------------------------------------------------- 게시판 테이블
 
 create table tbl_board (
   bno number(10,0),
@@ -60,7 +60,7 @@ alter table tbl_board add (viewNum number default 0); -- 게시글 조회수
 
 select * from TBL_BOARD order by bno desc; -- tbl_board 테이블 조회
 
----------------------------------------------- 댓글
+------------------------------------------------------------------------------- 댓글 테이블
 create table tbl_reply (
 	rno number(10,0),  -- 댓글 번호
 	bno number(10,0),  -- fk(게시판번호)
@@ -82,9 +82,7 @@ alter table tbl_reply add constraint fk_reply_board foreign key (bno) references
 ---------------------------------------------------------------------------------------------------
 
 
---------------------------------- 희망 도서 요청 전용 쿼리 모음 2024 09 30 ---------------------------------
-
----------------------------------------------------------- 희망 도서 테이블
+--------------------------------------------------------------------------------------------------- 희망 도서 테이블(2024 09 30)
 
 select * from tbl_requestBook; -- tbl_requestBook 테이블 조회
 
@@ -111,10 +109,9 @@ create sequence seq_requestBook; -- 도서요청 글 번호 시퀀스
 alter table tbl_requestBook add constraint pk_requestBook primary key (r_bookBno);
 -----------------------------------------------------------------------------------
 alter table tbl_requestBook add r_bookProcedure varchar2(50) default '요청됨'
-alter table tbl_requestBook add r_bookResultMsg varchar2(50) default '요청됨'
+ALTER TABLE tbl_requestBook DROP COLUMN r_bookResultMsg;
 
-
------------------------------------------------------------ 희망 도서 첨부 파일
+------------------------------------------------------------------------ 희망 도서 첨부 파일 테이블(2024 09 30)
 create table tbl_requestBookAttach(
 	r_uuid varchar2(100) not null,
 	r_uploadPath varchar2(200) not null,
@@ -130,13 +127,22 @@ alter table tbl_requestBook add constraint pk_requestBook primary key (r_bookBno
 alter table tbl_requestBookAttach add constraint fk_requestBook_Attach foreign key (r_bno) references tbl_requestBook(r_bookBno)
 ----------------------------------------------------------------------------------------------------
 
+------------------------------------------------------------- 게시판 포인트 테이블 (2024 10 02)
+create table tbl_bookPoint(
+	bookPointNo number(10),
+	bookPoint number(10) default '0',
+	bookPointTotal number(10) default '0',
+	bookPointDate date default sysdate,
+	bookPointHistory varchar2(200),
+	bookPointUserId varchar2(100),
+	bookPointNickName varchar2(100)
+)
 
+create sequence seq_bookPoint; -- 게시판 포인트 자동번호객체 추가
 
-
-
-
+select * from tbl_bookPoint;
 -------------------------------------이 아래에는 추가할 내용이 따로 없습니다.-----------------------------------------------------
-
+drop table tbl_bookPoint
 
 insert into TBL_BOARD (bno, title, content, category, nickName, boardUserId) (select seq_board.nextval, title, content, category, nickName, boardUserId from tbl_board); -- 재귀 복사
 

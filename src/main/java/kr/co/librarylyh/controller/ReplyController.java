@@ -1,5 +1,8 @@
 package kr.co.librarylyh.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.librarylyh.domain.BookPointVO;
 import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.ReplyPageDTO;
 import kr.co.librarylyh.domain.ReplyVO;
+import kr.co.librarylyh.domain.UserVO;
+import kr.co.librarylyh.service.BoardService;
 import kr.co.librarylyh.service.ReplyService;
+import kr.co.librarylyh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -27,16 +34,49 @@ public class ReplyController { // Rest 방식의 컨트롤러로 구현 + ajax �
 
 	// private BoardService bService; 나중에 응용해 보세요.
 	private ReplyService service;
-
+	private BoardService boardService; // 댓글 포인트 적용 2024 10 02 
+	private UserService userService;
+	
 	// http://localhost:80/replies/new
-	@PostMapping(value="/new", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE) //입력값은 json으로
-	public ResponseEntity<String> create(@RequestBody ReplyVO vo) {
+	@PostMapping(value="/new", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE ) //입력값은 json으로
+	public ResponseEntity<String> create(@RequestBody ReplyVO vo, HttpServletRequest request) {
 		// 리턴은 200이나 500으로 처리 된다.
 		log.info("ReplyVO 객체 json 입력 값 : " + vo); // 파라미터로 넘어온 값 출력 테스트
 
 		int insertCount = service.register(vo); // sql 처리 후에 결과값이 1 | 0 이 나옴
 
 		log.info("서비스 + 매퍼 처리 결과 : " + insertCount);
+		
+    	HttpSession session = request.getSession();
+    	
+    	// 댓글 작성시 포인트 증가 및 로그기록 2024 10 02
+    	
+    	String userU_id = (String) session.getAttribute("userU_id"); // 로그인 시 발생한 세션 : userU_id 따로 분리 2024 10 02
+    	
+    	UserVO Uvo = userService.read(userU_id);
+    	
+    	String id = Uvo.getId();// 로그인 시 발생한 세션 : id 따로 분리 2024 10 02
+    	
+    	String nickName = Uvo.getNickName();// 로그인 시 발생한 세션 : userNickName 따로 분리 2024 10 02
+
+    	int userPoint = Uvo.getPoint() + 5; // 로그인 시 발생한 세션 : point 따로 분리 2024 10 02
+    	// 포인트 총량을 세션으로 가져오니 최신화가 안됨, 그래서 포인트를 가져오는 sql 문을 작성하기로함
+		int bookPoint = 5; // 포인트 5 증가
+		
+		String bookPointHistory = "댓글 작성 포인트 증가";
+		
+		service.replyAddPoint(nickName); // 댓글 유저 포인트 추가 2024 10 02
+    	
+    	BookPointVO Bvo = new BookPointVO();
+    	
+    	Bvo.setBookPoint(bookPoint);
+    	Bvo.setBookPointTotal(userPoint);
+    	Bvo.setBookPointHistory(bookPointHistory);
+    	Bvo.setBookPointUserId(id);
+    	Bvo.setBookPointNickName(nickName);
+    	
+    	boardService.allPointHistory(Bvo); // 댓글 작성 로그 기록
+    	
 
 		return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK) // 200 정상
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 500 서버 오류

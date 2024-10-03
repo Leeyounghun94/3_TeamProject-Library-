@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.librarylyh.domain.BoardAttachVO;
 import kr.co.librarylyh.domain.BoardVO;
+import kr.co.librarylyh.domain.BookPointVO;
 import kr.co.librarylyh.domain.BookRequestVO;
 import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.LikeVO;
@@ -50,7 +51,8 @@ public class BoardServiceImpl implements BoardService {
 		});
 	}
 	
-	public void registerRequest(BookRequestVO bookRequest) { // 희망 도서 요청 파일 값 2024 09 30
+	// 희망 도서 요청 파일 값 2024 09 30
+	public void registerRequest(BookRequestVO bookRequest) { 
 
 		log.info("register......" + bookRequest);
 
@@ -133,34 +135,38 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.getListWithPagingListFree(cri);
 	}
 	
+	// 게시글 분류 질문답변 게시판 2024 09 28
 	@Override
-	public List<BoardVO> getListListQnA(Criteria cri) { // 게시글 분류 질문답변 게시판 2024 09 28
+	public List<BoardVO> getListListQnA(Criteria cri) { 
 
 		log.info("get List with criteria: " + cri);
 
 		return mapper.getListWithPagingListQnA(cri);
 	}
 	
+	// 게시글 분류 질문답변 게시판 2024 09 28
 	@Override
-	public List<BookRequestVO> getRequestBookList(String r_bookUserId) { // 게시글 분류 질문답변 게시판 2024 09 28
+	public List<BookRequestVO> getRequestBookList(String r_bookUserId, Criteria cri) { 
 
-		return mapper.getRequestBookList(r_bookUserId);
+		return mapper.getRequestBookList(r_bookUserId, cri);
 	}
 	
+	// 게시글 분류 질문답변 게시판 2024 09 28
 	@Override
-	public List<BookRequestVO> adminRequestBookList() { // 게시글 분류 질문답변 게시판 2024 09 28
+	public List<BookRequestVO> adminRequestBookList(Criteria cri) { 
 
-		return mapper.adminRequestBookList();
+		return mapper.adminRequestBookList(cri);
 	}
 	
-	
+	// 요청게시물 수정(번호이용) 2024 10 01
 	@Override
-	public int updateRequestBook(BookRequestVO Rvo) { // 요청게시물 수정(번호이용) 2024 10 01
+	public int updateRequestBook(BookRequestVO Rvo) { 
 		return mapper.updateRequestBook(Rvo); // userController 에서 이용중
 	}
 	
+	// 희망 도서 요청 게시글 삭제 2024 10 01
 	@Override
-	public int deleteRequestBook(Long r_bookBno) { 	// 희망 도서 요청 게시글 삭제 2024 10 01
+	public int deleteRequestBook(Long r_bookBno) { 	
 		return mapper.deleteRequestBook(r_bookBno); // userController 에서 이용중
 	}
 
@@ -173,16 +179,17 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.getTotalCount(cri);
 	}
 	
+	// 게시글 분류 자유 게시판 2024 09 28
 	@Override
-	public int getTotalListFree(Criteria cri) { // 게시글 분류 자유 게시판 2024 09 28
+	public int getTotalListFree(Criteria cri) { 
 
 		log.info("get total count");
 		return mapper.getTotalCountListFree(cri);
 	}
 	
+	// 게시글 분류 질문답변 게시판 2024 09 28
 	@Override
-	public int getTotalListQnA(Criteria cri) { // 게시글 분류 질문답변 게시판 2024 09 28
-
+	public int getTotalListQnA(Criteria cri) { 
 		log.info("get total count");
 		return mapper.getTotalCountListQnA(cri);
 	}
@@ -196,7 +203,6 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	// 게시글 좋아요 관련
-	
 	@Override
 	public LikeVO serviceCheckLike(Long bno) {  // 게시글 좋아요 여부
 		// TODO Auto-generated method stub
@@ -204,29 +210,46 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.checkLike(bno);
 	}
 
-
+	// 게시글 좋아요 (좋아요 상승)
 	@Override
-	public void serviceInsertLike(String likeUserId, Long bno) throws Exception { // 게시글 좋아요 (좋아요 상승)
+	public void serviceInsertLike(String likeUserId, Long bno) throws Exception { 
 		// TODO Auto-generated method stub
 		mapper.boardLikeNumUp(bno); // 해당 메서드 실행 하여 조회수 증가
 		
 		mapper.insertLike(likeUserId, bno);
 	}
-
+	
+	// 게시글 좋아요 (좋아요 하락)
 	@Override
-	public int serviceDeleteLike(String likeUserId, Long bno) throws Exception { // 게시글 좋아요 (좋아요 하락)
+	public int serviceDeleteLike(String likeUserId, Long bno) throws Exception { 
 		// TODO Auto-generated method stub
 		mapper.boardLikeNumDown(bno);
 		return mapper.deleteLike(likeUserId, bno);
 	}
 
-
-
-	/*@Override
-	public int serviceCountLike(Long bno) {
-		// TODO Auto-generated method stub
-		return mapper.countLike(bno);
-	}*/
+	// 게시글 작성시 회원 포인트 50 추가 - 2024 10 02
+	@Override
+	public void boardAddPoint(String userId) {
+		mapper.boardAddPoint(userId);
+	}
 	
+	// 도서 요청시 500 포인트 차감 - 2024 10 02
+	@Override
+	public void bookRequestPoint(String requestBoard) {
+		mapper.bookRequestPoint(requestBoard);
+	}
+	
+	// 회원가입 시 1000포인트 2024 10 02
+	@Override
+	public void userJoinPoint(String userId) {
+		mapper.userJoinPoint(userId);
+	}
+
+
+	// 포인트 로그 기록 2024 10 02
+	@Override
+	public void allPointHistory(BookPointVO vo) {
+		mapper.allPointHistory(vo);
+	}
 
 }

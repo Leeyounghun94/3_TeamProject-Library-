@@ -6,11 +6,16 @@ create table member_tbl(
 	email varchar2(20) not null,
 	id varchar2(20) not null unique,
 	pw varchar2(20) not null,
-	nickName varchar2(20) not null unique
+	nickName varchar2(20) not null unique,
+
 )
 
 alter table member_tbl add authority number(10);
 alter table member_tbl modify authority number(10) default '0';
+alter table member_tbl add point number(10) default '0'; -- 포인트 추가 2024 10 02
+alter table member_tbl add lastVisitDate date default sysdate; -- 매일 포인트 증정용 2024 10 02
+
+update member_tbl set lastVisitDate='2024-10-02' where lastVisitDate='2024-10-03'; -- category 칼럼의 '선택' 데이터 값을 '자유'로 변경
 
 select dbms_random.String('X',10) u_id from dual; -- 임시테이블에 랜덤 번호 생성 (u_id)
 

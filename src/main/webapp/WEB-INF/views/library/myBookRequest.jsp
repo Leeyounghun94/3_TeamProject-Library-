@@ -26,6 +26,11 @@
   table-layout: fixed; /* 자식 태그의 크기 고정 */
  }
  
+ .news_page_nav{
+  padding-left : 1150px;
+  padding-bottom : 50px;
+ }
+ 
 </style>
 
 <body>
@@ -76,51 +81,81 @@
 				</div> <!-- end 목록이 출력될 칸 -->
             </section><!-- end /.myPage-main  -->
         </section><!-- end /.myPage-content -->
+                <!-- 페이징 버튼 관련 -->
+				<div class='news_page_nav'>
+				<label>페이징 버튼</label>
+					<ul class="pagination" style="align-items:center;">
+						 <c:if test="${pageMaker.prev}">
+							<li class="paginate_button previous text-center"><a href="${pageMaker.startPage -1}">이전</a></li>
+						</c:if> 
+						<c:forEach var="num" begin="${pageMaker.startPage}"	end="${pageMaker.endPage}">
+							<li class="paginate_button text-center ${pageMaker.cri.pageNum == num ? 'active':''} ">
+								<a href="${num}">${num}</a>
+							</li>
+						</c:forEach>
+						 <c:if test="${pageMaker.next}">
+							<li class="paginate_button next text-center"><a href="${pageMaker.endPage +1 }">다음</a></li>
+						</c:if> 
+					</ul>
+					
+				</div>
+				
+				<!--  end Pagination -->
     </main>
     <!-- 로그인 아이디 전달 2024 09 30 -->
-					
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">창닫기</h4>
-			</div>
-			
-			<div class="modal-body"><!-- 모달창 내부 -->
-				<div class="form-group">
-					<label>희망도서 제목</label> <input class="form-control" name='r_bookTitle' value='<c:out value="${RequestList.r_bookTitle}"/>' >
-				</div>
-				<div class="form-group">
-					<label>희망도서 저자</label> <input class="form-control" name='r_bookAuthor' value='<c:out value="${RequestList.r_bookAuthor}"/>' >
-				</div>
 
-				<div class="form-group">
-					<label>희망도서 출판사</label> <input class="form-control" name='r_bookCompany' value='<c:out value="${RequestList.r_bookCompany}"/>'>
-				</div>
-				<!-- 댓글 작성자 아이디 입력 2024 09 29 -->
-				<div class="form-group">
-					<label>희망도서 카테고리</label> <input class="form-control" name='r_bookCategory' value='<c:out value="${RequestList.r_bookCategory}"/>' >
-				</div>
-				<input type='hidden' class="rno">
-			</div><!-- end 모달창 내부 -->
-			<!-- end modal body 2024 09 29 -->
-			
-			<div class="modal-footer">
-				<button id='modalModBtn' type="button" class="btn btn-warning">Modify</button>
-				<button id='modalRemoveBtn' type="button" class="btn btn-danger">Remove</button>
-				<!-- <button id='modalRegisterBtn' type="button" class="btn btn-primary">Register</button> -->
-				<button id='modalCloseBtn' type="button" class="btn btn-default">Close</button>
+
 			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+			<!-- endpanel-heading -->    
+			<!-- 페이지 번호 클릭시 함께 전달 되는 데이터 -->
+			<form id='actionForm' action="/library/myBookRequest" method='get'><!-- Jstl  -->
+				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+			</form>
+					
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">창닫기</h4>
+						</div>
+						
+						<div class="modal-body"><!-- 모달창 내부 -->
+							<div class="form-group">
+								<label>희망도서 제목</label> <input class="form-control" name='r_bookTitle' value='<c:out value="${RequestList.r_bookTitle}"/>' >
+							</div>
+							<div class="form-group">
+								<label>희망도서 저자</label> <input class="form-control" name='r_bookAuthor' value='<c:out value="${RequestList.r_bookAuthor}"/>' >
+							</div>
+			
+							<div class="form-group">
+								<label>희망도서 출판사</label> <input class="form-control" name='r_bookCompany' value='<c:out value="${RequestList.r_bookCompany}"/>'>
+							</div>
+							<!-- 댓글 작성자 아이디 입력 2024 09 29 -->
+							<div class="form-group">
+								<label>희망도서 카테고리</label> <input class="form-control" name='r_bookCategory' value='<c:out value="${RequestList.r_bookCategory}"/>' >
+							</div>
+							<input type='hidden' class="rno">
+							<input type='hidden' class="form-control" name='r_bookProcedure' value='<c:out value="${RequestList.r_bookProcedure}"/>' >
+						</div><!-- end 모달창 내부 -->
+						<!-- end modal body 2024 09 29 -->
+						
+						<div class="modal-footer">
+							<button id='modalModBtn' type="button" class="btn btn-warning">Modify</button>
+							<button id='modalRemoveBtn' type="button" class="btn btn-danger">Remove</button>
+							<!-- <button id='modalRegisterBtn' type="button" class="btn btn-primary">Register</button> -->
+							<button id='modalCloseBtn' type="button" class="btn btn-default">Close</button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>
+			<!-- /.modal -->
     
 </body>
 <script type="text/javascript" src="/resources/js/bookRequest.js"></script> <!-- 외부파일 include - reply.js -->
@@ -147,13 +182,14 @@ $(document).ready(function(){
 		var $row = $(this).closest("tr"); 
 		
 		// 행에서 필요한 데이터를 추출
-		var bookTitle = $row.find("td:eq(3)").text(); // 요청 도서 제목
-		var bookAuthor = $row.find("td:eq(4)").text(); // 요청 도서 저자
-		var bookCompany = $row.find("td:eq(5)").text(); // 요청 도서 출판사
-		var bookCategory = $row.find("td:eq(6)").text(); // 요청 도서 카테고리
+		var bookProcedure = $row.find("td:eq(1)").text(); // 요청 도서 제목
+		var bookTitle = $row.find("td:eq(2)").text(); // 요청 도서 제목
+		var bookAuthor = $row.find("td:eq(3)").text(); // 요청 도서 저자
+		var bookCompany = $row.find("td:eq(4)").text(); // 요청 도서 출판사
+		var bookCategory = $row.find("td:eq(5)").text(); // 요청 도서 카테고리
 		var bookBno = $row.find(".bookBno").val(); // 요청 도서 번호
 
-		
+		console.log("bookProcedure 값 : "+ bookProcedure);
 		console.log("bookTitle 값 : "+ bookTitle);
 		console.log("bookAuthor 값 : "+ bookAuthor);
 		console.log("bookCompany 값 : "+ bookCompany);
@@ -161,6 +197,7 @@ $(document).ready(function(){
 		console.log("bookBno 값 : "+ bookBno);
 		
 		// 모달 창 내부에 데이터 채워 넣기
+		$('input[name="r_bookProcedure"]').val(bookProcedure);
 		$('input[name="r_bookTitle"]').val(bookTitle);
 		$('input[name="r_bookAuthor"]').val(bookAuthor);
 		$('input[name="r_bookCompany"]').val(bookCompany);
@@ -178,11 +215,13 @@ $(document).ready(function(){
 	
 	modalModBtn.on("click", function(e) { // 수정버튼 클릭
 		// 수정 시 입력된 값을 다시 가져와야 함
+		var bookProcedure = $('input[name="r_bookProcedure"]').val(); // 모달창 hidden 요청상태
 		var bookTitle = $('input[name="r_bookTitle"]').val(); // 모달창에서 가져온 도서 제목
 		var bookAuthor = $('input[name="r_bookAuthor"]').val(); // 모달창에서 가져온 도서 저자
 		var bookCompany = $('input[name="r_bookCompany"]').val(); // 모달창에서 가져온 도서 출판사
 		var bookCategory = $('input[name="r_bookCategory"]').val(); // 모달창에서 가져온 도서 카테고리
 		var bookBno = $('.rno').val(); // 모달창에서 가져온 도서 번호
+		
 		
 		console.log("bookTitle 값 : "+ bookTitle);
 		console.log("bookAuthor 값 : "+ bookAuthor);
@@ -190,13 +229,16 @@ $(document).ready(function(){
 		console.log("bookCategory 값 : "+ bookCategory);
 		console.log("bookBno 값 : "+ bookBno);
 		
+		console.log("bookProcedure 값 : "+ bookProcedure);
+		
 		
 		var bookRequest = { // bookRequest 변수에 모달창에 있는 값들을 넣어줌
 			r_bookBno : bookBno,
 			r_bookTitle : bookTitle,
 			r_bookAuthor : bookAuthor,
 			r_bookCompany : bookCompany,
-			r_bookCategory : bookCategory
+			r_bookCategory : bookCategory,
+			r_bookProcedure : bookProcedure
 		}; // end var bookRequest
 		
 		// bookRequest.js의 update 함수 실행
@@ -228,10 +270,24 @@ $(document).ready(function(){
 
 	});// end modalRemoveBtn (삭제 버튼 종료)
 	
+	
+	var actionForm = $("#actionForm");
+
+	$(".paginate_button a").on("click",	function(e) {
+
+				e.preventDefault();
+
+				console.log('click');
+
+				actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+				actionForm.submit();
+			}); // 페이지 버튼
+	
 });
 
 
 </script>
+
 </html>
 
 <jsp:include page="../includes/footer.jsp" />

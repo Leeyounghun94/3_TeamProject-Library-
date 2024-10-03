@@ -86,6 +86,13 @@ public class ReplyServiceImpl implements ReplyService{
 		log.info("ReplyServiceImpl.getListPage() 메서드 실행, 댓글이 해당하는 게시물 번호: " + bno);
 		return new ReplyPageDTO(mapper.getCountByBno(bno), mapper.getListWithPaging(cri, bno));
 	}
+	
+	// 댓글 작성시 회원 포인트 5 추가 - 2024 10 02
+	@Override
+	public void replyAddPoint(String userId) {
+		mapper.replyAddPoint(userId);
+	}
+	
 
 
 

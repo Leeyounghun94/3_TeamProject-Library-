@@ -114,7 +114,7 @@
 						        <form role="form" action="/library/listRequest" method="post"> <!-- 희망도서 Form --><!-- action 경로 수정 필요 -->
 						        	<div class="form-group">
 						        		<label>닉네임</label> 
-						        		<input class="form-control" name='r_bookUserNickName' value="${userNickName}" readonly>
+						        		<input class="form-control" name='r_bookUserNickName' value="${user.nickName}" readonly>
 						        		<label>아이디</label>
 						        		<input class="form-control" name='r_bookUserId' value="${user.id}" readonly>
 						    	 	</div>
@@ -140,6 +140,7 @@
 						  <!-- end panel -->
 						</div>
 						<!-- /.row -->
+
 
 						<div class="row">
 						  <div class="col-lg-12">

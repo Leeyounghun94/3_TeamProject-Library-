@@ -4,6 +4,7 @@ import java.util.List;
 
 import kr.co.librarylyh.domain.BoardAttachVO;
 import kr.co.librarylyh.domain.BoardVO;
+import kr.co.librarylyh.domain.BookPointVO;
 import kr.co.librarylyh.domain.BookRequestVO;
 import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.LikeVO;
@@ -34,11 +35,11 @@ public interface BoardService {
 	
 	public List<BoardVO> getListListQnA(Criteria cri); // 게시판 분류 질문답변 게시물 가져오기. 2024 09 28 
 	
-	public List<BookRequestVO> getRequestBookList(String r_bookUserId); // 요청게시물 가져오기 2024 09 30
+	public List<BookRequestVO> getRequestBookList(String r_bookUserId, Criteria cri); // 요청게시물 가져오기 2024 09 30
 
 	public int updateRequestBook(BookRequestVO Rvo); // 요청게시물 가져오기(번호이용) 2024 10 01
 	
-	public List<BookRequestVO> adminRequestBookList(); // [관리자]요청게시물 전체 가져오기 2024 10 01
+	public List<BookRequestVO> adminRequestBookList(Criteria cri); // [관리자]요청게시물 전체 가져오기 2024 10 01
 	
 	
 	public int getTotal(Criteria cri); // 게시글 수 카운트
@@ -58,7 +59,16 @@ public interface BoardService {
 	public int serviceDeleteLike(String likeUserId, Long bno) throws Exception; // 게시글 좋아요 한번더 (좋아요 취소)
 	
 	
+	// 포인트 관련
 	
+	public void boardAddPoint(String userId); // 게시글 작성시 50 포인트 [유저테이블] 2024 10 02
+	
+	public void allPointHistory(BookPointVO vo); // 포인트 로그 기록 2024 10 02
+	
+	public void bookRequestPoint(String requestBoard); // 도서 요청시 500 포인트 차감[유저테이블] 2024 10 02
 
+	public void userJoinPoint(String userId); // 회원가입 시 1000포인트[유저테이블] 2024 10 02
+
+	
 
 }

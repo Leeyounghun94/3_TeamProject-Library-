@@ -52,4 +52,14 @@
 	]]>
 </select>
 
+	<!-- 댓글 작성시 5 포인트 증가 2024 10 02 -->
+    <update id="replyAddPoint">
+    	<![CDATA[  
+    		update member_tbl set
+    		point = point + 5
+    		where id=#{id}
+    	]]>
+    </update>
+    
+	
 </mapper>

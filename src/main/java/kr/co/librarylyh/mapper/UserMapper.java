@@ -3,6 +3,7 @@ package kr.co.librarylyh.mapper;
 
 import java.util.List;
 
+import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.UserVO;
 
 // DB와 영속성을 가진 패키지
@@ -47,5 +48,13 @@ public interface UserMapper {
 	// 어드민 등록
 	public void adminRegister(UserVO user);
 	
+	// 매일매일 포인트 증정 2024 10 02
+	public void updateLastVisitAndPoint(UserVO user);
+	
+	// 나의 도서 요청 목록 페이징 [전체 가져오기] 2024 10 03
+	public int getTotalMyRequest(String id);
+	
+	// 관리자용 요청 목록 전체 페이징 [전체 가져오기] 2024 10 03
+	public int getTotalAdminRequest();
 
 }	

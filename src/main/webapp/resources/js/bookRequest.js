@@ -10,10 +10,11 @@ var boardService = (function() {
       // 요청 도서 수정
       function update(bookRequest, callback, error){
 	  	console.log("RNO: " + bookRequest.r_bookBno);
-	  	console.log("bookRequestTitle: " + bookRequest.bookRequestTitle);
-	  	console.log("bookRequestAuthor: " + bookRequest.bookRequestAuthor);
-	  	console.log("bookRequestCompany: " + bookRequest.bookRequestCompany);
-	  	console.log("bookRequestCategory: " + bookRequest.bookRequestCategory);
+	  	console.log("bookRequestTitle: " + bookRequest.r_bookTitle);
+	  	console.log("bookRequestAuthor: " + bookRequest.r_bookAuthor);
+	  	console.log("bookRequestCompany: " + bookRequest.r_bookCompany);
+	  	console.log("bookRequestCategory: " + bookRequest.r_bookCategory);
+	  	console.log("bookRequestProcedure: " + bookRequest.r_bookProcedure);
 	  	
 	  	$.ajax({
 		type : 'put',

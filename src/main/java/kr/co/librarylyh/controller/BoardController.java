@@ -5,6 +5,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,22 +16,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.librarylyh.domain.BoardAttachVO;
 import kr.co.librarylyh.domain.BoardVO;
+import kr.co.librarylyh.domain.BookPointVO;
 import kr.co.librarylyh.domain.BookRequestVO;
 import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.PageDTO;
-import kr.co.librarylyh.domain.ReplyVO;
+import kr.co.librarylyh.domain.UserVO;
 import kr.co.librarylyh.service.BoardService;
+import kr.co.librarylyh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -42,6 +44,7 @@ import lombok.extern.log4j.Log4j2;
 public class BoardController {
 
 	private BoardService service;/////중요
+	private UserService userService;
 	
 	
 	@GetMapping("/board/register")
@@ -91,14 +94,9 @@ public class BoardController {
 		
 	}
 	
-	@GetMapping("/listRequest") // 도서 요청 게시판
-	public void listRequest() {
-		
-	}
-	
 	
 	@PostMapping("/board/register") // 새글 작성
-	public String register(BoardVO board, RedirectAttributes rttr) {
+	public String register(BoardVO board, RedirectAttributes rttr, HttpServletRequest request) {
 
 		log.info("==========================");
 
@@ -115,6 +113,36 @@ public class BoardController {
 		service.register(board); // 보드 객체를 사용하여 글을 등록하고
 		
 		
+    	HttpSession session = request.getSession();
+    	
+    	// 게시글 작성시 포인트 증가 및 로그기록 2024 10 02
+    	String userU_id = (String) session.getAttribute("userU_id"); // 로그인 시 발생한 세션 : userU_id 따로 분리 2024 10 02
+    	
+    	UserVO Uvo = userService.read(userU_id);
+    	
+    	String id = Uvo.getId();// 로그인 시 발생한 세션 : id 따로 분리 2024 10 02
+    	
+    	String nickName = Uvo.getNickName();// 로그인 시 발생한 세션 : userNickName 따로 분리 2024 10 02
+
+    	int userPoint = Uvo.getPoint() + 50; // 로그인 시 발생한 세션 : point 따로 분리 2024 10 02
+
+    	// 포인트 총량을 세션으로 가져오니 최신화가 안됨, 그래서 포인트를 가져오는 sql 문을 작성하기로함
+		int bookPoint = 50; // 포인트 50 증가
+		
+		String bookPointHistory = "게시글 작성 포인트 증가";
+		
+    	service.boardAddPoint(id); // 게시글 유저 포인트 추가 2024 10 02
+    	
+    	BookPointVO vo = new BookPointVO();
+    	
+    	vo.setBookPoint(bookPoint);
+    	vo.setBookPointTotal(userPoint);
+    	vo.setBookPointHistory(bookPointHistory);
+    	vo.setBookPointUserId(id);
+    	vo.setBookPointNickName(nickName);
+    	
+    	service.allPointHistory(vo); // 게시글 작성 로그 기록
+    	
 		rttr.addFlashAttribute("result", board.getBno()); // 그 글을 떙겨오면 몇번 값인지 알수있음
 		
 		String pathreturn = board.getCategory(); // 게시판 분류 2024 09 29
@@ -133,8 +161,14 @@ public class BoardController {
 		
 	}
 	
+	@GetMapping("/listRequest") // 도서 요청 게시판
+	public void listRequest() {
+		
+	}
+	
+	
 	@PostMapping("/listRequest") // 새글 작성 요청 도서 2024 09 30
-	public String registerBookRequest(BookRequestVO requestBoard, RedirectAttributes rttr) {
+	public String registerBookRequest(BookRequestVO requestBoard, RedirectAttributes rttr, HttpServletRequest request) {
 
 		log.info("==========================");
 
@@ -147,13 +181,49 @@ public class BoardController {
 		}
 
 		log.info("==========================");
+		
 
-		service.registerRequest(requestBoard); // 보드 객체를 사용하여 글을 등록하고
+			service.registerRequest(requestBoard); // 보드 객체를 사용하여 도서 글을 등록
+			
+			if(requestBoard != null) {
+			
+	    	HttpSession session = request.getSession();
+	    	
+	    	// 게시글 작성시 포인트 증가 및 로그기록 2024 10 02
+	    	String userU_id = (String) session.getAttribute("userU_id"); // 로그인 시 발생한 세션 : userU_id 따로 분리 2024 10 02
+	    	
+	    	UserVO Uvo = userService.read(userU_id);
+	    	
+	    	String id = Uvo.getId();// 로그인 시 발생한 세션 : id 따로 분리 2024 10 02
+	    	
+	    	String nickName = Uvo.getNickName();// 로그인 시 발생한 세션 : userNickName 따로 분리 2024 10 02
+	    	
+	    	int userPoint = Uvo.getPoint() - 500; // 로그인 시 발생한 세션 : point 따로 분리 2024 10 02
+
+	    	// 포인트 총량을 세션으로 가져오니 최신화가 안됨, 그래서 포인트를 가져오는 sql 문을 작성하기로함
+			int bookPoint = -500; // 포인트 50 증가
+			
+			String bookPointHistory = "도서 요청으로 포인트감소";
+			
+			service.bookRequestPoint(id);
+			
+	    	BookPointVO vo = new BookPointVO();
+	    	
+	    	vo.setBookPoint(bookPoint);
+	    	vo.setBookPointTotal(userPoint);
+	    	vo.setBookPointHistory(bookPointHistory);
+	    	vo.setBookPointUserId(id);
+	    	vo.setBookPointNickName(nickName);
+	    	
+	    	service.allPointHistory(vo); // 게시글 작성 로그 기록
+		}
+
+		service.registerRequest(requestBoard); // 보드 객체를 사용하여 도서 글을 등록
 		
 		
 		rttr.addFlashAttribute("result", requestBoard.getR_bookBno()); // 번호를 가지고 모달창에 완료 문구띄우기
 		
-			return "redirect:/library/listRequest";
+		return "redirect:/library/listRequest";
 			
 	}// end registerBookRequest
 
@@ -292,7 +362,7 @@ public class BoardController {
 		
 	}// end likeDown *(ajax)
 	
-
+	
 	
 
 	

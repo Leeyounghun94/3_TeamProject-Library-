@@ -26,6 +26,12 @@
   table-layout: fixed; /* 자식 태그의 크기 고정 */
  }
  
+  .news_page_nav{
+  padding-left : 1150px;
+  padding-bottom : 50px;
+ }
+ 
+ 
 </style>
 
 <body>
@@ -56,7 +62,6 @@
 									<th style="width:30%">카테고리</th>
 									<th style="width:20%">등록날짜</th>
 									<th style="width:20%">요청자</th>
-									<th style="width:20%">비고</th>
 									<th style="width:15%"></th>
 								</tr>
 							</thead>
@@ -70,7 +75,6 @@
 									<td><c:out value="${RequestList.r_bookCategory}" /></td>
 									<td><c:out value="${RequestList.r_bookRegdate}" /></td>
 									<td><c:out value="${RequestList.r_bookUserId}" /></td>
-									<td><c:out value="${RequestList.r_bookResultMsg}" /></td>
 									<td class='editDel'>수정/삭제</td>
 									<td><input type='hidden' class="bookBno" value="${RequestList.r_bookBno}"></td>
 								</tr>
@@ -80,8 +84,38 @@
 				</div> <!-- end 목록이 출력될 칸 -->
             </section><!-- end /.myPage-main  -->
         </section><!-- end /.myPage-content -->
+                        <!-- 페이징 버튼 관련 -->
+				<div class='news_page_nav'>
+				<label>페이징 버튼</label>
+					<ul class="pagination" style="align-items:center;">
+						 <c:if test="${pageMaker.prev}">
+							<li class="paginate_button previous text-center"><a href="${pageMaker.startPage -1}">이전</a></li>
+						</c:if> 
+						<c:forEach var="num" begin="${pageMaker.startPage}"	end="${pageMaker.endPage}">
+							<li class="paginate_button text-center ${pageMaker.cri.pageNum == num ? 'active':''} ">
+								<a href="${num}">${num}</a>
+							</li>
+						</c:forEach>
+						 <c:if test="${pageMaker.next}">
+							<li class="paginate_button next text-center"><a href="${pageMaker.endPage +1 }">다음</a></li>
+						</c:if> 
+					</ul>
+					
+				</div>
+				
+				<!--  end Pagination -->
     </main>
     <!-- 로그인 아이디 전달 2024 09 30 -->
+			</div>
+			<!-- endpanel-heading -->    
+			<!-- 페이지 번호 클릭시 함께 전달 되는 데이터 -->
+			<form id='actionForm' action="/library/adminBookRequest" method='get'><!-- Jstl  -->
+				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+			</form>
+					
+    
+    
 					
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
@@ -123,9 +157,6 @@
     			<option value="지연">지연</option>
     			<option value="반려">반려</option>
   			</select>
-  				<div class="form-group">
-					<label>메시지 전달</label> <input class="r_bookResultMsg" name='r_bookResultMsg' />
-				</div>
 				<input type='hidden' class="rno">
 			</div><!-- end 모달창 내부 -->
 			<!-- end modal body 2024 09 29 -->
@@ -176,7 +207,6 @@ $(document).ready(function(){
 		var bookCategory = $row.find("td:eq(5)").text(); // 요청 도서 카테고리
 		var bookRegDate = $row.find("td:eq(6)").text();	
 		var bookUserId = $row.find("td:eq(7)").text(); // 요청 도서 현 상황(진행중, 성공 이런거)
-		var bookResultMsg = $row.find("td:eq(9)").text();	
 
 
 		
@@ -190,7 +220,6 @@ $(document).ready(function(){
 		console.log("bookCompany 값 : "+ bookCompany);
 		console.log("bookCategory 값 : "+ bookCategory);
 		console.log("bookProcedure 값 : "+ bookProcedure);
-		console.log("bookResultMsg 값 : "+ bookResultMsg);
 		console.log("bookRegDate 값 : "+ bookRegDate);
 		
 		// 모달 창 내부에 데이터 채워 넣기
@@ -202,7 +231,6 @@ $(document).ready(function(){
 		$('input[name="r_bookCategory"]').val(bookCategory);
 		//regdate 는 sysdate
 		$('input[name="r_bookUserId"]').val(bookUserId);
-		$('input[name="r_bookResultMsg"]').val(bookProcedure);
 		
 		$('.rno').val(bookBno);
 
@@ -224,8 +252,7 @@ $(document).ready(function(){
 	            r_bookAuthor: $('input[name="r_bookAuthor"]').val(),
 	            r_bookCompany: $('input[name="r_bookCompany"]').val(),
 	            r_bookCategory: $('input[name="r_bookCategory"]').val(),
-	            r_bookProcedure: $('select[name="r_bookProcedure"]').val(),
-	            r_bookResultMsg: $('input[name="r_bookResultMsg"]').val()
+	            r_bookProcedure: $('select[name="r_bookProcedure"]').val()
 	        };
 
 	        console.log(bookRequest); // 디버깅용
@@ -258,6 +285,19 @@ $(document).ready(function(){
 		});
 
 	});// end modalRemoveBtn (삭제 버튼 종료)
+	
+	var actionForm = $("#actionForm");
+
+	$(".paginate_button a").on("click",	function(e) {
+
+				e.preventDefault();
+
+				console.log('click');
+
+				actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+				actionForm.submit();
+			}); // 페이지 버튼
+			
 	
 });
 

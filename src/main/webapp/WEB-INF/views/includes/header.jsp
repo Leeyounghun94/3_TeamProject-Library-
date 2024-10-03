@@ -98,6 +98,9 @@
 				<div class ="logout_button" >
 					<a href="/library/logout" id="logout_button">로그아웃</a>
 				</div>
+				<div class ="userPoint_button" > <!-- 포인트 출력 2024 10 02 -->
+					<a href="#" id="userPoint_button">${userPoint}</a>
+				</div>
 			</c:if>
 			<c:if test="${user.authority == 1 }">
 				<div><a href="/library/admin/main">어드민페이지</a></div>
@@ -150,6 +153,7 @@
 		</div>
 
 	</div>
+
 <script type="text/javascript">
 /* $("#logout_button").click(function(){
 	$.ajax({
