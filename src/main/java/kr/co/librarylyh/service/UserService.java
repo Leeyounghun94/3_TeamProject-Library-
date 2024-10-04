@@ -48,7 +48,16 @@ public interface UserService {
 	// 나의 도서목록 요청 페이징 [전체 가져오기] 2024 10 03
 	public int getTotalMyRequest(String id);
 	
-	// 관리자용 요청 목록 전체 페이징 [전체 가져오기] 2024 10 03
+	// 관리자용 요청 목록 전체 페이징 [전체 수 가져오기] 2024 10 03
 	public int getTotalAdminRequest();
+	
+	// 나의 포인트 내역 페이징 [전체 수 가져오기] 2024 10 03
+	public int getTotalMyPoint(String id);
+	
+	// 관리자 포인트 내역 페이징 [전체 수 가져오기] 2024 10 03
+	public int getTotalAdminPoint();
+	
+	//날짜 업데이트 2024 10 03
+	public void updateLastVisitDate(UserVO loginUser);
 	
 }

@@ -15,7 +15,9 @@ alter table member_tbl modify authority number(10) default '0';
 alter table member_tbl add point number(10) default '0'; -- 포인트 추가 2024 10 02
 alter table member_tbl add lastVisitDate date default sysdate; -- 매일 포인트 증정용 2024 10 02
 
-update member_tbl set lastVisitDate='2024-10-02' where lastVisitDate='2024-10-03'; -- category 칼럼의 '선택' 데이터 값을 '자유'로 변경
+update member_tbl set lastVisitDate='2024-10-02 15:04:48.0' where lastVisitDate='2024-10-03 15:04:48.0'; -- category 칼럼의 '선택' 데이터 값을 '자유'로 변경
+
+UPDATE member_tbl SET lastVisitDate=TO_DATE( '2024/06/01 11:00:00', 'YYYY/MM/DD HH:MM:SS' );
 
 select dbms_random.String('X',10) u_id from dual; -- 임시테이블에 랜덤 번호 생성 (u_id)
 

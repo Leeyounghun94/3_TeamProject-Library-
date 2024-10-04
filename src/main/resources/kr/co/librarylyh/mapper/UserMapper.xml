@@ -69,12 +69,15 @@
 		]]>
 	</select>
 	
+	
+	<!-- 일일 로그인 포인트 지급 2024 10 02 -->
 	<update id="updateLastVisitAndPoint" >
     	update member_tbl 
     	set point = #{point}, lastVisitDate = #{lastVisitDate}
     	where id = #{id}
 	</update>
 	
+	<!-- 유저 책 요청 전체 데이터 수 2024 10 03 -->
 	<select id="getTotalMyRequest" resultType="int">
 		<![CDATA[
 		select count(*) from tbl_requestBook where		
@@ -83,13 +86,38 @@
 		
 	</select>
 	
-		<select id="getTotalAdminRequest" resultType="int">
+	<!-- 관리자 책 요청 전체 데이터 수 2024 10 03 -->
+	<select id="getTotalAdminRequest" resultType="int">
 		<![CDATA[
 		select count(*) from tbl_requestBook
 		]]>
 		
 	</select>
 
+	<!-- 유저 포인트 내역 전체 데이터 수 2024 10 03 -->
+	<select id="getTotalMyPoint" resultType="int">
+		<![CDATA[
+		select count(*) from tbl_bookPoint where		
+		bookPointNo > 0 and bookPointUserId = #{bookPointUserId} 
+		]]>
+		
+	</select>
+	
+	<!-- 관리자 포인트 내역 전체 데이터 수 2024 10 03 -->
+	<select id="getTotalAdminPoint" resultType="int">
+		<![CDATA[
+		select count(*) from tbl_bookPoint
+		]]>
+		
+	</select>
+	
+	<!-- 비밀번호 업데이트 -->
+	<update id="updateLastVisitDate">
+		<![CDATA[
+			update member_tbl set lastVisitDate = #{lastVisitDate}
+		]]>
+	</update>
+	
 	
 	
 </mapper>

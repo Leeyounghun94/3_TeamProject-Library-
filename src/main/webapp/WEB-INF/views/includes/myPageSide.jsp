@@ -53,13 +53,17 @@
         
         	<li> <a href="/myPage/changePw">비밀번호 변경</a> </li>
         
-        	<li> <a href="/library/myBookRequest">나의 도서 요청 목록</a></li>
+        	<li> <a href="/library/myBookRequest">나의 도서 요청 목록</a></li> <!-- 2024 10 01 도서요청 메뉴 추가 -->
+        	
+        	<li> <a href="/library/myPagePoint">나의 포인트 목록</a></li> <!-- 2024 10 01 포인트 메뉴 추가 -->
         
         	<li> <a href="/myPage/secession">회원 탈퇴</a> </li>
         
        	<c:if test="${user.authority == 1 }">
 			<li> <a href="/library/adminBookRequest">회원 요청 도서 목록 관리</a> </li>
+			<li> <a href="/library/adminBookPoint">회원 포인트 내역 관리</a> </li>
 		</c:if>
+
         
     </ul>
     

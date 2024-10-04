@@ -338,12 +338,42 @@
     </update>
     
     <!-- 포인트 로그기록 2024 10 02 -->
-    <insert id="allPointHistory">
-    	insert into tbl_bookPoint (bookPointNo, bookPoint, bookPointTotal,
-    	bookPointHistory, bookPointUserId, bookPointNickName)
-    	values( seq_bookPoint.nextval, #{bookPoint}, #{bookPointTotal},
-    	#{bookPointHistory}, #{bookPointUserId}, #{bookPointNickName}) 
-	</insert>
+<insert id="allPointHistory">
+    insert into tbl_bookPoint (
+        bookPointNo, 
+        bookPoint, 
+        bookPointTotal, 
+        bookPointHistory, 
+        bookPointUserId,
+        bookPointNickName
+    ) values (
+        seq_bookPoint.nextval,
+        #{bookPoint},
+        #{bookPointTotal},
+        #{bookPointHistory},
+        #{bookPointUserId},
+        #{bookPointNickName}
+    )
+</insert>
+
+    <!-- 포인트 로그기록 2024 10 02 -->
+<insert id="allPointHistoryT">
+    insert into tbl_bookPoint (
+        bookPointNo, 
+        bookPoint, 
+        bookPointTotal, 
+        bookPointHistory, 
+        bookPointUserId,
+        bookPointNickName
+    ) values (
+        seq_bookPoint.nextval,
+        #{bookPoint},
+        #{bookPointTotal},
+        #{bookPointHistory},
+        #{bookPointUserId},
+        #{bookPointNickName}
+    )
+</insert>
 	
 	<!-- 도서 요청시 500 포인트 차감 2024 10 02 -->
     <update id="bookRequestPoint">
@@ -362,7 +392,57 @@
     		where id=#{id}
     	]]>
     </update>
+    
+    <!-- 회원 포인트 내역 리스트 출력 2024 10 03 -->
+    	<select id="getMyPointList" resultType="kr.co.librarylyh.domain.BookPointVO">
+	  <![CDATA[
+	    SELECT *
+	    FROM (
+	      SELECT /*+INDEX_DESC(tbl_bookPoint pk_board) */
+	        rownum rn, bookPointNo, bookPoint, bookPointTotal, bookPointDate,
+	        bookPointHistory, bookPointUserId, bookPointNickName
+	      FROM tbl_bookPoint
+	      WHERE bookPointUserId = #{bookPointUserId}
+	      AND rownum <= #{cri.pageNum} * #{cri.amount}
+	    )
+	    WHERE rn > (#{cri.pageNum} - 1) * #{cri.amount}
+	  ]]>
+	</select>
+	
+	<!-- [관리자] 요청 포인트 리스트 가져오기 2024 10 01  -->
+	<select id="adminPointList" resultType="kr.co.librarylyh.domain.BookPointVO">
+		<![CDATA[
+			select * 
+			from
+			 (
+			  select /*+INDEX_DESC(tbl_bookPoint pk_board) */
+	        rownum rn, bookPointNo, bookPoint, bookPointTotal, bookPointDate,
+	        bookPointHistory, bookPointUserId, bookPointNickName
+	      from 
+	        tbl_bookPoint
+	      where 
+			 
+			rownum <= #{pageNum} * #{amount}
+	      )
+	  		where rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
 
-
+	<!-- 포인트 로그 삭제 2024 10 03 -->
+	<delete id="deletePointLog">
+		<![CDATA[
+			delete tbl_bookPoint where bookPointNo = #{bookPointNo}
+		]]>
+	</delete>
+	
+	    <!-- 회원 포인트 차감 2024 10 03 -->
+    <update id="deletePointUser">
+    	<![CDATA[  
+    		update member_tbl set
+    		point = point - #{point}
+    		where id=#{id}
+    	]]>
+    </update>
+    
 
 </mapper>

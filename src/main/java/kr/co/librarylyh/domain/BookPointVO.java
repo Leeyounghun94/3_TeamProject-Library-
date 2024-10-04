@@ -15,5 +15,6 @@ public class BookPointVO {
 	private String bookPointUserId; // 포인트 적립한 유저 아이디
 	private String bookPointNickName; // 포인트 적립한 유저 닉네임
 	
+	
 
 }

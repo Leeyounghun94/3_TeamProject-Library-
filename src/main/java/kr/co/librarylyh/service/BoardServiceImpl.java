@@ -169,6 +169,20 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteRequestBook(Long r_bookBno) { 	
 		return mapper.deleteRequestBook(r_bookBno); // userController 에서 이용중
 	}
+	
+	// 포인트 철회 2024 10 03
+	@Override
+	public int updateBookPoint(BookPointVO Pvo) {
+		
+		int pointNo = Pvo.getBookPointNo(); // 로그 기록 삭제용 번호
+		String id = Pvo.getBookPointUserId(); // 해당 유저 포인트 차감용 아이디
+		int point = Pvo.getBookPoint(); // 해당 로그의 포인트량
+		
+		
+		mapper.deletePointUser(point, id); // 포인트 삭제
+		
+		return mapper.deletePointLog(pointNo); // 포인트 로그 삭제;
+	}
 
 
 	
@@ -250,6 +264,22 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void allPointHistory(BookPointVO vo) {
 		mapper.allPointHistory(vo);
+	}
+	
+	
+	// 포인트 리스트 가져오기 2024 10 03
+	@Override
+	public List<BookPointVO> getMyPointList(String bookPointUserId, Criteria cri) {
+		
+		return mapper.getMyPointList(bookPointUserId, cri);
+		
+	}
+	
+	// 전체 포인트 리스트 [관리자]가져오기 2024 10 03
+	@Override
+	public List<BookPointVO> adminPointList(Criteria cri){
+		
+		return mapper.adminPointList(cri);
 	}
 
 }

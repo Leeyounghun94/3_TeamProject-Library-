@@ -21,6 +21,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,6 +86,7 @@ public class UserController {
     	vo.setBookPointHistory(bookPointHistory);
     	vo.setBookPointUserId(joinUserId);
     	vo.setBookPointNickName(user.getNickName());
+
     	
     	boardService.allPointHistory(vo); // 게시글 작성 로그 기록
     	
@@ -124,36 +130,80 @@ public class UserController {
     // 로그인 
     @PostMapping("/login")
     public String login(HttpServletRequest request, UserVO user, RedirectAttributes rttr) throws Exception {
-        
-    	HttpSession session = request.getSession();
-    	UserVO loginUser = service.login(user);
 
-       
-    	if(loginUser == null) {
-    		int result = 0;
-    		rttr.addFlashAttribute("result", result);
-    		return "redirect:/library/login";
-    	}
-    	
-    	session.setAttribute("user", loginUser);
-    	
-    	String userId = loginUser.getId();//// add_게시판 아이디 확인용 2024 09 23
-    	session.setAttribute("userId", userId);/// add_게시판 아이디 확인용  2024 09 23 // 요청 도서 목록 아이디 대입 2024 09 30
-    	String userNickName = loginUser.getNickName(); // add_ 게시판 닉네임 확인용 2024 09 23
-    	session.setAttribute("userNickName", userNickName); // add_ 게시판 닉네임 확인용 2024 09 23
-    	int userAuthority = loginUser.getAuthority(); // add_ 게시판 관리자 권한 확인(관리자 답글용) 2024 09 24
-    	session.setAttribute("userAuthority", userAuthority); // add_ 게시판 관리자 권한 확인(관리자 답글용) 2024 09 24
-    	String userU_id = loginUser.getU_id(); // 포인트 총량 가져오기 2024 10 02
-    	session.setAttribute("userU_id", userU_id); // 포인트 총량 가져오기 2024 10 02
-    	
-    	int userPoint = loginUser.getPoint(); 
-    	
-    	UserVO Uvo = service.read(userU_id);
-    	
-    	service.updateLastVisitAndPoint(Uvo);
-    	
-    	
+        HttpSession session = request.getSession();
+        UserVO loginUser = service.login(user);
+
+        if (loginUser == null) {
+            int result = 0;
+            rttr.addFlashAttribute("result", result);
+            return "redirect:/library/login";
+        }
+
+        // 세션 설정
+        session.setAttribute("user", loginUser);
+
+        String userId = loginUser.getId(); // 게시판 아이디 확인용
+        session.setAttribute("userId", userId);
+        String userNickName = loginUser.getNickName(); // 게시판 닉네임 확인용
+        session.setAttribute("userNickName", userNickName);
+        int userAuthority = loginUser.getAuthority(); // 관리자 권한 확인용
+        session.setAttribute("userAuthority", userAuthority);
+        String userU_id = loginUser.getU_id(); // 포인트 총량 가져오기
+        session.setAttribute("userU_id", userU_id);
+
+        // 유저 정보 조회
+        UserVO Uvo = service.read(userU_id);
+        
+        log.info("Uvo 값 확인 :" + Uvo);
+
+        if (loginUser != null) {
+            Date today = new Date(); // 현재 날짜를 Date로 가져오기
+            log.info("today: " + today);
+
+            Date lastVisitDate = Uvo.getLastVisitDate(); // 마지막 방문일 가져오기
+            
+            log.info("lastVisitDate: fsdfasdfasdfasdfsadf" + lastVisitDate);
+
+            // "오늘 첫 방문이거나, 이전에 방문한 경우" 조건으로 변경
+            if (lastVisitDate == null || !isSameDay(lastVisitDate, today)) {
+                // 포인트 지급 및 마지막 방문일 업데이트
+                service.updateLastVisitAndPoint(Uvo); // 실질적 포인트 추가 및 날짜 업데이트
+
+                String id = Uvo.getId(); // 로그인 시 발생한 세션: id 분리
+                String nickName = Uvo.getNickName(); // 로그인 시 발생한 세션: userNickName 분리
+                int userPoint = Uvo.getPoint(); // 현재 유저의 포인트 가져오기
+
+                int bookPoint = 100; // 포인트 100 증가
+                String bookPointHistory = "일일 접속 포인트 증가";
+
+                boardService.boardAddPoint(id); // 게시글 유저 포인트 추가
+
+                BookPointVO vo = new BookPointVO();
+                vo.setBookPoint(bookPoint);
+                vo.setBookPointTotal(userPoint + bookPoint); // 총 포인트는 현재 포인트 + 지급된 포인트
+                vo.setBookPointHistory(bookPointHistory);
+                vo.setBookPointUserId(id);
+                vo.setBookPointNickName(nickName);
+
+                boardService.allPointHistory(vo); // 포인트 기록 로그 저장
+
+                // 마지막 방문 날짜를 오늘로 업데이트
+                loginUser.setLastVisitDate(today);
+            }
+        }
+
         return "redirect:/library/home";
+    }
+
+    // 두 날짜가 같은 날인지 비교하는 메서드
+    private boolean isSameDay(Date date1, Date date2) {
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+               cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
     }
     
     //로그아웃
@@ -175,7 +225,6 @@ public class UserController {
     
     // 요청 도서 목록 2024 09 30
     @GetMapping("/myBookRequest") 
-    @RequestMapping(value = "myBookRequest", method = RequestMethod.GET)
     public void myBookRequest(HttpServletRequest request, Model model, @Param("cri") Criteria cri, @Param("id") String id) {
     	
     	HttpSession session = request.getSession();
@@ -201,6 +250,36 @@ public class UserController {
     	model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
     	
     }
+    
+    // 나의 포인트 기록 2024 10 03
+    @GetMapping("/myPagePoint") 
+    public void myPagePoint(HttpServletRequest request, Model model, @Param("cri") Criteria cri, @Param("id") String id) {
+    	
+    	HttpSession session = request.getSession();
+    	
+    	id = (String) session.getAttribute("userId"); // 로그인 시 발생한 세션 : userId 따로 분리
+
+    	model.addAttribute("bookPointList", boardService.getMyPointList(id, cri));
+    	
+    	int total = service.getTotalMyPoint(id); // 총 게시물 수
+    	
+    	model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
+    	
+    }
+    
+    // 관리자 포인트 기록 2024 10 03
+    @GetMapping("/adminBookPoint") 
+    public void adminBookPoint(HttpServletRequest request, Model model, @Param("cri") Criteria cri, @Param("id") String id) {
+    	   	
+
+    	model.addAttribute("bookPointList", boardService.adminPointList(cri));
+    	
+    	int total = service.getTotalAdminPoint(); // 총 게시물 수
+    	
+    	model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
+    	
+    }
+    
     
 	// 요청 도서 목록 수정 2024 10 01
 	@RequestMapping(method = { RequestMethod.PUT, RequestMethod.PATCH }, //put 전체/ patch 일부 수정
@@ -230,6 +309,24 @@ public class UserController {
 				? new ResponseEntity<>("success", HttpStatus.OK) // 200 정상
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 500 서버 오류
 	}
+	
+	// 포인트 내역 '회수 클릭시 액션' [관리자] 2024 10 03
+	@RequestMapping(method = { RequestMethod.PUT, RequestMethod.PATCH }, //put 전체/ patch 일부 수정
+			value="/asd/{PointRno}",consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE )
+	public ResponseEntity<String> pointWithDraw(@RequestBody BookPointVO Pvo, @PathVariable("PointRno") int PointRno){
+			//					   						 이미 폼(form)에 있는 값						 수정할 번호
+
+		Pvo.setBookPointNo(PointRno); // 이미 가지고있는 객체의 rno 값을 넣음
+		
+		
+		log.info("UserController.pointWithDraw() 메서드 실행 / 수정할 rnoPoint : " + Pvo);
+
+		log.info("수정할 객체 : " + Pvo);
+
+		return boardService.updateBookPoint(Pvo) == 1
+				? new ResponseEntity<>("success", HttpStatus.OK) // 200 정상
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 500 서버 오류
+	}	
 
 
     @GetMapping("/modify")

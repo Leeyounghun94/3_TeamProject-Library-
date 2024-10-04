@@ -2,6 +2,8 @@ package kr.co.librarylyh.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import kr.co.librarylyh.domain.BoardAttachVO;
 import kr.co.librarylyh.domain.BoardVO;
 import kr.co.librarylyh.domain.BookPointVO;
@@ -41,6 +43,7 @@ public interface BoardService {
 	
 	public List<BookRequestVO> adminRequestBookList(Criteria cri); // [관리자]요청게시물 전체 가져오기 2024 10 01
 	
+	public int updateBookPoint(BookPointVO Pvo); // 포인트 철회 2024 10 03
 	
 	public int getTotal(Criteria cri); // 게시글 수 카운트
 	
@@ -69,6 +72,8 @@ public interface BoardService {
 
 	public void userJoinPoint(String userId); // 회원가입 시 1000포인트[유저테이블] 2024 10 02
 
-	
+	public List<BookPointVO> getMyPointList(String bookPointUserId, Criteria cri); // 포인트 리스트 가져오기 2024 10 03
+
+	public List<BookPointVO> adminPointList(Criteria cri); // 전체 포인트 리스트 [관리자]가져오기 2024 10 03
 
 }

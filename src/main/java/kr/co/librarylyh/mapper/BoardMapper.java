@@ -78,6 +78,12 @@ public interface BoardMapper {
 	
 	public void allPointHistory(BookPointVO vo); // 포인트 로그 기록 2024 10 02
 	
+	public List<BookPointVO> getMyPointList(@Param("bookPointUserId") String bookPointUserId, @Param("cri") Criteria cri); // 포인트 리스트 가져오기 2024 10 03
 	
+	public List<BookPointVO> adminPointList(Criteria cri); // 전체 포인트 리스트 [관리자]가져오기 2024 10 03
+	
+	public int deletePointLog(int pointNo); // 포인트 로그 삭제
+	
+	public void deletePointUser(@Param("point") int point, @Param("id") String id); // 포인트 삭제
 	
 }

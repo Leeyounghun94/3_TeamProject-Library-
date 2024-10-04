@@ -166,8 +166,8 @@ public class BoardController {
 		
 	}
 	
-	
-	@PostMapping("/listRequest") // 새글 작성 요청 도서 2024 09 30
+	 // 도서 요청 하기 2024 09 30
+	@PostMapping("/listRequest")
 	public String registerBookRequest(BookRequestVO requestBoard, RedirectAttributes rttr, HttpServletRequest request) {
 
 		log.info("==========================");
@@ -185,7 +185,7 @@ public class BoardController {
 
 			service.registerRequest(requestBoard); // 보드 객체를 사용하여 도서 글을 등록
 			
-			if(requestBoard != null) {
+			if(requestBoard != null) { // 도서 요청글을 작성할 경우 매서드 시작
 			
 	    	HttpSession session = request.getSession();
 	    	
@@ -194,34 +194,49 @@ public class BoardController {
 	    	
 	    	UserVO Uvo = userService.read(userU_id);
 	    	
-	    	String id = Uvo.getId();// 로그인 시 발생한 세션 : id 따로 분리 2024 10 02
+	    	int userPointChk = Uvo.getPoint(); // 유저가 보유한 포인트
 	    	
-	    	String nickName = Uvo.getNickName();// 로그인 시 발생한 세션 : userNickName 따로 분리 2024 10 02
-	    	
-	    	int userPoint = Uvo.getPoint() - 500; // 로그인 시 발생한 세션 : point 따로 분리 2024 10 02
+	    	// 조건 추가, 포인트가 0 미만 일 경우 도서 요청 작성 제한 2024 10 03
+		    	if (userPointChk - 500 > 0) {
+		    		
+			    	String id = Uvo.getId();// 로그인 시 발생한 세션 : id 따로 분리 2024 10 02
+			    	
+			    	String nickName = Uvo.getNickName();// 로그인 시 발생한 세션 : userNickName 따로 분리 2024 10 02
+			    	
+			    	int userPoint = Uvo.getPoint() - 500; // 로그인 시 발생한 세션 : point 따로 분리 2024 10 02
+	
+			    	// 포인트 총량을 세션으로 가져오니 최신화가 안됨, 그래서 포인트를 가져오는 sql 문을 작성하기로함
+					int bookPoint = -500; // 포인트 50 증가
+					
+					String bookPointHistory = "도서 요청으로 포인트감소";
+					
+					service.bookRequestPoint(id);
+					
+			    	BookPointVO vo = new BookPointVO();
+			    	
+			    	vo.setBookPoint(bookPoint);
+			    	vo.setBookPointTotal(userPoint);
+			    	vo.setBookPointHistory(bookPointHistory);
+			    	vo.setBookPointUserId(id);
+			    	vo.setBookPointNickName(nickName);
+			    	
+			    	service.allPointHistory(vo); // 게시글 작성 로그 기록
+			    	
 
-	    	// 포인트 총량을 세션으로 가져오니 최신화가 안됨, 그래서 포인트를 가져오는 sql 문을 작성하기로함
-			int bookPoint = -500; // 포인트 50 증가
-			
-			String bookPointHistory = "도서 요청으로 포인트감소";
-			
-			service.bookRequestPoint(id);
-			
-	    	BookPointVO vo = new BookPointVO();
+					service.registerRequest(requestBoard); // 보드 객체를 사용하여 도서 글을 등록
+					
+					
+					rttr.addFlashAttribute("result", requestBoard.getR_bookBno()); // 번호를 가지고 모달창에 완료 문구띄우기
+					
+				}else {
+					
+					rttr.addFlashAttribute("result", "fail"); // 포인트 부족시 문구 반환
+				}
 	    	
-	    	vo.setBookPoint(bookPoint);
-	    	vo.setBookPointTotal(userPoint);
-	    	vo.setBookPointHistory(bookPointHistory);
-	    	vo.setBookPointUserId(id);
-	    	vo.setBookPointNickName(nickName);
+	    	}
 	    	
-	    	service.allPointHistory(vo); // 게시글 작성 로그 기록
-		}
 
-		service.registerRequest(requestBoard); // 보드 객체를 사용하여 도서 글을 등록
-		
-		
-		rttr.addFlashAttribute("result", requestBoard.getR_bookBno()); // 번호를 가지고 모달창에 완료 문구띄우기
+
 		
 		return "redirect:/library/listRequest";
 			

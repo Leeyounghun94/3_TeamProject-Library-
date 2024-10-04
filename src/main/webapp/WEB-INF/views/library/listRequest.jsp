@@ -383,6 +383,12 @@ $(document).ready(function(e){
 		if (parseInt(result) > 0) {
 			$(".modal-body").html("게시글 " + parseInt(result) + " 번이 등록되었습니다.");
 		}
+		
+		if (result === "fail" || history.state) {
+			alert("포인트가 부족합니다.");
+			return;
+		}
+
 
 		$("#myModal").modal("show"); // Modal id= myModal 을 show(창을 띄운다)
 	} // 모달창 띄우는 메서드
