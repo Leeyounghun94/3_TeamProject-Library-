@@ -52,13 +52,13 @@ public class BoardController {
 
 	}
 
-	@GetMapping("/list") // 메인(기존) 게시판
+	@GetMapping("/listReview") // 메인(기존) 게시판
 	public void list(Criteria cri, Model model, Long bno) {
 
 	    
-		model.addAttribute("list", service.getList(cri)); // 게시물 리스트
+		model.addAttribute("list", service.getListReview(cri)); // 게시물 리스트
 
-		int total = service.getTotal(cri); // 총 게시물 수
+		int total = service.getTotalReview(cri); // 총 게시물 수
 
 		log.info("total: " + total);
 		

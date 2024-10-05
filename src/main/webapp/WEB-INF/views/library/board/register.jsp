@@ -124,6 +124,7 @@
   			<select class="form-select" id="inputGroupSelect01" name="category" placeholder="카테고리를 입력해주세요.">
     			<option value="자유">자유</option>
     			<option value="QnA">QnA</option>
+    			<option value="Review">리뷰</option>
   			</select>
 			</div>
           <div class="form-group">

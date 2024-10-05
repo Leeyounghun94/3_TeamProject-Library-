@@ -120,11 +120,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardVO> getList(Criteria cri) {
+	public List<BoardVO> getListReview(Criteria cri) {
 
 		log.info("get List with criteria: " + cri);
 
-		return mapper.getListWithPaging(cri);
+		return mapper.getListWithPagingListReview(cri);
 	}
 	
 	@Override
@@ -187,10 +187,10 @@ public class BoardServiceImpl implements BoardService {
 
 	
 	@Override
-	public int getTotal(Criteria cri) {
+	public int getTotalReview(Criteria cri) {
 
 		log.info("get total count");
-		return mapper.getTotalCount(cri);
+		return mapper.getTotalCountListReview(cri);
 	}
 	
 	// 게시글 분류 자유 게시판 2024 09 28

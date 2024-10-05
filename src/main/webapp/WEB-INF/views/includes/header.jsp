@@ -72,7 +72,7 @@
 					    <div class="dropdown">
 						<li class="main_nav_item"><a>게시판</a></li>	
 						<div class="dropdown-content"><br>
-					        <a href="/library/list">기존 게시판</a><br>
+					        <a href="/library/listReview">리뷰 게시판</a><br>
 					        <a href="/library/listFree">자유 게시판</a><br>
 					        <a href="/library/listQnA">Q&A 게시판</a><br>
 					        <a href="/library/listRequest">도서 요청</a><br>

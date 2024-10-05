@@ -74,6 +74,7 @@
 		<select class="form-select" id="inputGroupSelect01" name="category">
     		<option value="자유">자유</option>
     		<option value="QnA">QnA</option>
+    		<option value="Review">리뷰</option>
   		</select>
 		
 		<div class="form-group">
@@ -237,7 +238,11 @@ $(document).ready(function() {
 	      }else if (listCategory == "QnA"){
 	    	  
 	    	  formObj.attr("action", "/library/listQnA").attr("method","get");
+	      }else if (listCategory == "Review"){
+	    	  
+	    	  formObj.attr("action", "/library/listReview").attr("method","get");
 	      }
+	      
 
 	      var pageNumTag = $("input[name='pageNum']").clone();
 	      var amountTag = $("input[name='amount']").clone();

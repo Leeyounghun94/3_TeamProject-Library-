@@ -31,7 +31,7 @@ public interface BoardService {
 
 	// public List<BoardVO> getList();
 
-	public List<BoardVO> getList(Criteria cri); // 게시물 가져오기.
+	public List<BoardVO> getListReview(Criteria cri); //  게시판 분류 리뷰 게시물 가져오기. 2024 10 05
 	
 	public List<BoardVO> getListListFree(Criteria cri); // 게시판 분류 자유 게시물 가져오기. 2024 09 28 
 	
@@ -45,7 +45,7 @@ public interface BoardService {
 	
 	public int updateBookPoint(BookPointVO Pvo); // 포인트 철회 2024 10 03
 	
-	public int getTotal(Criteria cri); // 게시글 수 카운트
+	public int getTotalReview(Criteria cri); // 게시판 분류 리뷰 게시글 수 카운트 2024 10 05
 	
 	public int getTotalListFree(Criteria cri); // 게시판 분류 자유 게시글 수 카운트 2024 09 28 
 	
