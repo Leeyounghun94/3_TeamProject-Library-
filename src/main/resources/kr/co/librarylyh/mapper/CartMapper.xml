@@ -6,20 +6,28 @@
 
 <mapper namespace="kr.co.librarylyh.mapper.CartMapper">
 
-<insert id="cartInsert">
-
+<insert id="cartInsert" parameterType="kr.co.librarylyh.domain.CartVO">
+<selectKey keyProperty="cart_id" order="BEFORE" resultType="String">
+select seq_cart.nextval from dual
+</selectKey>
 <![CDATA[
-insert into cart_tbl (cart_id, user_id, isbn13, c_count, photo, c_title, c_price, c_totalPrice)
-values (#{cart_id}, #{user_id}, #{isbn13}, #{c_count}, #{photo}, #{c_title}, #{c_price}, #{c_totalPrice})
+insert into cart_tbl (cart_id, user_id, isbn13, photo, c_title)
+values (#{cart_id}, #{user_id}, #{isbn13}, #{photo}, #{c_title})
 ]]>
 </insert>
 
+<insert id="CartIdPut" >
+<![CDATA[
+insert into cart_tbl (cart_id, user_id, isbn13, photo, c_title)
+values (#{cart_id}, #{user_id}, #{isbn13}, #{photo}, #{c_title})
+]]>
+</insert><!-- CartId를 알아내기 위한 Insert -->
 
 
-<select id="CartRead" resultType="kr.co.librarylyh.domain.CartVO">
+<select id="cartRead" resultType="kr.co.librarylyh.domain.CartVO">
 
 <![CDATA[
-select * from cart_tbl where cart_id = #{cart_id}
+select * from cart_tbl where cart_id = #{cart_id} and isbn13 = #{isbn13}
 ]]>
 
 </select>
@@ -27,7 +35,7 @@ select * from cart_tbl where cart_id = #{cart_id}
 <select id="cartList" resultType="kr.co.librarylyh.domain.CartVO">
 
 <![CDATA[
-select * from cart_tbl
+select * from cart_tbl where cart_id = #{cart_id}
 ]]>
 
 </select>
@@ -36,31 +44,45 @@ select * from cart_tbl
 
 <![CDATA[
 update cart_tbl set
-cart_id = #{cart_id},
-user_id = #{user_id},
+
 isbn13 = #{isbn13},
 c_count = #{c_count},
 photo = #{photo},
-c_title = #{c_title},
-c_price = #{c_price},
-c_totalPrice = #{c_totalPrice}
+c_title = #{c_title}
 where cart_id = #{cart_id}	
 ]]>
 
-</update>
+</update><!--  업뎃은 현재 사용하지 않지만 나중에 상황 위해 보류 -->
 
 <delete id="cartDelete">
 <![CDATA[
-DELETE FROM cart_tbl WHERE cart_id = {cart_id};
+DELETE FROM cart_tbl WHERE cart_id = #{cart_id} and isbn13 = #{isbn13}
 ]]>
 </delete>
 
 
 <delete id="clearBasket">
 <![CDATA[
-DELETE FROM cart_tbl WHERE user_id = {user_id};
+DELETE FROM cart_tbl WHERE cart_id = #{cart_id}
 ]]>
 </delete>
 
+<select id="cartCount" resultType="int">
+<![CDATA[
+select count(*) FROM cart_tbl WHERE cart_id = #{cart_id}
+]]>
+</select>
+
+<select id="cartIdCheck" resultType="int">
+<![CDATA[
+select count(*) FROM cart_tbl WHERE user_id = #{user_id} and to_char(cartDate) = to_char(TO_DATE(#{cartDate},'YYYY-MM-DD'))
+]]>
+</select>
+
+<select id="findCartID" resultType="String">
+<![CDATA[
+select cart_id FROM cart_tbl WHERE user_id = #{user_id} and to_char(cartDate) = to_char(TO_DATE(#{cartDate},'YYYY-MM-DD'))
+]]>
+</select>
 
 </mapper>

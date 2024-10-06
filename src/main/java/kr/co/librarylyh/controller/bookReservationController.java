@@ -1,5 +1,7 @@
 package kr.co.librarylyh.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +51,7 @@ public class bookReservationController {
 	
 	private BookReservationService service ; // service - Reservation
 	private BookListService bookService ;	// service - BookService
+	private CartService cartService;
 	
 	@GetMapping("/home")
 	public void home() {// home.jsp 연결
@@ -61,31 +64,102 @@ public class bookReservationController {
 	}
 	
 	
-	@GetMapping("/reservation/StudyReservation")
+/*	@GetMapping("/reservation/StudyReservation")
 	public void StudyReservation() {// 열람실 예약하기 - 해당 서비스 추후 개발 예정
 		
 	}
-	
+*/	
 
 	
+	// 예약 목록 조회
 	@GetMapping("/reservation/RsUpdate")
-	public void RsUpdate() {// MyPage -> 나의 예약 정보 - 예약 변경/취소
+	public String RsUpdate(HttpServletRequest request, Model model) {// MyPage -> 나의 예약 정보
 					
+		
+    	HttpSession session = request.getSession(false);
+    	
+    	if(session == null){
+    		//세션이 존재하지 않을 때의 로직
+    		
+    		return "library/home";
+    	}
+    	//세션이 존재할 때 세션에서 멤버를 불러오는 로직
+    	UserVO loginMember = (UserVO) session.getAttribute("user");
+
+    	if(loginMember == null){
+    		//세션은 존재하지만, 로그인 멤버가 없을 때의 로직
+    		
+    		return "library/login";   		
+    	}	
+    	//로그인 멤버가 있다면, 위에서 받은 loginMember 변수를 이용하면 된다.
+	
+    	String cartNum = String.valueOf(session.getAttribute("cart_id"));
+    	List<CartVO> myRsList = cartService.cartList(cartNum);
+
+    	model.addAttribute("myRsList", myRsList);
+    	model.addAttribute("userId", myRsList.get(0).getUser_id());
+    	model.addAttribute("cartId", myRsList.get(0).getIsbn13());
+    	
+    	return "library/reservation/RsUpdate";
 	}
 	
 	
+	
+	// Cart페이지에서 헤더 장바구니 버튼에서 Cart페이지 열기 
 	@GetMapping("/cart/cart")
-	public void cart() {
+	public String loginCart(HttpServletRequest request, Model model) {
 		
-		}
-	
-	@PostMapping("/cart/cart/{isbn13}")
-	public String cartbook(Model model) {
+    	HttpSession session = request.getSession(false);
+    	
+    	if(session == null){
+    		//세션이 존재하지 않을 때의 로직
+    		
+    		return "library/home";
+    	}
+    	//세션이 존재할 때 세션에서 멤버를 불러오는 로직
+    	UserVO loginMember = (UserVO) session.getAttribute("user");
+
+    	if(loginMember == null){
+    		//세션은 존재하지만, 로그인 멤버가 없을 때의 로직
+    		
+    		return "library/login";
+    	}	
+    	//로그인 멤버가 있다면, 위에서 받은 loginMember 변수를 이용하면 된다.
+    	
+    	    	    
+    	
+    	//세션이 존재하며 Session에다가 cart_id를 넣어주기.
+    	
+ //   	String cartNum = String.valueOf(session.getAttribute("cart_id"));
+    	    	    	
+    	CartVO vo = new CartVO();
+    	LocalDate date = LocalDate.now();
+    	DateTimeFormatter timeFomat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	String time = date.format(timeFomat);
+    	vo.setUser_id(loginMember.getU_id());
+    	vo.setCartDate(time);
+    	    	
+    	List<String> cartNum = cartService.findCartID(vo);  
+    	log.info("==========cartNum========" + cartNum);
+    	List<CartVO> cartList = cartService.cartList(cartNum.get(0));
+
+    	model.addAttribute("cartList", cartList);
+    	model.addAttribute("userId", cartList.get(0).getUser_id());
+    	model.addAttribute("cartId", cartList.get(0).getCart_id());  
+    	model.addAttribute("cartDate", cartList.get(0).getCartDate());
+    	
+    	model.addAttribute("listCount", cartService.cartCount(cartNum.get(0)));
+    	
+    	
+    	return "library/cart/cart";
+    }
 		
-		model.addAttribute("user_id");
-		return "library/cart/cart/";
+
+
+	@GetMapping("/reservation/RsCreate")
+	public void RsCreate( ) {// 도서 예약 신청하기 페이지 경로
+		
 	}
-	
 	
 	// 예약 신청하기
 	@PostMapping("/reservation/RsCreate")
@@ -94,94 +168,13 @@ public class bookReservationController {
 		model.addAttribute("isbn13", bookvo);
 		model.addAttribute("author", bookvo);
 		model.addAttribute("publisher", bookvo);
-		model.addAttribute("price", bookvo);
-		
+		model.addAttribute("price", bookvo);		
 		model.addAttribute("name", uservo);
-		
-		
+				
 		log.info("bookReservationController.RsCreate 메서드 실행");	
 
 		return "redirect:/reservation/RsCreate";
 
-	}
-	
-	@GetMapping("/reservation/RsCreate")
-	public void RsCreate( ) {
-		
-	}
-	
-	
-	// BookReservation.jsp 에서 책 목록 조회 List
-	@GetMapping("/reservation/BookReservation")
-	public String RsList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-			@RequestParam(value = "amount", defaultValue = "10") int amount,
-			@RequestParam(value = "category_id", required = false) String category_id,
-			@RequestParam(value = "rentalAvailable", required = false) String rentalAvailable,
-			@RequestParam(value = "publicationDateFilter", required = false) String publicationDateFilter,
-			Model model, Criteria cri) {
-		
-		Paging pge = new Paging(pageNum, amount);
-		Map<String, Object> searchParams = new HashMap<>();
-
-		// 필터 조건이 있을 경우에만 searchParams에 추가 (필터 설정 안할때 URL 난장판되길래 만듦)
-		if (category_id != null && !category_id.isEmpty()) {
-			searchParams.put("category_id", category_id);
-		}
-		if (rentalAvailable != null && !rentalAvailable.isEmpty()) {
-			searchParams.put("rentalAvailable", rentalAvailable);
-		}
-		if (publicationDateFilter != null && !publicationDateFilter.isEmpty()) {
-			searchParams.put("publicationDateFilter", publicationDateFilter);
-		}
-
-		// 기본 검색 조건에 맞는 모든 책 목록 가져오기
-		List<BookListVO> bookList = bookService.getListWithFiltersAndPaging(pge, searchParams);
-		model.addAttribute("bookList", bookList);
-		
-/*		// bookReservation - 페이징 처리 
-		
-		int total =service.RsGetTotal();
-		
-		RsPageDTO rsPageMake = new RsPageDTO(cri, total);		
-		
-		model.addAttribute("rsPageMaker", rsPageMake);
-*/		
-		
-		
-		log.info("bookReservationController.RsList 메서드 실행");
-		
-		return "library/reservation/BookReservation";
-	}
-		
-
-	// addToBasket 메서드를 호출하여 user_id와 isbn13을 Service에 전달.
-	@PostMapping("/cart/cart")
-    @ResponseBody // 이 부분을 사용하면 JSON 형식으로 반환 가능
-    public Map<String, Object> confirmReservation(@RequestParam("user_id") String user_id) {
-        // 예약 로직 실행
-        boolean isSuccess = service.confirmReservation(user_id);
-
-        // 결과를 JSON 형태로 반환
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", isSuccess);
-        response.put("message", isSuccess ? "예약이 완료되었습니다!" : "예약에 실패했습니다.");
-        return response;
-		}
-	
-	  
-	
-	// BookReservationController의 confirmReservation 메서드가 호출되어 Service에 요청을 전달.
-	  @PostMapping("/confirmReservation")
-      public String confirmReservation(@RequestParam("user_id") String user_id, Model model) {
-          boolean result = service.confirmReservation(user_id);
-          model.addAttribute("message", result);
-          return "reservationResult";
-      }
-	
-	
-	
-	
-	
-	
+	}	
 
 }

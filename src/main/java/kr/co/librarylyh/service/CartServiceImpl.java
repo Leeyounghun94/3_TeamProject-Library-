@@ -23,22 +23,28 @@ public class CartServiceImpl implements CartService {
 	
 
 	@Override
-	public void CartRegister(CartVO vo) throws Exception {
+	public int cartRegister(CartVO vo) {// cartid 생성하고 넣기
 		log.info("CartServiceImpl.CartRegister 메서드 실행");
-		cartMapper.cartInsert(vo);
+		return cartMapper.cartInsert(vo);
 		
 	}
-
+	
 	@Override
-	public List<CartVO> cartList() {
-		log.info("CartServiceImpl.cartList 메서드 실행");
-		return cartMapper.cartList();
+	public int CartIdPut(CartVO vo) {// 기존 인서트
+		log.info("CartServiceImpl.CartIdPut 메서드 실행");
+		return cartMapper.CartIdPut(vo);
 	}
 
 	@Override
-	public CartVO cartRead(String cart_id) {
+	public List<CartVO> cartList(String cart_id) {
+		log.info("CartServiceImpl.cartList 메서드 실행");
+		return cartMapper.cartList(cart_id);
+	}
+
+	@Override
+	public CartVO cartRead(CartVO vo) {
 		log.info("CartServiceImpl.cartRead 메서드 실행");
-		return cartMapper.CartRead(cart_id);
+		return cartMapper.cartRead(vo);
 	}
 
 	@Override
@@ -49,18 +55,38 @@ public class CartServiceImpl implements CartService {
 
 	
 	@Override
-	public boolean cartRemove(String cart_id) {
+	public boolean cartRemove(String cart_id, Long isbn13) {
 		log.info("CartServiceImpl.cartRemove 메서드 실행");
-		return cartMapper.cartDelete(cart_id) == 1;
+		return cartMapper.cartDelete(cart_id, isbn13) == 1;
 	}
 	
 
 	@Override
 	public boolean clearBasket(String user_id) {
-		log.info("CartServiceImpl.cartRemove 메서드 실행");
+		log.info("CartServiceImpl.clearBasket 메서드 실행");
 		return cartMapper.clearBasket(user_id) == 1;
 		
 	}
+
+	@Override
+	public int cartCount(String cart_id) {
+		log.info("CartServiceImpl.cartCount 메서드 실행");
+		return cartMapper.cartCount(cart_id);
+	}
+
+	@Override
+	public int cartIdCheck(CartVO vo) {
+		// TODO Auto-generated method stub
+		return cartMapper.cartIdCheck(vo);
+	}
+
+	@Override
+	public List<String> findCartID(CartVO vo) {
+		// TODO Auto-generated method stub
+		return cartMapper.findCartID(vo);
+	}
+
+
 
 	
 

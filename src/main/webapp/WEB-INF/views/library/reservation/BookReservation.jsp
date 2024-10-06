@@ -172,229 +172,29 @@
 
 
 
-			<!--  검색 창 -->
+			
 				<div id="content">
 					<div class="container">
 						<div id="contents">
-							<div class="position-static" style="z-index: 1030;">
-        <nav class="navbar navbar-light bg-light">
-        
-                     
-            <form class="form-inline mt-1 mb-1" onsubmit="handleFormSubmit(event)" style="margin: auto; text-align: center;">
-                <button id="toggleButton" type="button"
-                        class="btn btn-outline-danger mr-2 my-sm-2 toggle-mode"
-                        onclick="toggleFunction()"
-                        data-toggle="tooltip" data-placement="top" title="검색모드로 전환합니다.">페이지 이동
-                </button>
-
-                <input id="searchInput" class="form-control search-mode mr-sm-2" type="search"
-                       placeholder="제목 간편검색"
-                       aria-label="Search" required>
-                <div id="autocompleteList" class="autocomplete-items"></div>
-
-                <button id="toggleButton2" class="btn btn-outline-success my-2 my-sm-0 toggle-mode"
-                        type="submit"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="검색을 시작합니다.">검색
-                </button>
-
-            </form>
-            <div class="view-container">
-                <div class="tabs">
-                    <input type="radio" id="radio-1" name="tabs" value="list" checked="">
-                    <label class="tab" for="radio-1"><i class="bi bi-list-ul"></i></label>
-                    <input type="radio" id="radio-2" name="tabs">
-                    <label class="tab" for="radio-2"><i class="bi bi-grid"></i></label>
-                    <span class="glider"></span>
-                </div>          
-            </div>
-        </nav>
-        <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="bg-light p-5" style="min-height: 300px">
-                <div class="btn-group" role="group">
-                    <button id="dropdownMenuButton" type="button"
-                            class="btn btn-secondary dropdown-toggle"
-                            data-toggle="dropdown" aria-expanded="false">
-                        카테고리
-                    </button>
-                    <ul id="categoryDropdownContainer" class="dropdown-menu">
-                    </ul>
-                    <div id="subMenuWrapper">
-                    </div>
-                </div>
-                <!-- 고급 검색 버튼 -->
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modal1">고급 검색
-                </button>
-                <div class="btn-group">
-                    <!-- 드롭다운 버튼 -->
-                    <button type="button" class="btn btn-info dropdown-toggle"
-                            id="itemsPerPageButton" data-toggle="dropdown" aria-expanded="false">
-                    </button>
-                    <!-- 드롭다운 메뉴 -->
-                    <ul class="dropdown-menu" id="itemsPerPageMenu">
-                        <li class="dropdown-item2" style="cursor: pointer;"
-                            data-value="10"></li>
-                        <li class="dropdown-item2" style="cursor: pointer;"
-                            data-value="20"></li>
-                        <li class="dropdown-item2" style="cursor: pointer;"
-                            data-value="50"></li>
-                    </ul>
-                </div>
-
-                <!-- 모달 창 -->
-                <div class="modal fade" id="modal1" tabindex="-1" role="dialog"
-                     aria-labelledby="advancedSearchLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="advancedSearchLabel">고급 검색은 추후 업데이트 됩니다.</h5>
-                                <button type="button" class="close" data-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="advancedSearchForm">
-                                    <!-- 검색어 입력 -->
-                                    <div class="form-group">
-                                        <label for="keyword">검색어</label>
-                                        <input type="text" class="form-control" id="keyword"
-                                               name="keyword">
-                                    </div>
-                                    <!-- 검색 기준 -->
-                                    <div class="form-group">
-                                        <label for="searchType">검색 기준</label>
-                                        <select class="form-control" id="searchType" name="type">
-                                            <option value="title">책 제목</option>
-                                            <option value="author">저자</option>
-                                            <option value="publisher">출판사</option>
-                                        </select>
-                                    </div>
-                                    <!-- 가격 범위 (일반 텍스트 박스) -->
-                                    <div class="form-group">
-                                        <label for="minPrice">최소 가격</label>
-                                        <input type="text" class="form-control" id="minPrice"
-                                               name="minPrice"
-                                               placeholder="최소 가격">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="maxPrice">최대 가격</label>
-                                        <input type="text" class="form-control" id="maxPrice"
-                                               name="maxPrice"
-                                               placeholder="최대 가격">
-                                    </div>
-                                    <!-- 출판일 범위 -->
-                                    <div class="form-group">
-                                        <label for="publicationDateRange">출판일 범위</label>
-                                        <select class="form-control" id="publicationDateRange"
-                                                name="publicationDateRange">
-                                            <option value="">전체</option>
-                                            <option value="3months">최근 3개월</option>
-                                            <option value="6months">최근 6개월</option>
-                                            <option value="1year">최근 1년</option>
-                                        </select>
-                                    </div>
-                                    <!-- 최소 평점 (라디오 버튼) -->
-                                    <div class="form-group">
-                                        <label>최소 평균 리뷰점수</label><br>
-                                        <div>
-                                            <label><input type="radio" name="minRating" value="1"> 1</label>
-                                            <label><input type="radio" name="minRating" value="2"> 2</label>
-                                            <label><input type="radio" name="minRating" value="3"> 3</label>
-                                            <label><input type="radio" name="minRating" value="4"> 4</label>
-                                            <label><input type="radio" name="minRating" value="5"> 5</label>
-                                        </div>
-                                    </div>
-                                    <!-- 대여 가능 여부 -->
-                                    <div class="form-group">
-                                        <label for="rentalAvailable">대여 가능 여부</label>
-                                        <input type="checkbox" id="rentalAvailable"
-                                               name="rentalAvailable" value="Y">
-                                    </div>
-                                    <!-- 구매 가능 여부 -->
-                                    <div class="form-group">
-                                        <label for="purchaseAvailable">구매 가능 여부</label>
-                                        <input type="checkbox" id="purchaseAvailable"
-                                               name="purchaseAvailable"
-                                               value="Y">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">닫기
-                                </button>
-                                <button type="button" class="btn btn-primary"
-                                        id="executeAdvancedSearch">검색
-                                </button>
+							
+	
+	
+	<div class="col-md-5" style="border:1px solid white; float:left; margin-right:100px;">
+					<img class="card-img-top" src="/resources/images/Book.png" alt="https://unsplash.com/@kellybrito">
+                       <div class="section_title text-center">                         
+                            <div class="featurs-content text-center" style="border:1px gray; color:gray;">
+                               <a href="#" onclick="location.href='BookReservation'" id=bookBtn ><h1>도서 예약/대여</h1></a>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-							<div id="bbs_wrap">
-								<!-- 게시물 건수 -->
-								<div class=total">
-									(ex) 총 게시물 <strong><c:out
-											value="${paginationInfo.totalRecordCount}" /></strong>800건 | 현재페이지<strong><c:out
-											value="${paginationInfo.currentPageNo}" /></strong> 1
-									<c:out value="${paginationInfo.totalPageCount}" />
-								</div>
-
-
-
-								<!-- 테이블(BookList) -->
-								<table class="table" style="margin: auto; text-align: center;">
-									<thead>
-										<tr>
-											
-											<th>isbn13</th>
-											<th>도서 사진</th>
-											<th>도서명</th>
-											<th>저자</th>
-											<th>출판사</th>
-											<th>가격</th>
-											<th>자세히</th>
-										
-										</tr>
-									</thead>
-									
-									<c:forEach  items="${bookList}" var="vo">
-										
-										<tr>											
-											<td>${vo.isbn13}</td>
-											<td><img src="${vo.photo}" alt="" style="max-height: 300px"></td>											
-											<td>${vo.book}</td>
-										 	<td>${vo.author}</td>
-										 	<td>${vo.publisher}</td>
-										 	<td>${vo.price}</td>										 									 	
-										 	<td><button type="button" class="btn btn-outline-warning btn" onclick="window.location.href='/library/read/${vo.isbn13}'">상세보기</button>	
-										
-										</tr>
-									
-									</c:forEach>
-
-								</table><!-- 테이블 종료 -->
-								<br>
-								<div>
-									<nav class="pagination-sm"">
-										<ul class="pagination">
-											<li class="page-item"><a class="page-link" href="#">이전</a>
-											</li>
-											<li class="page-item"><a class="page-link" href="#">1</a>
-											<li class="page-item"><a class="page-link" href="#">다음</a>
-											</li>
-										</ul>
-									</nav>
-								</div>
-								<br>
-
-
-							</div>
+					
+					
+					
+					
+					
+					
+					
+					
 						</div>
 					
 					</div>
@@ -409,20 +209,7 @@
 
 <script type="text/javascript">
 	
-$(document).ready(function() {
-	
-var loginSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>'; // 세션의 유저 ID
 
-if(!loginSessionUserId || loginSessionUserId.trim() === ""){
-	alert("로그인 후 이용 가능 합니다.");
-	return "/library/home";
-}else{
-	self.location = "/library/reservation/ReservationMain";
-
-}
-
-});		
-		
 </script>
 	<%@ include file="../../includes/footer.jsp"%>
 </body>

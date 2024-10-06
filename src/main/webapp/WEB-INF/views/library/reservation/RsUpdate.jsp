@@ -28,7 +28,7 @@
 </style>
 
 <meta charset="UTF-8">
-<title>나의 예약 정보</title>
+<title></title>
 </head>
 <body>
 <div class="home2">
@@ -47,7 +47,7 @@
 				<div class="col">
 				<br><br><br><br>		
 					<div class="section_title text-center">					
-						<h1>나의 예약 정보</h1>
+						<h1>예약 목록 조회</h1>
 					</div>
 				</div>
 			</div>
@@ -56,55 +56,34 @@
 
 
 
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="row">
-				<div class="col-md-4">
-				</div>
-				<div class="col-md-4">
-			<form role="form">
-						<div class="form-group">
-						<label for="BookUser">예약자</label>
-					<input type="text" class="form-control" id="" />
-				</div>
-				<div class="form-group">					 
-					<label for="BookName">도서명</label>
-					<input type="text" class="form-control" id="" />
-				</div>
-				<div class="form-group">					 
-					<label for="BookWriter">저자</label>
-					<input type="text" class="form-control" id="" />
-				</div>
-				<div class="form-group">					 
-					<label for="BookPublisher">출판사</label>
-					<input type="text" class="form-control" id="" />
-				</div>
-				<div class="form-group">					 
-					<label for="BookPrice">가격</label>
-					<input type="text" class="form-control" id="" />
-				</div>
-				<div class="form-group">					 
-					<label for="RsStart-day">예약 날짜</label>
-					<input type="text" class="form-control" id="" />
-				</div>
-				
-				
-			</form>
-			<br>							
-			<div class="find-btn" style="text-align: left; ">
-			    <button type="button" class="btn btn-outline-warning btn find-btn1" onclick="location.href='/library/RsRemove'">취소하기</button>
-			    <button type="button" class="btn btn-outline-warning btn find-btn1" onclick="location.href='/library/home'">메인화면으로 돌아가기</button>
-			</div>
-				
-				
-				<div class="col-md-4">
-				</div>
-			</div>
-		</div>
+<div class="jumbotron">
+		
+		<h3>${user.nickName} 님 예약 목록 </h3>
+		 
 	</div>
-</div>
-</div>
+
+<table>
+<thead>
+<tr>
+	<th>도서 사진</th>
+	<th>도서명</th>
+	<th>예약일</th>
+	<th>반납일</th>
+</tr>
+</thead>
+<tbody>
+<c:forEach items="${myRsList}" var="myRs">
+<td><img alt="도서이미지" src="${cart.photo}"  height="100"></td>
+<td>${cart.c_title}</td>
+<td><input type="date"> </td>
+<td><input type="date"> </td>
+</c:forEach>
+</tbody>
+
+</table>
+<input type="hidden" id="user_id" value="${userId}">
+<input type="hidden" id="cart_id" value="${cartId}">
+
 
 
 
