@@ -51,4 +51,9 @@
 		<servlet-name>appServlet</servlet-name>
 	</filter-mapping>
 	
+	<session-config> <!-- 세션 유지 30분으로 설정 -->
+    	<session-timeout>30</session-timeout> 
+	</session-config>
+
+	
 </web-app>

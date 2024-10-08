@@ -42,6 +42,7 @@
 						<li class="main_nav_item"><a href="/library/booklist">도서 목록</a></li>
 						<li class="main_nav_item"><a href="/library/list">고객 게시판</a></li>
 						<li class="main_nav_item"><a href="/library/reservation/ReservationMain">예약</a></li>	
+						<li class="main_nav_item"><a href="/library/cart/cart">장바구니</a></li>
 
          			
 					</ul>
@@ -114,4 +115,7 @@
 		</div>
 
 	</div>
-	
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+</script>
+<!-- JQuery 사용 -->	

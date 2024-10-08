@@ -74,8 +74,7 @@ public class bookReservationController {
 	// 예약 목록 조회
 	@GetMapping("/reservation/RsUpdate")
 	public String RsUpdate(HttpServletRequest request, Model model) {// MyPage -> 나의 예약 정보
-					
-		
+						
     	HttpSession session = request.getSession(false);
     	
     	if(session == null){
@@ -125,9 +124,7 @@ public class bookReservationController {
     		return "library/login";
     	}	
     	//로그인 멤버가 있다면, 위에서 받은 loginMember 변수를 이용하면 된다.
-    	
-    	    	    
-    	
+    	   	    	    
     	//세션이 존재하며 Session에다가 cart_id를 넣어주기.
     	
  //   	String cartNum = String.valueOf(session.getAttribute("cart_id"));

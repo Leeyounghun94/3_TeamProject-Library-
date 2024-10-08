@@ -1,3 +1,4 @@
+
 /**
  * cart.js -> cart.jsp
  */
@@ -85,11 +86,12 @@ $(document).ready(function() {
 		}else{
 			cartData.bookData();
 			var sendData = $("#bookData").val();
-			cartService.rsButton(sendData, function(result){
+			console.log("sendData" + sendData );
+		//	cartService.rsButton(sendData, function(result){
 				
-				cosole.log(result);
+		//		cosole.log(result);
 				
-			});		
+		//	});		
 			alert("예약이 확정됐습니다.");
 		}
 		
@@ -106,24 +108,28 @@ var cartData = (function(){
 	
 	//배열형태로 책 데이터 넣기
 	function bookData(){
-		
+		// tr대신 내가 만든 배열에 값 넣기 -> tr의 자식td에서 값을 받아와라. 
 		var books = [];
 		var checkedTr = $("#tableBody tr").find("input[name='check']:checked");
 		var user = $("#user_id").val();
 		
-		
-		checkedTr.each(function(index, item){
-			var data = $(item).find("input[name='book']").val();
+		console.log(checkedTr.length);
+		checkedTr.each(function(index, item){//td를 정의를 해주고 데이터는 td에있는 북에 있는 값이라고 정의
+			console.log("index:"+index);
+			var tdBook = $(item).children();
+			var data = $(tdBook).find("input[name='book']").val();
+			console.log("데이터 =" + data);
 			var json = {"user_id":user, "isbn13":data};
 			books.push(json);
-		});
+		});// checkedTr.each / 데이터를 못받는 상황이 나오니 다른 방법으로 찾아볼것 (각각 인덱스를 숨겨가지고 체크할때마다 인덱스 받아서..값 넘어오게..)
 		
 		$("#bookData").val(JSON.stringify(books));
-	}
+		
+	}// function bookData() end
 	return{
 		bookData:bookData
 	};
-})();
+})();// var cartData = (function() end
 
 var cartService = (function() {// ready가 아닌 이렇게 선언해버리면 즉시 실행된다.
 

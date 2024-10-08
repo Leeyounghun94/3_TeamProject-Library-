@@ -97,11 +97,11 @@ public class BookRsRestController {
 
 		log.info("===================장바구니 실행=====================");
 		UserVO vo = (UserVO) session.getAttribute("user");
-		
+
 		LocalDate cartDate = LocalDate.now();
 		DateTimeFormatter timeFomat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String time = cartDate.format(timeFomat);
-		
+
 		BookListVO book = bookService.get(isbn13);
 
 		CartVO cart = new CartVO();
@@ -111,84 +111,89 @@ public class BookRsRestController {
 		cart.setPhoto(book.getPhoto());
 		cart.setUser_id(vo.getU_id());
 		cart.setCartDate(time);
-	
-	//	String cartNum = String.valueOf(session.getAttribute("cart_id")) ;
-		
+
+		// String cartNum = String.valueOf(session.getAttribute("cart_id")) ;
+
 		int cartIdCheck = cartService.cartIdCheck(cart);
-		log.info("=========User_id============" + cart.getUser_id());	
-		log.info("=========cartIdCheck============" + cartIdCheck);		
+		log.info("=========User_id============" + cart.getUser_id());
+		log.info("=========cartIdCheck============" + cartIdCheck);
 		log.info("==========cartdate===============" + cart.getCartDate());
-				
+
 		int result = 0;
-		
+
 		if (cartIdCheck == 0) {
-				
-		result = cartService.cartRegister(cart);
-		log.info(cart.getCart_id() + "=====cart_id=========");
-	
+
+			result = cartService.cartRegister(cart);
+			log.info(cart.getCart_id() + "=====cart_id=========");
+
 //		session.setAttribute("cart_id", cart.getCart_id());
-		log.info("================cartNum null 실행===================");
-		}else {	
+			log.info("================cartNum null 실행===================");
+		} else {
 			List<String> cartNum = cartService.findCartID(cart);
-			
+
 			cart.setCart_id(cartNum.get(0));
 			log.info(cart.getCart_id() + "=====cart_id=========");
-			
+
 			result = cartService.CartIdPut(cart);
-					
+
 		}
-		
+
 		log.info("cart_id" + cart.getCart_id());
-		
+
 		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	
-	
 
-	
-	
-	
-	//장바구니 페이지에서 장바구니 비우기(전체 삭제) 했을 때의 메서드
+	// 장바구니 페이지에서 장바구니 비우기(전체 삭제) 했을 때의 메서드
 	@DeleteMapping(value = "/clearCart/{cartid}")
 	public ResponseEntity<String> clearCart(@PathVariable("cartid") String cartid) {
-		
-		log.info("=================clearcart  실행 중=================" +cartid );
-		
+
+		log.info("=================clearcart  실행 중=================" + cartid);
+
 		boolean cartResult = cartService.clearBasket(cartid);
-				
+
 		return cartResult ? new ResponseEntity<>("success", HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);				
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	
-	//장바구니 페이지에서 삭제 버튼 눌렀을 때의 메서드(개별 삭제)
+
+	// 장바구니 페이지에서 삭제 버튼 눌렀을 때의 메서드(개별 삭제)
 	@DeleteMapping(value = "/deleteCart/{cartid}/{isbn13}")
-	public ResponseEntity<String> deleteCart(@PathVariable("cartid") String cartid, @PathVariable("isbn13") Long isbn13) {
-		log.info("=================deleteCart  실행 중=================" +cartid );
-		
+	public ResponseEntity<String> deleteCart(@PathVariable("cartid") String cartid,
+			@PathVariable("isbn13") Long isbn13) {
+		log.info("=================deleteCart  실행 중=================" + cartid);
+
 		boolean deleteResult = cartService.cartRemove(cartid, isbn13);
-		
+
 		return deleteResult ? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
-	
-	@PostMapping(value = "/inserRs")
-	public ResponseEntity<String> insertRs(List<bookReservationVO> vo){
-		
-		log.info("=================insertRs  실행 중=================" +vo);
 
-		for(bookReservationVO rs:vo){
-			int result = rsService.rsRegister(rs);			
+	@PostMapping(value = "/inserRs", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> insertRs(@RequestBody List<bookReservationVO> vo) {
+		log.info("=================insertRs  실행 중=================" + vo);
+		int rsCount = 0;
+		int total = vo.size();
+
+		for (bookReservationVO rs : vo) {
+			int result = rsService.rsRegister(rs);
+			rs.getIsbn13();
+			rs.getUser_id();
+			rs.getRsStartDay();
+			rs.getRsEndDay();
+			
+			if (result > 0) {
+				
+			}else {				
+			}
 		}
-		
-		
-		
-		return result ? new ResponseEntity<>("success", HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		
+		log.info("해당 값 : " + rsCount);
+		if(total == rsCount) {
+			return  new ResponseEntity<>("success", HttpStatus.OK);
+		}else {			
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
-	
+
 }

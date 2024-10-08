@@ -15,7 +15,7 @@ public class CartInterceptor implements HandlerInterceptor{
 	
 	/*
 	 * 컨트롤러(Controller)의 핸들러(Handler)를 호출 하기 전과 후에 요청과 응답을 참조하거나 가공할 수 있는 필터
-	 * 즉, 사용자 요청에 의해 서버에 들어온 Request 객체를 컨트롤러의 핸들러에 도달하기 전에 낚아채서 개발하가 원하는 추가적인 작업을 
+	 * 즉, 사용자 요청에 의해 서버에 들어온 Request 객체를 컨트롤러의 핸들러에 도달하기 전에 낚아채서 개발자가 원하는 추가적인 작업을 
 	 * 한 후 핸들러로 보낼 수 있도록 해주는 것.
 	 */
 	
