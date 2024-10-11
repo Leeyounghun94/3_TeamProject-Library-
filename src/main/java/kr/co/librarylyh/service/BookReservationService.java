@@ -4,13 +4,15 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.co.librarylyh.domain.BookListVO;
+import kr.co.librarylyh.domain.CartVO;
 import kr.co.librarylyh.domain.bookReservationVO;
 
 public interface BookReservationService {
 
 	
 	
-	public void rsRegister(bookReservationVO vo);// 예약 등록하기
+	public int rsRegister(bookReservationVO vo);// 예약 등록하기
 	
 	public List<bookReservationVO> rsList(); // 예약 목록 수
 	
@@ -20,5 +22,6 @@ public interface BookReservationService {
 	
 	public boolean rsRemove(Long rsNum);// 예약 삭제하기
 	
+	public boolean rsDel(Long rsNum, Long isbn13);
 	
 }

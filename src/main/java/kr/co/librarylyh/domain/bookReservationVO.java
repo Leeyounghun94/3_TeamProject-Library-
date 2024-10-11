@@ -21,7 +21,9 @@ public class bookReservationVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate Date; 
 
-	private String u_id ;	// 유저 아이디
+	private Long rsNum ; // 예약 번호
+	
+	private String user_id ;	// 유저 아이디
 	
 	private Long isbn13 ;	// 책 아이디
 	
@@ -29,5 +31,5 @@ public class bookReservationVO {
 
 	private String rsEndDay;// 예약 종료일
 	
-	private Long rsNum ; // 예약 번호
+	
 }

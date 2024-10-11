@@ -28,8 +28,8 @@ public interface UserMapper {
 	// 회원 로그인
 	public UserVO login(UserVO user);
 	
-	// 비밀번호 확인
-	public int checkPw(String id);
+	// 마이페이지 - 비밀번호 확인
+	public int checkPw(UserVO user);
 	
 	// 비밀번호 변경
 	public int updatePw(String pw);
@@ -39,6 +39,7 @@ public interface UserMapper {
 		
 	// 유저 비밀번호 찾기
 	public int findUserPw(UserVO user);
+
 	
 	// 비밀번호 업데이트
 	public UserVO pwUpdate(UserVO user);
@@ -51,9 +52,30 @@ public interface UserMapper {
 	
 	public UserVO read(String id); // 회원 정보 읽어옴
 	
+	public UserVO readInfo(String u_id); // 회원 정보 읽어옴
+
 	public int update(UserVO user); // 회원 정보 수정
 	
 	public int delete(String u_id); // 회원 탈퇴
+
+	// 매일매일 포인트 증정 2024 10 02
+	public void updateLastVisitAndPoint(UserVO user);
+	
+	// 나의 도서 요청 목록 페이징 [전체 가져오기] 2024 10 03
+	public int getTotalMyRequest(String id);
+	
+	// 관리자용 요청 목록 전체 페이징 [전체 수 가져오기] 2024 10 03
+	public int getTotalAdminRequest();
+
+	// 나의 포인트 내역 페이징 [전체 수 가져오기] 2024 10 03
+	public int getTotalMyPoint(String id);
+	
+	// 관리자 포인트 내역 페이징 [전체 수 가져오기] 2024 10 03
+	public int getTotalAdminPoint();
+	
+	//날짜 업데이트 2024 10 03
+	public void updateLastVisitDate(UserVO loginUser);
+	
 	
 	
 }	

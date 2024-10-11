@@ -80,7 +80,7 @@
 						<tr>
 							<th>번호</th>
 							<th>제목</th>
-							<th>작성자</th>
+							<th>분류</th><!-- 2024 09 28 명칭 변경 -->
 							<th>작성일</th>
 							<th>수정일</th>
 							<th>조회수</th>
@@ -175,7 +175,7 @@
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal"
 								aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+							<h4 class="modal-title" id="myModalLabel"></h4>
 						</div>
 						<div class="modal-body">처리가 완료되었습니다.</div>
 						<div class="modal-footer">

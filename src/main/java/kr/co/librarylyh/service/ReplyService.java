@@ -21,7 +21,9 @@ public interface ReplyService { // 구현 클래스 필수 ReplyServiceImpl.java
 	
 	public ReplyPageDTO getListPage(Criteria cri, Long bno); // 댓글 페이징 처리
 	
-
+	// 포인트 관련
 	
+	public void replyAddPoint(String userId); // 댓글 작성시 5 포인트 [유저테이블] 2024 10 02
+		
 
 }

@@ -27,4 +27,8 @@ public interface ReplyMapper {
 	//댓글의 숫자 파악
 	public int getCountByBno(Long bno);
 	
+	// 포인트 관련
+	public void replyAddPoint(String userId); // 댓글 작성시 5 포인트[유저테이블] 2024 10 02
+	
+	
 }

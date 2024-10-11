@@ -24,15 +24,15 @@
                 <h1 class="myPage-title">내 정보</h1>
                 <span class="myPage-subject">닉네임, 전화번호, 이메일을 수정할 수 있습니다.</span>
 
-                <div name="myPageFrm" >
+                <div class="myPageFrm" align="center">
 
-                    <div class="myPage-row">
+                    <div class="myPage-row" >
                         <label>아이디</label>
-                        <input type="text" id="id" name="id" readonly="readonly"
+                        <input type="text" id="id" name="id" readonly="readonly" style="background-color:rgba(169, 160, 158, 0.69); "
                             value="${user.id}">
                     </div>
                     
-                    <div class="myPage-row">
+                    <div class="myPage-row" >
                         <label>닉네임</label>
                         <input type="text" id="nickName" name="nickName" 
                             value="${user.nickName}" >
@@ -40,13 +40,13 @@
 
                     <div class="myPage-row">
                         <label>이름</label>
-                        <input type="text" id="name" name="name" readonly="readonly"
+                        <input type="text" id="name" name="name" readonly="readonly" style="background-color:rgba(169, 160, 158, 0.69);"
                             value="${user.name}">
                     </div>
                     
                     <div class="myPage-row">
                         <label>생년월일</label>
-                        <input type="text" id="birth" name="birth"  maxlength="11" readonly="readonly"
+                        <input type="text" id="birth" name="birth"  maxlength="11" readonly="readonly" style="background-color:rgba(169, 160, 158, 0.69);"
                             value="${user.birth}">
                     </div>
                     
@@ -94,7 +94,8 @@ $('.myPage-submit').on('click', function(){
         contentType: 'application/json',
         success : function(result) {
         	alert("정보수정이 완료되었습니다.")
-            window.location.href = '/library/myPage';
+            window.location.href = '/library/logout';
+        	alert("다시 로그인 후 이용해주세요.")
         },
         error: function(error) {
             alert("정보수정에 실패하였습니다.");

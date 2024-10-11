@@ -19,9 +19,9 @@
 
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 
-		<!--	jdbclog4j2 용으로 교체
-        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
-        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE"></property>	-->
+	<!--	jdbclog4j2 용으로 교체
+			<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+			<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE"></property>	-->
 
 
 		<!-- log4jdbc용으로 콘솔에 표 형식 으로 출력-->
@@ -30,39 +30,63 @@
 
 		<property name="username" value="library"></property>
 		<property name="password" value="6673"></property>
-	</bean>
+		</bean>
 
-	<!-- 커넥션 풀 설정 HikariCP configuration -->
-	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<constructor-arg ref="hikariConfig" />
-	</bean>
+		<!-- 커넥션 풀 설정 HikariCP configuration -->
+		<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+			<constructor-arg ref="hikariConfig" />
+		</bean>
+				
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"></property>
+		</bean>
+		
+		<!-- 게시글 조회수 구현을 위한 트랜젝션-->
+		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    		<property name="dataSource" ref="dataSource"></property>
+		</bean>
 
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"></property>
-	</bean>
+				<!-- 이메일 인증 관련 빈 - Gmail -->
+		<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	      	<property name="host" value="smtp.gmail.com" />
+	      	<property name="port" value="587" />
+	     	<property name="username" value="" />
+	      	<property name="password" value="" />
+	      	<property name="javaMailProperties">
+         	<props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <!-- gmail의 경우 보안문제 업데이트로 인해 SSLSocketFactory를 추가해야 smtp 사용 가능. -->
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+                <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+            </props>
+      		</property>  
+  		 </bean>
 
-	<!-- 게시글 조회수 구현을 위한 트랜젝션-->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"></property>
-	</bean>
+    	<tx:annotation-driven transaction-manager="transactionManager" />
+		
+    	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+        	<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+    	</bean>
+		
+		
+		<!-- mybatis는 pstmt를 사용하지 않고 인터페이스 + xml로 매핑한다. -->
+		<mybatis-spring:scan base-package="kr.co.librarylyh.mapper"/>
+		<!-- mybatis에서 자동으로 처리할 패키지 명시  -->
 
-	<tx:annotation-driven transaction-manager="transactionManager" />
+		<context:component-scan base-package="kr.co.librarylyh"/>
 
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
-		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
-	</bean>
+		<context:component-scan base-package="kr.co.librarylyh.service"></context:component-scan>	<!-- 스프링에서 @Service 를 찾는다. -->
 
+		<context:component-scan base-package="kr.co.librarylyh.aop"></context:component-scan>	<!--  AOP 설정 추가 -->
 
+		<context:component-scan base-package="kr.co.librarylyh.task"></context:component-scan> <!-- Quartz 어노테이션  -->
 
+		<task:annotation-driven/> <!-- Quartz 라이브러리 설정 추가 -> 스케쥴러를 구상하기 위해 사용한다. -->
 
-	<!-- mybatis는 pstmt를 사용하지 않고 인터페이스 + xml로 매핑한다. -->
-	<mybatis-spring:scan base-package="kr.co.librarylyh.mapper"/>
-	<!-- mybatis에서 자동으로 처리할 패키지 명시  -->
-
-	<context:component-scan base-package="kr.co.librarylyh.service"></context:component-scan>	<!-- 스프링에서 @Service 를 찾는다. -->
-
-	<context:component-scan base-package="kr.co.librarylyh.aop"></context:component-scan>	<!--  AOP 설정 추가 -->
-
-	<!-- <tx:annotation-driven/>	 어노테이션 기반으로 트랜젝션 설정 추가 -->
+		<tx:annotation-driven/>	 <!-- 어노테이션 기반으로 트랜젝션 설정 추가 -->
 
 </beans>

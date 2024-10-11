@@ -16,14 +16,14 @@ public interface BookListService {
 
 	public List<CategoryVO> getCategoriesByISBN(long isbn13);
 
-	public boolean modify(BookListVO bookList);
+	public void modify(BookListVO bookList);
 
-	public boolean remove(long isbn13);
+	public void remove(long isbn13);
 
 	// 페이징 및 검색 조건을 처리하는 메서드
 	public List<BookListVO> getListWithFiltersAndPaging(Paging pge, Map<String, Object> searchParams);
 
 	public int getTotal(Map<String, Object> searchParams);
 
-	public List<BookListVO> searchTitles(String query);
+	public List<BookListVO> searchTitles(Map<String, Object> searchParams);
 }

@@ -91,6 +91,7 @@
 .myPage-row > * {
     font-size: 18px;
     font-weight: bold;
+    padding-left:20px;
 }
 
 /* 행 제목 */
@@ -114,7 +115,7 @@
 }
 
 /* 제출 버튼 */
-.myPage-submit{
+.myPage-submit, .myPage-back{
     width: 100%;
     padding: 10px;
     margin: 50px 0;

@@ -72,9 +72,9 @@
 		
 		<label class="input-group-text" for="inputGroupSelect01">카테고리</label>
 		<select class="form-select" id="inputGroupSelect01" name="category">
-    		<option selected>선택</option>
     		<option value="자유">자유</option>
-    		<option value="Q&A">Q&A</option>
+    		<option value="QnA">QnA</option>
+    		<option value="Review">리뷰</option>
   		</select>
 		
 		<div class="form-group">
@@ -220,30 +220,48 @@ $(document).ready(function() {
 	    
 	    e.preventDefault(); 
 	    
-	    var operation = $(this).data("oper");
+	    var operation = $(this).data("oper"); // data-oper 할당값 받음
 	    
 	    console.log(operation);
 	    
-	    if(operation === 'remove'){
+	    if(operation === 'remove'){ // remove 삭제
 	      formObj.attr("action", "/library/board/remove");
 	      
-	    }else if(operation === 'list'){
+	    }else if(operation === 'list'){ // list 목록
+	    	
+	    	var listCategory = '<c:out value="${board.category}"/>';
 	      //move to list
-	      formObj.attr("action", "/library/list").attr("method","get");
+	      if(listCategory == "자유"){
+	    	  
+	    	  formObj.attr("action", "/library/listFree").attr("method","get");
+	    	  
+	      }else if (listCategory == "QnA"){
+	    	  
+	    	  formObj.attr("action", "/library/listQnA").attr("method","get");
+	      }else if (listCategory == "Review"){
+	    	  
+	    	  formObj.attr("action", "/library/listReview").attr("method","get");
+	      }
 	      
+
 	      var pageNumTag = $("input[name='pageNum']").clone();
 	      var amountTag = $("input[name='amount']").clone();
 	      var keywordTag = $("input[name='keyword']").clone();
-	      var typeTag = $("input[name='type']").clone();      
+	      var typeTag = $("input[name='type']").clone();
+	      var categoryTag = $("input[name='category']").clone();
 	      
-	      formObj.empty();
+		  	  formObj.empty();	
+		  
+		  	  formObj.append(pageNumTag);
+		  	  formObj.append(amountTag);
+		  	  formObj.append(keywordTag);
+		  	  formObj.append(typeTag);
+		  	  formObj.append(categoryTag);	 
+
+		  // 게시글의 카테고리 체크 2024 09 29
+
 	      
-	      formObj.append(pageNumTag);
-	      formObj.append(amountTag);
-	      formObj.append(keywordTag);
-	      formObj.append(typeTag);	  
-	      
-	    }else if(operation === 'modify'){
+	    }else if(operation === 'modify'){ // modify 수정
 	        
 	        console.log("submit clicked");
 	        
@@ -276,9 +294,9 @@ $(document).ready(function() {
 $(document).ready(function() {
   (function(){
     
-    var bno = '<c:out value="${board.bno}"/>';
+    var bno = '<c:out value="${board.bno}"/>'; // BoardCotroller / get() model "board"
     
-    $.getJSON("/library/getAttachList", {bno: bno}, function(arr){
+    $.getJSON("/library/getAttachList", {bno: bno}, function(arr){ // 게시글에 업로드 된 첨부파일 불러오기
     
       console.log(arr);
       
@@ -288,7 +306,7 @@ $(document).ready(function() {
       $(arr).each(function(i, attach){
           
           //image type
-          if(attach.fileType){
+          if(attach.fileType){ // 이미지 타입 파일 불러오기
             var fileCallPath =  encodeURIComponent( attach.uploadPath+ "/s_"+attach.uuid +"_"+attach.fileName);
             
             str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' "
@@ -299,7 +317,7 @@ $(document).ready(function() {
             str += "<img src='/display?fileName="+fileCallPath+"'>";
             str += "</div>";
             str +"</li>";
-          }else{
+          }else{ // 일반 파일 타입 불러오기
               
             str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' "
             str += "data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
@@ -319,14 +337,14 @@ $(document).ready(function() {
   })();//end function
   
   
-  $(".uploadResult").on("click", "button", function(e){
+  $(".uploadResult").on("click", "button", function(e){ // 첨부되어 있는 파일을 삭제
 	    
     console.log("delete file");
       
     if(confirm("Remove this file? ")){
     
-      var targetLi = $(this).closest("li");
-      targetLi.remove();
+      var targetLi = $(this).closest("li"); 
+      targetLi.remove(); //li 태그에 붙어있는 것을 삭제
 
     }
   });  
@@ -334,7 +352,7 @@ $(document).ready(function() {
   var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
   var maxSize = 5242880; //5MB
   
-  function checkExtension(fileName, fileSize){
+  function checkExtension(fileName, fileSize){ // 파일 업로드 검사(확장자, 사이즈(용량))
     
     if(fileSize >= maxSize){
       alert("파일 사이즈 초과");
@@ -348,7 +366,7 @@ $(document).ready(function() {
     return true;
   }
   
-  $("input[type='file']").change(function(e){
+  $("input[type='file']").change(function(e){ // 재업로드 (웹상에 띄워질 html 처리)
 
     var formData = new FormData();
     
@@ -365,7 +383,7 @@ $(document).ready(function() {
       
     }
     
-    $.ajax({
+    $.ajax({ // 파일 업로드 ajax (실질적인 파일 생성)
       url: '/uploadAjaxAction',
       processData: false, 
       contentType: false,data: 
@@ -373,14 +391,14 @@ $(document).ready(function() {
       dataType:'json',
         success: function(result){
           console.log(result); 
-		  showUploadResult(result); //업로드 결과 처리 함수 
-
+		  showUploadResult(result);
       }
+    
     }); //$.ajax
     
   });    
 
-  function showUploadResult(uploadResultArr){
+  function showUploadResult(uploadResultArr){ // 파일을 첨부하면 나오는 썸네일칸
 	    
     if(!uploadResultArr || uploadResultArr.length == 0){ return; }
     

@@ -1,12 +1,11 @@
 package kr.co.librarylyh.controller;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,14 +31,16 @@ public class UserRestController {
 
 	// 마이페이지에서 정보수정
 	@PutMapping(value = "/updateForm")
-	public ResponseEntity<String> saveUser(@RequestBody UserVO user, HttpSession session) {
+	public ResponseEntity<String> saveUser(@RequestBody UserVO user, HttpServletRequest request) {
 		log.info("UserRestController-회원정보 수정 시작");
 		log.info(user);
 		service.update(user);
 		log.info(user.getNickName());
 		
 		
+		
 		return new ResponseEntity<>("success", HttpStatus.OK);
 
 	}
+	
 }

@@ -20,8 +20,9 @@ crossorigin="anonymous"></script>
 		<form id="login_form" method="post">
 			<div class="logo_wrap">
 				<span>Login</span>
+				<br>
 			</div>
-			<div class="login_wrap"> 
+			<div class="login_wrap">
 				<div class="id_wrap">
 						<div class="id_input_box">
 						<input class="id_input" name="id" placeholder="ID">
@@ -39,6 +40,7 @@ crossorigin="anonymous"></script>
 				<div class="login_success">로그인 성공</div>
 				</c:if>
 				<div class="login_button_wrap">
+					<h3>서버안전을 위해 회원가입 기능을 비활성화 했습니다.<br>이 테스트 계정을 이용해주세요 [ID / PW]<br><br>일반계정 : 33333 / test123<br>관리자계정 : test123 / test123<br><br></h3>
 					<button type="button" class="login_button" >로그인</button>
 					<button type="button" class="join_button" onclick="location.href='/library/agreementForm'">회원가입</button>
 					<p style="align:center;"><a href="/library/findId">아이디 찾기</a> | <a href="/library/findPw">비밀번호 찾기</a></p>

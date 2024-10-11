@@ -5,6 +5,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,9 +24,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.librarylyh.domain.BoardAttachVO;
 import kr.co.librarylyh.domain.BoardVO;
+import kr.co.librarylyh.domain.BookPointVO;
+import kr.co.librarylyh.domain.BookRequestVO;
 import kr.co.librarylyh.domain.Criteria;
 import kr.co.librarylyh.domain.PageDTO;
+import kr.co.librarylyh.domain.UserVO;
 import kr.co.librarylyh.service.BoardService;
+import kr.co.librarylyh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -37,6 +44,7 @@ import lombok.extern.log4j.Log4j2;
 public class BoardController {
 
 	private BoardService service;/////중요
+	private UserService userService;
 	
 	
 	@GetMapping("/board/register")
@@ -44,13 +52,13 @@ public class BoardController {
 
 	}
 
-	@GetMapping("/list")
+	@GetMapping("/listReview") // 메인(기존) 게시판
 	public void list(Criteria cri, Model model, Long bno) {
 
 	    
-		model.addAttribute("list", service.getList(cri)); // 게시물 리스트
+		model.addAttribute("list", service.getListReview(cri)); // 게시물 리스트
 
-		int total = service.getTotal(cri); // 총 게시물 수
+		int total = service.getTotalReview(cri); // 총 게시물 수
 
 		log.info("total: " + total);
 		
@@ -58,8 +66,37 @@ public class BoardController {
 		
 	}
 	
-	@PostMapping("/board/register")
-	public String register(BoardVO board, RedirectAttributes rttr) {
+	@GetMapping("/listFree") // 자유 게시판
+	public void listFree(Criteria cri, Model model, Long bno) {
+		
+	    
+		model.addAttribute("list", service.getListListFree(cri)); // 게시물 리스트
+
+		int total = service.getTotalListFree(cri); // 총 게시물 수
+
+		log.info("total: " + total);
+		
+		model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
+		
+	}
+	
+	@GetMapping("/listQnA") // 질문답변(QnA) 게시판
+	public void listQnA(Criteria cri, Model model, Long bno) {
+		
+	    
+		model.addAttribute("list", service.getListListQnA(cri)); // 게시물 리스트
+
+		int total = service.getTotalListQnA(cri); // 총 게시물 수
+
+		log.info("total: " + total);
+		
+		model.addAttribute("pageMaker", new PageDTO(cri, total)); // 페이징 객체 전달
+		
+	}
+	
+	
+	@PostMapping("/board/register") // 새글 작성
+	public String register(BoardVO board, RedirectAttributes rttr, HttpServletRequest request) {
 
 		log.info("==========================");
 
@@ -76,11 +113,135 @@ public class BoardController {
 		service.register(board); // 보드 객체를 사용하여 글을 등록하고
 		
 		
-		rttr.addFlashAttribute("result", board.getBno()); // 그 글을 떙겨오면 몇번 값인지 알수있음
+    	HttpSession session = request.getSession();
+    	
+    	// 게시글 작성시 포인트 증가 및 로그기록 2024 10 02
+    	String userU_id = (String) session.getAttribute("userU_id"); // 로그인 시 발생한 세션 : userU_id 따로 분리 2024 10 02
+    	
+    	UserVO Uvo = userService.readInfo(userU_id);
+    	
+    	String id = Uvo.getId();// 로그인 시 발생한 세션 : id 따로 분리 2024 10 02
+    	
+    	String nickName = Uvo.getNickName();// 로그인 시 발생한 세션 : userNickName 따로 분리 2024 10 02
 
-		return "redirect:/library/list"; // 게시물을 등록하고 그 값을 list로 보낸다 + list 페이지로 이동 된다.
+    	int userPoint = Uvo.getPoint() + 50; // 로그인 시 발생한 세션 : point 따로 분리 2024 10 02
+
+    	// 포인트 총량을 세션으로 가져오니 최신화가 안됨, 그래서 포인트를 가져오는 sql 문을 작성하기로함
+		int bookPoint = 50; // 포인트 50 증가
+		
+		String bookPointHistory = "게시글 작성 포인트 증가";
+		
+    	service.boardAddPoint(id); // 게시글 유저 포인트 추가 2024 10 02
+    	
+    	BookPointVO vo = new BookPointVO();
+    	
+    	vo.setBookPoint(bookPoint);
+    	vo.setBookPointTotal(userPoint);
+    	vo.setBookPointHistory(bookPointHistory);
+    	vo.setBookPointUserId(id);
+    	vo.setBookPointNickName(nickName);
+    	
+    	service.allPointHistory(vo); // 게시글 작성 로그 기록
+    	
+		rttr.addFlashAttribute("result", board.getBno()); // 그 글을 떙겨오면 몇번 값인지 알수있음
+		
+		String pathreturn = board.getCategory(); // 게시판 분류 2024 09 29
+
+		
+		if(pathreturn.equals("자유")) { // 게시물 분류에 따른 경로 변경 2024 09 28
+			
+			return "redirect:/library/listFree";
+			
+		}else if(pathreturn.equals("QnA")) {
+			
+			return "redirect:/library/listQnA";
+			
+		}
+			return "redirect:/library/listReview";
+		
 	}
 	
+	@GetMapping("/listRequest") // 도서 요청 게시판
+	public void listRequest() {
+		
+	}
+	
+	 // 도서 요청 하기 2024 09 30
+	@PostMapping("/listRequest")
+	public String registerBookRequest(BookRequestVO requestBoard, RedirectAttributes rttr, HttpServletRequest request) {
+
+		log.info("==========================");
+
+		log.info("register: " + requestBoard);
+
+		if (requestBoard.getAttachListRequest() != null) { // 첨부 파일이 있을 경우
+
+			requestBoard.getAttachListRequest().forEach(attach -> log.info(attach));
+
+		}
+
+		log.info("==========================");
+		
+
+			service.registerRequest(requestBoard); // 보드 객체를 사용하여 도서 글을 등록
+			
+			if(requestBoard != null) { // 도서 요청글을 작성할 경우 매서드 시작
+			
+	    	HttpSession session = request.getSession();
+	    	
+	    	// 게시글 작성시 포인트 증가 및 로그기록 2024 10 02
+	    	String userU_id = (String) session.getAttribute("userU_id"); // 로그인 시 발생한 세션 : userU_id 따로 분리 2024 10 02
+	    	
+	    	UserVO Uvo = userService.readInfo(userU_id);
+	    	
+	    	int userPointChk = Uvo.getPoint(); // 유저가 보유한 포인트
+	    	
+	    	// 조건 추가, 포인트가 0 미만 일 경우 도서 요청 작성 제한 2024 10 03
+		    	if (userPointChk - 500 > 0) {
+		    		
+			    	String id = Uvo.getId();// 로그인 시 발생한 세션 : id 따로 분리 2024 10 02
+			    	
+			    	String nickName = Uvo.getNickName();// 로그인 시 발생한 세션 : userNickName 따로 분리 2024 10 02
+			    	
+			    	int userPoint = Uvo.getPoint() - 500; // 로그인 시 발생한 세션 : point 따로 분리 2024 10 02
+	
+			    	// 포인트 총량을 세션으로 가져오니 최신화가 안됨, 그래서 포인트를 가져오는 sql 문을 작성하기로함
+					int bookPoint = -500; // 포인트 50 증가
+					
+					String bookPointHistory = "도서 요청으로 포인트감소";
+					
+					service.bookRequestPoint(id);
+					
+			    	BookPointVO vo = new BookPointVO();
+			    	
+			    	vo.setBookPoint(bookPoint);
+			    	vo.setBookPointTotal(userPoint);
+			    	vo.setBookPointHistory(bookPointHistory);
+			    	vo.setBookPointUserId(id);
+			    	vo.setBookPointNickName(nickName);
+			    	
+			    	service.allPointHistory(vo); // 게시글 작성 로그 기록
+			    	
+
+					service.registerRequest(requestBoard); // 보드 객체를 사용하여 도서 글을 등록
+					
+					
+					rttr.addFlashAttribute("result", requestBoard.getR_bookBno()); // 번호를 가지고 모달창에 완료 문구띄우기
+					
+				}else {
+					
+					rttr.addFlashAttribute("result", "fail"); // 포인트 부족시 문구 반환
+				}
+	    	
+	    	}
+	    	
+
+
+		
+		return "redirect:/library/listRequest";
+			
+	}// end registerBookRequest
+
 
 	@GetMapping({ "/board/get", "/board/modify" })
 	public void get(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, Model model) throws Exception {
@@ -98,6 +259,7 @@ public class BoardController {
 	
 	@PostMapping("/board/modify")
 	public String modify(BoardVO board, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
+		
 		log.info("modify:" + board);
 
 		if (service.modify(board)) {
@@ -108,12 +270,25 @@ public class BoardController {
 		rttr.addAttribute("amount", cri.getAmount());
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
+		rttr.addAttribute("category", cri.getCategory());
+		
+		String pathreturn = board.getCategory();
 
-		return "redirect:/library/list";
+		
+		if(pathreturn.equals("자유")) { // 게시물 분류에 따른 경로 변경 2024 09 28
+			
+			return "redirect:/library/listFree";
+			
+		}else if(pathreturn.equals("QnA")) {
+			
+			return "redirect:/library/listQnA";
+			
+		}
+			return "redirect:/library/listReview";
 	}
 
 	@PostMapping("/board/remove")
-	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr) {
+	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr, BoardVO board) { // 게시물 분류 2024 09 29
 
 		log.info("remove..." + bno);
 
@@ -126,10 +301,24 @@ public class BoardController {
 
 			rttr.addFlashAttribute("result", "success");
 		}
-		return "redirect:/library/list" + cri.getListLink();
+		
+		String pathreturn = board.getCategory();
+		
+		if(pathreturn.equals("자유")) { // 게시물 분류에 따른 경로 변경 2024 09 29
+			
+			return "redirect:/library/listFree"+ cri.getListLink();
+			
+		}else if(pathreturn.equals("QnA")) {
+			
+			return "redirect:/library/listQnA"+ cri.getListLink();
+			
+		}
+			return "redirect:/library/listReview" + cri.getListLink(); 
+			
 	}
 	
-	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	// 첨부파일 리스트를 가져옴
+	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) 
 	@ResponseBody
 	public ResponseEntity<List<BoardAttachVO>> getAttachList(Long bno) {
 
@@ -187,6 +376,8 @@ public class BoardController {
 		
 		
 	}// end likeDown *(ajax)
+	
+	
 	
 
 	

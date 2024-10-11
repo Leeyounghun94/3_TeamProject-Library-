@@ -27,6 +27,8 @@ public class BoardVO {
   private String uploadPath; // 업로드 경로
   private String uuid; // UUID 값
   
+  private String r_bno; // 도서요청용 2024 09 30
+  
   
   
   private List<BoardAttachVO> attachList;

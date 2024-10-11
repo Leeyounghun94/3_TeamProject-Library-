@@ -3,10 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../../includes/header.jsp"%>
-<link rel="stylesheet" type="text/css"
-	href="/resources/styles/news_styles.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/styles/news_responsive.css">
+<link rel="stylesheet" type="text/css" href="/resources/styles/news_styles.css">
+<link rel="stylesheet" type="text/css" href="/resources/styles/news_responsive.css">
 
 
 
@@ -234,12 +232,10 @@ ul.adminChat li{
 											<!-- ./ end ul -->
 										</div>
 										<!-- /.panel .chat-panel -->
-
 										<div class="panel-footer"></div>
 									</div>
 								</div>
-								<!-- ./ end row -->
-							</div>
+							</div><!-- ./ end row -->
 						</div>
 					</div>
 				</div>
@@ -254,6 +250,7 @@ ul.adminChat li{
 	<input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
 	<input type='hidden' name='keyword'	value='<c:out value="${cri.keyword}"/>'>
 	<input type='hidden' name='type' value='<c:out value="${cri.type}"/>'>
+	<input type='hidden' id='category' name='category' value='<c:out value="${board.category}"/>'><!-- 게시판별 카테고리 구별 2024 09 28 -->
 </form>
 
 <!-- 댓글 좋아요 눌렀을 때 -->
@@ -272,15 +269,21 @@ ul.adminChat li{
 			
 			<div class="modal-body"> <!-- 댓글 작성을 누르면 나오는 창 -->
 				<div class="form-group">
-					<label>댓글 내용</label> <input class="form-control" name='reply' value='New Reply!!!!'>
+					<label>댓글 내용</label> <input class="form-control" name='reply'>
 				</div>
 				<div class="form-group">
-					<label>작성자</label> <input class="form-control" name='replyer' value="replyer" >
+					<label>닉네임</label> <input type=text class="form-control" name='replyer' value='<c:out value="${user.nickName}"/>' readonly>
 				</div>
+
 				<div class="form-group">
 					<label>Reply Date</label> <input class="form-control" name='replyDate' value='2018-01-01 13:13'>
 				</div>
+				<!-- 댓글 작성자 아이디 입력 2024 09 29 -->
+				<div class="form-group">
+					<label>아이디체크</label> <input type='hidden' class="form-control" name='replyerUserId' value='<c:out value="${user.id}"/>' readonly>
+				</div>
 			</div> <!-- end 댓글 작성을 누르면 나오는 창 -->
+			<!-- end modal body 2024 09 29 -->
 			
 			<div class="modal-footer">
 				<button id='modalModBtn' type="button" class="btn btn-warning">Modify</button>
@@ -296,11 +299,10 @@ ul.adminChat li{
 <!-- /.modal -->
 
 
-<script type="text/javascript" src="/resources/js/reply.js">
-	/* 외부파일 include 용 */
-</script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+<script type="text/javascript" src="/resources/js/reply.js"></script> <!-- 외부파일 include 용 --> 
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
 </script>
 <!-- JQuery 사용 -->
 
@@ -341,7 +343,8 @@ ul.adminChat li{
 						            var replyHtml = "<li class='left clearfix' data-rno='"+list[i].rno+"'>";
 						            replyHtml += "<div class='replyBox'><strong class='primary-font'>" + list[i].replyer + "</strong>";
 						            replyHtml += "<small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small>";
-						            replyHtml += "<small class='editDelReply'>&nbsp&nbsp&nbsp&nbsp수정/삭제</small>";
+						            replyHtml += "<small class='editDelReply'>&nbsp&nbsp&nbsp&nbsp수정/삭제</small>"; 
+						            replyHtml += "<input type='hidden' class='replyerUserId' value='"+list[i].replyerUserId+"'>";  // 수정
 						            replyHtml += "<p>" + list[i].reply + "</p></div></li>";
 						            
 						            var adminHtml = "<li class='left clearfix' data-rno='" + list[i].rno + "'>";
@@ -516,6 +519,7 @@ ul.adminChat li{
 						var modal = $(".modal");
 						var modalInputReply = modal.find("input[name='reply']");
 						var modalInputReplyer = modal.find("input[name='replyer']");
+						var modalInputReplyerUserId = modal.find("input[name='replyerUserId']");// 유저 아이디 체크용 2024 09 29
 						var modalInputReplyDate = modal.find("input[name='replyDate']");
 						
 
@@ -528,7 +532,7 @@ ul.adminChat li{
 							modal.modal('hide');
 						});
 
-						$("#addReplyBtn").on("click", function(e) { // 댓글 작성 modal
+						$("#addReplyBtn").on("click", function(e) { // 댓글 작성 창을 보여줌
 							
 						    var loginSessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>'; // 세션의 유저 ID
 						    console.log(loginSessionUserId);
@@ -537,8 +541,7 @@ ul.adminChat li{
 								return false;
 							}else{
 								
-							modal.find("input").val(""); // 입력값을 찾음(위 변수 참고)
-							
+							//modal.find("input").val(""); // input val을 초기화를 삭제 하여 value값 정상 입력 2024 09 29
 							
 							modalInputReplyDate.closest("div").hide(); // 작성일.hide()
 							modal.find("button[id !='modalCloseBtn']").hide();// close 누르면 hide()
@@ -576,20 +579,20 @@ ul.adminChat li{
 								//관리자 댓글 조회 클릭 이벤트 처리 
 								$(".adminChat").on("click","li",function(e) {
 
-													var rno = $(this).data("rno");
+									var rno = $(this).data("rno");
 
-													replyService.get(rno, function(reply) {
+									replyService.get(rno, function(reply) {
 
-															modalInputReply.val(reply.reply);
-															modalInputReplyer.val(reply.replyer);
-															modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
-															modal.data("rno", reply.rno);
-															modal.find("button[id !='modalCloseBtn']").hide();
-															modalModBtn.show();
-															modalRemoveBtn.show();
-															$(".modal").modal("show");
-													});
-												});
+										modalInputReply.val(reply.reply);
+										modalInputReplyer.val(reply.replyer);
+										modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
+										modal.data("rno", reply.rno);
+										modal.find("button[id !='modalCloseBtn']").hide();
+										modalModBtn.show();
+										modalRemoveBtn.show();
+										$(".modal").modal("show");
+									});
+							});
 
 						    } else {
 						        return; // 권한이 없으면 아무것도 하지 않음
@@ -601,6 +604,7 @@ ul.adminChat li{
 							var reply = { // modal 입력창에서 받은 갑 입력
 								reply : modalInputReply.val(),
 								replyer : modalInputReplyer.val(),
+								replyerUserId : modalInputReplyerUserId.val(), // 유저 아이디 추가 2024 09 29
 								bno : bnoValue,
 								authority : authorityValue // 권한도 넘어가게 함.
 
@@ -626,33 +630,44 @@ ul.adminChat li{
 							
 							
 							var SessionUserId = '<%=session.getAttribute("userId") != null ? session.getAttribute("userId") : "" %>';
-
+							var sessionAuthority = '<c:out value = "${user.authority}"/>';
 							if(!SessionUserId || SessionUserId.trim() === "" ){
 								
 								alert("로그인 먼저 진행해 주세요.");
 								
 								return false;
 							}else{
-											//var rno = $(this).data("rno");
-											var rno = $(this).closest("li").data("rno")
+								var CreplyerUserId = $(this).closest("li").find(".replyerUserId").val();  // 수정
+							        console.log("CreplyerUserId 값 확인 : " + CreplyerUserId);
+								
+								if(SessionUserId == CreplyerUserId || sessionAuthority == '1'){
+									
+									//var rno = $(this).data("rno");
+									var rno = $(this).closest("li").data("rno");
 
-											replyService.get(rno, function(reply) {
+									replyService.get(rno, function(reply) {
 
-													modalInputReply.val(reply.reply);
-													modalInputReplyer.val(reply.replyer);
-													modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
-													modal.data("rno", reply.rno);
-													modal.find("button[id !='modalCloseBtn']").hide();
-													modalModBtn.show();
-													modalRemoveBtn.show();
-													$(".modal").modal("show");
-											});// end replyService.get
-							}
-											
-										});// end .chat on click
+											modalInputReply.val(reply.reply);
+											modalInputReplyer.val(reply.replyer);
+											modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly",	"readonly");
+											modal.data("rno", reply.rno);
+											modal.find("button[id !='modalCloseBtn']").hide();
+											modalModBtn.show();
+											modalRemoveBtn.show();
+											$(".modal").modal("show");
+									});// end replyService.get
+									
+								}else{
+									alert("댓글 작성자만 수정 가능합니다.");
+									return false;
+								}//end inside else
+								
+							}//end outside else
+								
+						});// end .chat on click
 						
 
-						modalModBtn.on("click", function(e) {
+						modalModBtn.on("click", function(e) { // 수정버튼 클릭
 
 							var reply = {
 								rno : modal.data("rno"),
@@ -667,9 +682,9 @@ ul.adminChat li{
 
 							});
 
-						});
+						}); // end modalModBtn
 
-						modalRemoveBtn.on("click", function(e) {
+						modalRemoveBtn.on("click", function(e) { // 삭제 버튼 클릭
 
 							var rno = modal.data("rno");
 
@@ -681,7 +696,7 @@ ul.adminChat li{
 
 							});
 
-						});
+						});// end modalRemoveBtn
 
 					});
 </script>
@@ -714,11 +729,29 @@ ul.adminChat li{
 
 		});
 
-		$("button[data-oper='list']").on("click", function(e) {
+		$("button[data-oper='list']").on("click", function(e) { // category 별 리스트 되돌아가기 변경 
+			
+			var listTypeCheck = '<c:out value="${board.category}"/>'; // 게시글의 카테고리 체크
+			
+			   switch(listTypeCheck) {
+		        case '자유':
+		            operForm.find("#bno").remove();
+		            operForm.attr("action", "/library/listFree");
+		            operForm.submit();
+		            break;
 
-			operForm.find("#bno").remove();
-			operForm.attr("action", "/library/list")
-			operForm.submit();
+		        case 'QnA':
+		            operForm.find("#bno").remove();
+		            operForm.attr("action", "/library/listQnA");
+		            operForm.submit();
+		            break;
+
+		        default:
+		            operForm.find("#bno").remove();
+		            operForm.attr("action", "/library/list");
+		            operForm.submit();
+		            break;
+		    }
 
 		});
 	});
@@ -730,38 +763,38 @@ ul.adminChat li{
 
 							var bno = '<c:out value="${board.bno}"/>';
 
-							$.getJSON("/library/getAttachList",{ bno : bno }, function(arr) {
+							$.getJSON("/library/getAttachList",{ bno : bno }, function(arr) { // getAttachList를 bno 조건을 통해 가져옴
 
-												console.log(arr);
+							console.log("arr 이 뭔지 확인 : "+arr);
 
-												var str = "";
+							var str = "";
 
-												$(arr).each(function(i,	attach) {
+							$(arr).each(function(i,	attach) {
 
-																	//image type
-																	if (attach.fileType) { // 이미지 파일의 경우 썸네일을 출력
-																		var fileCallPath = encodeURIComponent(attach.uploadPath	+ "/s_"	+ attach.uuid+ "_" + attach.fileName);
+							//image type
+								if (attach.fileType) { // 이미지 파일의 경우 썸네일을 출력
+								var fileCallPath = encodeURIComponent(attach.uploadPath	+ "/s_"	+ attach.uuid+ "_" + attach.fileName);
 
-																		str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
-																		str += "<img src='/display?fileName="+ fileCallPath	+ "'>";
-																		str += "</div>";
-																		str	+ "</li>";
+									str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
+									str += "<img src='/display?fileName="+ fileCallPath	+ "'>";
+									str += "</div>";
+									str	+ "</li>";
 
-																	} else { // 아닐 경우 파일 그림 출력
+								} else { // 아닐 경우 파일 그림 출력
+	
+									str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
+									str += "<span> "+ attach.fileName+ "</span><br/>";
+									str += "<img src='/resources/img/attach.png'></a>";
+									str += "</div>";
+									str	+ "</li>";
+									}
+								});
 
-																		str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
-																		str += "<span> "+ attach.fileName+ "</span><br/>";
-																		str += "<img src='/resources/img/attach.png'></a>";
-																		str += "</div>";
-																		str	+ "</li>";
-																	}
-																});
+								$(".uploadResult ul").html(str);
 
-												$(".uploadResult ul").html(str);
+								});//end getjson
 
-											});//end getjson
-
-						})();//end function
+								})();//end function
 
 						$(".uploadResult").on("click", "li", function(e) {
 
@@ -769,8 +802,7 @@ ul.adminChat li{
 
 									var liObj = $(this);
 
-									var path = encodeURIComponent(liObj
-											.data("path")
+									var path = encodeURIComponent(liObj.data("path")
 											+ "/"
 											+ liObj.data("uuid")
 											+ "_"
@@ -781,13 +813,12 @@ ul.adminChat li{
 												new RegExp(/\\/g), "/"));
 									} else {
 										//download 
-										self.location = "/download?fileName="
-												+ path
+										self.location = "/download?fileName=" + path
 									}
 
 								});
 
-						function showImage(fileCallPath) {
+						function showImage(fileCallPath) { // 페이지 상단에 이미지 썸네일 출력
 
 							alert(fileCallPath);
 
@@ -800,9 +831,9 @@ ul.adminChat li{
 								height : '100%'
 							}, 1000);
 
-						}
+						}// end showImage
 
-						$(".bigPictureWrapper").on("click", function(e) {
+						$(".bigPictureWrapper").on("click", function(e) { // 이미지 클릭시 원본 이미지 출력
 							$(".bigPicture").animate({
 								width : '0%',
 								height : '0%'
@@ -812,7 +843,7 @@ ul.adminChat li{
 							}, 1000);
 						});
 
-					});
+					});// end $(".bigPictureWrapper").on("click", function(e)
 </script>
 
 

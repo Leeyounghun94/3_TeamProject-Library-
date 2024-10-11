@@ -3,6 +3,7 @@ package kr.co.librarylyh.service;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.naming.directory.SearchResult;
 import kr.co.librarylyh.domain.CategoryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,25 +23,27 @@ public class BookListServiceImpl implements BookListService {
 
 
 	@Override
-	@Transactional
+	@Transactional // DB에 직접 영향을 주는 작업은 트랜잭션 처리를 해주는게 좋다.
 	public void add(BookListVO bookListVO) {
 		// 1. 책 기본 정보 저장
 		mapper.insertBook(bookListVO);
 
 		// 2. 책 상세 정보 저장
-
 		mapper.insertBookDetail(bookListVO);
 
 		// 3. 카테고리 여러 개 저장
 		List<String> categoryIds = bookListVO.getCategories().stream()
+				// streamAPI는 리스트에 있는 데이터를 하나씩 처리해줌
 				.map(CategoryVO::getCategoryId)
+				// CategoryVO에서 getCategoryId 메서드를 참조함
 				.collect(Collectors.toList());
+				// 리스트로 반환 => categoryIds 라는 List<String> 이 만들어짐
 		mapper.insertBookCategories(bookListVO.getIsbn13(), categoryIds);
 	}
 
 	@Override
 	public BookListVO get(long isbn13) {
-		// log.info("책 조회: " + isbn13);
+    log.info("책 조회: {}", isbn13);
 		return mapper.read(isbn13);
 	}
 
@@ -51,20 +54,32 @@ public class BookListServiceImpl implements BookListService {
 
 
 	@Override
-	public boolean modify(BookListVO bookList) {
-		// log.info("책 수정: " + bookList);
-		return mapper.update(bookList) == 1;
+	@Transactional
+	public void modify(BookListVO bookList) {
+
+		List<String> categoryIds = bookList.getCategories().stream()
+						.map(CategoryVO::getCategoryId)
+						.collect(Collectors.toList());
+
+		// 책의 카테고리를 먼저 삭제하고, 다시 생성함.
+		// (복합 테이블이기 때문에, 중복의 위험이 있고 각종 오류가 파생되기 쉬우므로 삭제 후 생성을 선택)
+		mapper.deleteBookCategories(bookList.getIsbn13());
+		mapper.insertBookCategories(bookList.getIsbn13(), categoryIds);
+		mapper.updateBookDetail(bookList);
+		mapper.updateBook(bookList);
 	}
 
 	@Override
-	public boolean remove(long isbn13) {
-		// log.info("책 삭제: " + isbn13);
-		return mapper.delete(isbn13) == 1;
+	@Transactional
+	public void remove(long isbn13) {
+		mapper.deleteBookCategories(isbn13);
+		mapper.deleteBookDetail(isbn13);
+		mapper.deleteBook(isbn13);
 	}
 
 	@Override
 	public List<BookListVO> getListWithFiltersAndPaging(Paging pge, Map<String, Object> searchParams) {
-		// log.info("필터 및 페이징 조건으로 책 리스트 조회: " + searchParams);
+    log.info("필터, 페이징 조건으로 책 리스트 조회: {}", searchParams);
 
 		// 페이징 정보 추가
 		searchParams.put("pageNum", pge.getPageNum());
@@ -78,16 +93,16 @@ public class BookListServiceImpl implements BookListService {
 
 	@Override
 	public int getTotal(Map<String, Object> searchParams) {
-		// log.info("총 책 수 조회: " + searchParams);
+    log.info("총 책 수 조회: {}", searchParams);
 		return mapper.getTotalCount(searchParams);
 	}
 
 	@Override
-	public List<BookListVO> searchTitles(String query) {
-		// log.info("검색어: {}", query);
-		List<BookListVO>result = mapper.searchTitles(query);
-		// log.info("검색 결과: {}", result);
-		return result;
+	public List<BookListVO> searchTitles(Map<String, Object> searchParams) {
+		log.info("검색어: {}", searchParams);
+		List<BookListVO> searchResult = mapper.searchTitles(searchParams);
+    log.info("검색 결과: {}", searchResult);
+		return searchResult;
 	}
 
 }

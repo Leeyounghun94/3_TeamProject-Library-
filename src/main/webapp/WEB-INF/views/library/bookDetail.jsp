@@ -3,7 +3,17 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <html>
 <style>
-.bookDetail *{
+  /* 전체 페이지의 캐럿을 투명하게 설정 */
+  body, * {
+    caret-color: transparent; /* 기본적으로 모든 요소에서 캐럿 숨김 */
+  }
+
+  /* 입력 영역에는 캐럿을 표시 */
+  input, textarea, [contenteditable=true] {
+    caret-color: auto; /* 인풋 요소에서는 기본 캐럿 표시 */
+  }
+
+  .bookDetail *{
   font-family: "Noto Sans KR", sans-serif;
   font-optical-sizing: auto;
   font-size: 1rem;
@@ -114,7 +124,19 @@
 <section class="bookinfo">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
-            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="${bookDetail.photo}" alt="..." /></div>
+            <div class="col-md-6">
+                <c:choose>
+                    <c:when test="${empty bookDetail.photo}">
+                        <img class="card-img-top mb-5 mb-md-0" src="" alt="${bookDetail.book}">
+                    </c:when>
+                    <c:when test="${bookDetail.photo.startsWith('http')}">
+                        <img class="card-img-top mb-5 mb-md-0" src="${bookDetail.photo}" alt="${bookDetail.book}">
+                    </c:when>
+                    <c:otherwise>
+                        <img class="card-img-top mb-5 mb-md-0" src="/library/books/${bookDetail.photo}" alt="${bookDetail.book}">
+                    </c:otherwise>
+                </c:choose>
+            </div>
             <div class="col-md-6">
                 <div class="small mb-1"><c:out value="${bookDetail.publisher}"/></div>
                 <h1 class="display-5 fw-bolder">${bookDetail.book}</h1>
@@ -156,10 +178,11 @@
                     </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <button type="button" class="btn btn-warning" id="reservation" data-isbn="${bookDetail.isbn13}" onclick="window.location.href='/library/reservation/RsCreate'">
-                            예약하기
-                        </button>
+                        <button type="button" class="btn btn-warning" id="reservation"
+                                data-isbn="${bookDetail.isbn13}">장바구니 담기</button>
                     </div>
+                    <p>${message}</p>
+                    <!-- "도서가 장바구니에 추가되었습니다." 메시지 표시 -->
                     <div class="col-md-4">
                         <button type="button" class="btn btn-info">
                             구매신청
@@ -237,6 +260,8 @@
     <p>Average Rating: <fmt:formatNumber value="${bookDetail.averageRating}" minFractionDigits="1"/></p>
 
     <p>Review Count: <c:out value="${bookDetail.reviewCount}"/></p>
+    
+    <p>사진 제목 : <c:out value="${bookDetail.photo}"/></p>
 
 
 </div>
@@ -249,6 +274,7 @@
     </div>
 </div>
 </body>
+<jsp:include page="../includes/footer.jsp"/>
 <script>
 
   // 뒤로 가기 버튼 함수
@@ -339,6 +365,28 @@
     isfull = document.getElementById("btn").innerHTML = (isfull === '더보기') ? '숨기기' : '더보기';
   })
 </script>
-<jsp:include page="../includes/footer.jsp"/>
+<script>
+  $("#reservation").on("click", function () {
+
+    var isbn13 = $(this).data("isbn");
+
+    $.ajax({
+      url: '/library/insertCart/' + isbn13,
+      type: 'get',
+      success: function (result, status, xhr) {
+        console.log(result);
+
+        if (result === "success") {
+          alert("장바구니에 담았습니다.");
+          location.replace('/library/booklist');
+
+        } else {
+          alert("에러났습니다");
+        }
+      }
+    })
+  });
+</script>
+
 <script src="/resources/js/category_ajax.js"></script>
 </html>

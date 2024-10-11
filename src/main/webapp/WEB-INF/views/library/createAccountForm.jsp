@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>        
 <%@ include file="../includes/header.jsp" %>
-<form action="<c:url value='/library/createAccountForm'/>" name="createAccountForm" method="post" align="center" style="padding-top:200px;">
+<form action="<c:url value='../library/createAccountForm'/>" name="createAccountForm" method="post" align="center" style="padding-top:200px;">
 		<input type="text" name="name" placeholder="Name" ><br>
 	<input type="text" name="id" placeholder="ID" ><br>
 	<input type="password" name="pw" placeholder="Password" ><br>

@@ -19,6 +19,8 @@ public class Criteria {
   
   private String type;
   private String keyword;
+  private String category; // 게시글 분류 2024 09 28
+  private String replyerUserId;
   
   
   public Criteria() {
@@ -30,6 +32,7 @@ public class Criteria {
     this.amount = amount;
   }
   
+
   // MyBatis는 원하는 속성을 찾을 때 getTypeArr()과 같이 이름에 기반을 두어서 검색
   
   public String[] getTypeArr() {

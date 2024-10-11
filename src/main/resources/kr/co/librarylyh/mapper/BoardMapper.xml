@@ -31,6 +31,120 @@
 			select * from tbl_board where bno > 0 
 		]]>
 	</select>
+	
+	<!-- 요청 도서 목록 가져오기 2024 09 30 -->
+	<select id="getRequestBookList" resultType="kr.co.librarylyh.domain.BookRequestVO">
+	  <![CDATA[
+	    SELECT *
+	    FROM (
+	      SELECT /*+INDEX_DESC(tbl_requestBook pk_board) */
+	        rownum rn, r_bookTitle, r_bookAuthor, r_bookCategory, r_bookCompany,
+	        r_bookUserId, r_bookUserNickName, r_bookBno, r_bookProcedure, r_bookRegdate, r_bookUpdatedate
+	      FROM tbl_requestBook
+	      WHERE r_bookUserId = #{r_bookUserId}
+	      AND rownum <= #{cri.pageNum} * #{cri.amount}
+	    )
+	    WHERE rn > (#{cri.pageNum} - 1) * #{cri.amount}
+	  ]]>
+	</select>
+	
+	<!-- 오리지날 게시물 쿼리
+	<select id="getListWithPaging" resultType="kr.co.librarylyh.domain.BoardVO">
+	  <![CDATA[
+	  select 
+	    bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+	  from 
+	      (
+	      select /*+INDEX_DESC(tbl_board pk_board) */
+	        rownum rn, bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+	      from 
+	        tbl_board
+	      where 
+	  ]]>
+	
+	   
+	  <include refid="criteria"></include> 
+	  
+	  <![CDATA[
+	      
+	  rownum <= #{pageNum} * #{amount}
+	      )
+	  where rn > (#{pageNum} -1) * #{amount}
+	  ]]>
+	</select> -->
+	
+	<!-- 게시글 분류 리뷰게시판 2024 10 05 -->
+	<select id="getListWithPagingListReview" resultType="kr.co.librarylyh.domain.BoardVO">
+	  <![CDATA[
+	  select 
+	    bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+	  from 
+	    (
+	    select /*+INDEX_DESC(tbl_board pk_board) */
+	      rownum rn, bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+	    from 
+	      tbl_board
+	    where
+	  ]]>
+	
+	  <!-- 검색 조건이 있을 때만 criteria 포함 -->
+	   <include refid="criteria" />
+	
+	
+	  <!-- 자유게시판 조건 추가 -->
+	  <![CDATA[
+	    category = 'Review' AND
+	  ]]> 
+	
+	  <![CDATA[
+	    rownum <= #{pageNum} * #{amount}
+	    )
+	  where rn > (#{pageNum} - 1) * #{amount}
+	  ]]>
+	</select>
+	
+	
+	<!-- [관리자] 요청 도서 목록 가져오기 2024 10 01  -->
+	<select id="adminRequestBookList" resultType="kr.co.librarylyh.domain.BookRequestVO">
+		<![CDATA[
+			select * 
+			from
+			 (
+			  select /*+INDEX_DESC(tbl_requestBook pk_board) */
+	         rownum rn, r_bookTitle, r_bookAuthor, r_bookCategory, r_bookCompany,
+	        r_bookUserId, r_bookUserNickName, r_bookBno, r_bookProcedure, r_bookRegdate, r_bookUpdatedate
+	      from 
+	        tbl_requestBook
+	      where 
+			 
+			rownum <= #{pageNum} * #{amount}
+	      )
+	  		where rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	
+	
+	
+	
+	<!-- 요청 도서 목록 수정 2024 10 01  번호를 이용하여-->
+	<update id="updateRequestBook">
+	<![CDATA[
+		update tbl_requestBook set r_bookTitle = #{r_bookTitle},
+								   r_bookAuthor = #{r_bookAuthor},
+								   r_bookCompany = #{r_bookCompany},
+								   r_bookCategory = #{r_bookCategory},
+								   r_bookProcedure = #{r_bookProcedure},
+								   r_bookUpdateDate = sysdate
+		where r_bookBno = #{r_bookBno}
+	]]>
+	</update>
+	
+	<!-- 요청 도서 삭제 2024 10 01  번호를 이용하여-->
+	<delete id="deleteRequestBook">
+		delete tbl_requestBook where r_bookBno = #{r_bookBno}
+	</delete>
+
 
 	
  	<insert id="insertSelectKey">
@@ -43,6 +157,18 @@
 		insert into tbl_board (bno,title,content, category, nickName, boardUserId)
 		values (#{bno},	#{title}, #{content}, #{category}, #{nickName}, #{boardUserId})
 	</insert>
+	
+ 	<insert id="insertSelectKeyRequest"><!-- 희망도서 요청 게시글 입력 2024 09 30 -->
+		<!-- selectKey는 DB에 명령을 한번만 보내며, 우선 입력한 값의 결과값을 다음 쿼리로 바로 return 시켜주는 것 -->
+		<selectKey keyProperty="r_bookBno" order="BEFORE"
+			resultType="long">
+			select seq_requestBook.nextval from dual
+		</selectKey>
+
+		insert into tbl_requestBook (r_bookBno, r_bookTitle, r_bookAuthor, r_bookCategory, r_bookCompany, r_bookUserId, r_bookUserNickName)
+		values (#{r_bookBno}, #{r_bookTitle}, #{r_bookAuthor}, #{r_bookCategory}, #{r_bookCompany}, #{r_bookUserId}, #{r_bookUserNickName})
+	</insert>
+		
 	
 	<select id="read" resultType="kr.co.librarylyh.domain.BoardVO">
 		select * from tbl_board where bno =	#{bno}
@@ -64,38 +190,120 @@
 		]]>
 	</update>
 	
-<select id="getListWithPaging" resultType="kr.co.librarylyh.domain.BoardVO">
-  <![CDATA[
-  select 
-    bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
-  from 
-      (
-      select /*+INDEX_DESC(tbl_board pk_board) */
-        rownum rn, bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
-      from 
-        tbl_board
-      where 
-  ]]>
+	<!-- 게시글 분류 자유게시판 2024 09 28 -->
+	<select id="getListWithPagingListFree" resultType="kr.co.librarylyh.domain.BoardVO">
+	  <![CDATA[
+	  select 
+	    bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+	  from 
+	    (
+	    select /*+INDEX_DESC(tbl_board pk_board) */
+	      rownum rn, bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+	    from 
+	      tbl_board
+	    where
+	  ]]>
+	
+	  <!-- 검색 조건이 있을 때만 criteria 포함 -->
+	   <include refid="criteria" />
+	
+	
+	  <!-- 자유게시판 조건 추가 -->
+	  <![CDATA[
+	    category = '자유' AND
+	  ]]> 
+	
+	  <![CDATA[
+	    rownum <= #{pageNum} * #{amount}
+	    )
+	  where rn > (#{pageNum} - 1) * #{amount}
+	  ]]>
+	</select>
+	<!-- end 게시글 분류 자유게시판 2024 09 28 -->
+	
+	<!-- 게시글 분류 질문 답변게시판 2024 09 28 -->
+	<select id="getListWithPagingListQnA" resultType="kr.co.librarylyh.domain.BoardVO">
+	  <![CDATA[
+	  select 
+	    bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+	  from 
+	    (
+	    select /*+INDEX_DESC(tbl_board pk_board) */
+	      rownum rn, bno, title, content, category, regdate, updatedate, replycnt, viewNum, likeNum, fileName
+	    from 
+	      tbl_board
+	    where
+	  ]]>
+	
+	  <!-- 검색 조건이 있을 때만 criteria 포함 -->
+	   <include refid="criteria" />
+	
+	
+	  <!-- 자유게시판 조건 추가 -->
+	  <![CDATA[
+	    category = 'QnA' AND
+	  ]]> 
+	
+	  <![CDATA[
+	    rownum <= #{pageNum} * #{amount}
+	    )
+	  where rn > (#{pageNum} - 1) * #{amount}
+	  ]]>
+	</select>
+	<!-- end 게시글 분류 자유게시판 2024 09 28 -->
 
-  <include refid="criteria"></include> 
-
-  <![CDATA[
-      
-      rownum <= #{pageNum} * #{amount}
-      )
-  where rn > (#{pageNum} -1) * #{amount}
-  ]]>
-</select>
-  
-
+	<!-- 기존  getTotalCount 
 	<select id="getTotalCount" resultType="int">
 		select count(*) from tbl_board where
-		<!-- refid(reference id)는 반복되는 쿼리를 미리 작성해 놓고 재활용 할 수 있게 해줌 -->
+		refid(reference id)는 반복되는 쿼리를 미리 작성해 놓고 재활용 할 수 있게 해줌
 		<include refid="criteria"></include> 
 		
 		bno > 0
 		
-	</select>
+	</select> -->
+	
+	<!-- 게시글 분류 리뷰 게시글 카운트 2024 09 28 -->
+	<select id="getTotalCountListReview" resultType="int"> 
+	  select count(*) from tbl_board where
+	   <!-- 검색 조건이 있을 때만 criteria 포함 -->
+    <include refid="criteria" />
+	  <!-- 자유게시판 조건 추가 -->
+	  <![CDATA[
+	   category = 'Review'
+	  ]]> 
+	  <![CDATA[
+	    AND bno > 0
+	  ]]>
+	</select><!-- end 게시글 분류 리뷰 게시글 카운트 2024 09 28 -->
+	
+	<!-- 게시글 분류 자유게시글 카운트 2024 09 28 -->
+	<select id="getTotalCountListFree" resultType="int"> 
+	  select count(*) from tbl_board where
+	   <!-- 검색 조건이 있을 때만 criteria 포함 -->
+    <include refid="criteria" />
+	  <!-- 자유게시판 조건 추가 -->
+	  <![CDATA[
+	   category = '자유'
+	  ]]> 
+	  <![CDATA[
+	    AND bno > 0
+	  ]]>
+	</select><!-- end 게시글 분류 자유게시글 카운트 2024 09 28 -->
+	
+	<!-- 게시글 분류 자유게시글 카운트 2024 09 28 -->
+	<select id="getTotalCountListQnA" resultType="int"> 
+	  select count(*) from tbl_board where
+	   <!-- 검색 조건이 있을 때만 criteria 포함 -->
+    <include refid="criteria" />
+	  <!-- 자유게시판 조건 추가 -->
+	  <![CDATA[
+	   category = 'QnA'
+	  ]]> 
+	  <![CDATA[
+	    AND bno > 0
+	  ]]>
+	</select><!-- end 게시글 분류 자유게시글 카운트 2024 09 28 -->
+	
 	
 	<update id="updateReplyCnt">
 	<![CDATA[  
@@ -166,6 +374,121 @@
 		#{fileType}) where bno = #{bno}
 	</insert>
 	
+	<!-- 게시판 작성시 50 포인트 증가 2024 10 02 -->
+    <update id="boardAddPoint">
+    	<![CDATA[  
+    		update member_tbl set
+    		point = point + 50
+    		where id=#{id}
+    	]]>
+    </update>
+    
+    <!-- 포인트 로그기록 2024 10 02 -->
+<insert id="allPointHistory">
+    insert into tbl_bookPoint (
+        bookPointNo, 
+        bookPoint, 
+        bookPointTotal, 
+        bookPointHistory, 
+        bookPointUserId,
+        bookPointNickName
+    ) values (
+        seq_bookPoint.nextval,
+        #{bookPoint},
+        #{bookPointTotal},
+        #{bookPointHistory},
+        #{bookPointUserId},
+        #{bookPointNickName}
+    )
+</insert>
 
+    <!-- 포인트 로그기록 2024 10 02 -->
+<insert id="allPointHistoryT">
+    insert into tbl_bookPoint (
+        bookPointNo, 
+        bookPoint, 
+        bookPointTotal, 
+        bookPointHistory, 
+        bookPointUserId,
+        bookPointNickName
+    ) values (
+        seq_bookPoint.nextval,
+        #{bookPoint},
+        #{bookPointTotal},
+        #{bookPointHistory},
+        #{bookPointUserId},
+        #{bookPointNickName}
+    )
+</insert>
+	
+	<!-- 도서 요청시 500 포인트 차감 2024 10 02 -->
+    <update id="bookRequestPoint">
+    	<![CDATA[
+    		update member_tbl set
+    		point = point - 500
+    		where id=#{id}
+    	]]>
+    </update>
+    
+    <!-- 회원가입 1000포인트 2024 10 02 -->
+    <update id="userJoinPoint">
+    	<![CDATA[  
+    		update member_tbl set
+    		point = point + 1000
+    		where id=#{id}
+    	]]>
+    </update>
+    
+    <!-- 회원 포인트 내역 리스트 출력 2024 10 03 -->
+    	<select id="getMyPointList" resultType="kr.co.librarylyh.domain.BookPointVO">
+	  <![CDATA[
+	    SELECT *
+	    FROM (
+	      SELECT /*+INDEX_DESC(tbl_bookPoint pk_board) */
+	        rownum rn, bookPointNo, bookPoint, bookPointTotal, bookPointDate,
+	        bookPointHistory, bookPointUserId, bookPointNickName
+	      FROM tbl_bookPoint
+	      WHERE bookPointUserId = #{bookPointUserId}
+	      AND rownum <= #{cri.pageNum} * #{cri.amount}
+	    )
+	    WHERE rn > (#{cri.pageNum} - 1) * #{cri.amount}
+	  ]]>
+	</select>
+	
+	<!-- [관리자] 요청 포인트 리스트 가져오기 2024 10 01  -->
+	<select id="adminPointList" resultType="kr.co.librarylyh.domain.BookPointVO">
+		<![CDATA[
+			select * 
+			from
+			 (
+			  select /*+INDEX_DESC(tbl_bookPoint pk_board) */
+	        rownum rn, bookPointNo, bookPoint, bookPointTotal, bookPointDate,
+	        bookPointHistory, bookPointUserId, bookPointNickName
+	      from 
+	        tbl_bookPoint
+	      where 
+			 
+			rownum <= #{pageNum} * #{amount}
+	      )
+	  		where rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+
+	<!-- 포인트 로그 삭제 2024 10 03 -->
+	<delete id="deletePointLog">
+		<![CDATA[
+			delete tbl_bookPoint where bookPointNo = #{bookPointNo}
+		]]>
+	</delete>
+	
+	    <!-- 회원 포인트 차감 2024 10 03 -->
+    <update id="deletePointUser">
+    	<![CDATA[  
+    		update member_tbl set
+    		point = point - #{point}
+    		where id=#{id}
+    	]]>
+    </update>
+    
 
 </mapper>

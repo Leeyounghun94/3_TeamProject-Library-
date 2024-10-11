@@ -121,10 +121,10 @@
     	 	</div>
         	<div class="input-group mb-3">
   			<label class="input-group-text" for="inputGroupSelect01">카테고리</label>
-  			<select class="form-select" id="inputGroupSelect01" name="category">
-    			<option selected>선택</option>
+  			<select class="form-select" id="inputGroupSelect01" name="category" placeholder="카테고리를 입력해주세요.">
     			<option value="자유">자유</option>
-    			<option value="Q&A">Q&A</option>
+    			<option value="QnA">QnA</option>
+    			<option value="Review">리뷰</option>
   			</select>
 			</div>
           <div class="form-group">

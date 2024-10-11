@@ -16,20 +16,17 @@ import org.springframework.transaction.TransactionSystemException;
 @Order(2)
 @Log4j2
 public class ExceptionHandlingAspect {
-
   @Autowired
   private LoggingAspect loggingAspect;
 
   @Pointcut("execution(* kr.co.librarylyh.service.*.*(..))")
   public void serviceMethods() {}
 
-
   @AfterThrowing(pointcut = "serviceMethods() && args(..)", throwing = "ex")
   public void handleException(JoinPoint joinPoint, Throwable ex){
 
-    // 문제의 근본 원인을 찾아옴 (AOP가 전혀 작동하지 않길래 찾아보니 대부분의 에러를 톰캣에서 빠르게 예외처리를 해버리고 있었음
-    // 그래서 AOP가 작동을 하지 못하기 때문에 로그도 발생하지 않았고, 이걸 해결할 방법을 찾다가
-    // 톰캣에서 예외처리를 해도 브라우저에 근본원인(Root Cause)라는 표기를 하기 위해 서버에서 정보를 제공하는게 떠올랐고 그걸 이용함
+    // 브라우저 오류를 보면 근본원인(Root Cause)라는 표기가 늘 보이고, 항상 대부분은 그 루트 근방에서 찾게 됨
+    // 그래서 오류를 찾기 쉽게 핵심적으로 당장 살펴봐야하는 위치를 짚어주는 로거를 만들어보자 생각함.
     Throwable rootCause = findRootCause(ex);
 
     String location = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
@@ -138,13 +135,12 @@ public class ExceptionHandlingAspect {
     sendFormattedLog(ex.getClass().getSimpleName(), location, args, ex.getMessage(), message);
   }
 
-  // 충-격 사실 : 보낼때 변수명하고 받을때 변수명 달라도 됨 타입만 같으면 똑같이 인식함. 이 특징은 SQL 하고 극소수의 몇개 언어 빼고 전부 다 해당됨
   private void sendFormattedLog(String exceptionName, String location, String args, String exceptionMessage, String solution) {
     log.error("예외 발생: [{}]\n위치 : [{}].\n인자 값: [{}].\n 예외 메시지: [{}]\n", exceptionName, location, args, exceptionMessage);
     log.info("해결방안 : {}\n", solution);
 
     // 예외 메시지를 리스트에 추가
-    String alertMessage = "예외 발생: [" + exceptionName + "]<br>위치 : " + location + ".<br>인자 값: " + args + ".<br>예외 메시지: " + exceptionMessage + "<br>";
+    String alertMessage = "[Error] 예외 발생: [" + exceptionName + "]<br>위치 : " + location + ".<br>인자 값: " + args + ".<br>예외 메시지: " + exceptionMessage + "<br>";
     loggingAspect.sendLog(alertMessage);
   }
 }

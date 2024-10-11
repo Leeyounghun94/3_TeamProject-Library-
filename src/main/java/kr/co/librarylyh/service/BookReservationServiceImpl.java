@@ -1,13 +1,15 @@
 package kr.co.librarylyh.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.co.librarylyh.domain.UserVO;
+import kr.co.librarylyh.domain.BookListVO;
+import kr.co.librarylyh.domain.CartVO;
 import kr.co.librarylyh.domain.bookReservationVO;
-import kr.co.librarylyh.mapper.UserMapper;
+import kr.co.librarylyh.mapper.CartMapper;
 import kr.co.librarylyh.mapper.bookReservationMapper;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -26,11 +28,9 @@ public class BookReservationServiceImpl implements BookReservationService {
 		
 	
 	@Override
-	public void rsRegister(bookReservationVO vo) {
+	public int rsRegister(bookReservationVO vo) {
 		log.info("BookReservationServiceImpl.rsRegister 메서드 실행");
-		rsMapper.rsInsert(vo);
-		
-		
+		return rsMapper.rsInsert(vo);			
 	}
 
 	@Override
@@ -46,21 +46,24 @@ public class BookReservationServiceImpl implements BookReservationService {
 		return rsMapper.rsRead(rsNum);
 	}
 
-
-	@Override
-	public boolean rsRemove(Long rsNum) {
-		log.info("BookReservationServiceImpl.rsRemove 메서드 실행");
-		return rsMapper.rsDelete(rsNum) == 1;
-	}
-
-	
 	@Override
 	public boolean rsModify(Long rsNum, Long isbn13) {
 		log.info("BookReservationServiceImpl.rsModify 메서드 실행");
 		return rsMapper.rsUpdate(rsNum, isbn13) == 1;
 	}
 
+	
+	@Override
+	public boolean rsRemove(Long rsNum) {
+		log.info("BookReservationServiceImpl.rsRemove 메서드 실행");
+		return rsMapper.rsDelete(rsNum) == 1;
+	}
+	
+	@Override
+	public boolean rsDel(Long rsNum, Long isbn13) {
+		log.info("BookReservationServiceImpl.rsDel 메서드 실행");
 
-
+		return rsMapper.rsDel(rsNum, isbn13) == 1;
+	}
 
 }

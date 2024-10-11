@@ -70,7 +70,7 @@
 							<img src="/resources/images/board.png">
 							<div class="hero_box_content">
 								<h2 class="hero_box_title">게시판</h2>
-								<a href="<c:url value='/library/list' />"  class="hero_box_link">view more</a>
+								<a href="<c:url value='../library/listFree' />"  class="hero_box_link">view more</a>
 							</div>
 						</div>
 					</div>

@@ -29,10 +29,17 @@
 		]]>
 	</select>
 	
+	<!-- 중복 이메일 체크 -->
+	<select id="emailCheck" resultType="int">
+		<![CDATA[
+			select count(*) from member_tbl where email = #{email}
+		]]>
+	</select>
+	
 	<!-- 로그인 체크 -->
 	<select id="login" resultType="kr.co.librarylyh.domain.UserVO" >
 		<![CDATA[
-			select u_id, name, birth, phone, email, id, pw, nickName, authority from member_tbl where id = #{id} and pw = #{pw}
+			select * from member_tbl where id = #{id} and pw = #{pw}
 		]]>
 	</select>
 	
@@ -58,16 +65,16 @@
 	</update>
 	
 	<!-- 현재 비밀번호 확인 -->
-	<select id="checkPw">
+	<select id="checkPw" resultType="Integer">
 		<![CDATA[
-			select pw from member_tbl where id = #{id}
+			select count(*) from member_tbl where id = #{id} and pw = #{pw}
 		]]>
 	</select>
 	
 	<!-- 비밀번호 업데이트 -->
 	<update id="updatePw">
 		<![CDATA[
-			update member_tbl set pw = #{pw}
+			update member_tbl set pw = #{pw} where id = #{id} and pw = #{pw}
 		]]>
 	</update>
 	
@@ -78,7 +85,7 @@
 		]]>
 	</update>
 	
-	<!-- 어드민 리스트 -->
+	<!-- 전체 회원 리스트 -->
 	<select id="getUserList" resultType="kr.co.librarylyh.domain.UserVO">
 		<![CDATA[
 			select * from member_tbl where authority = #{authority}
@@ -97,13 +104,68 @@
 		]]>
 	</select>
 	
+	<select id="readInfo" resultType="kr.co.librarylyh.domain.UserVO" >
+		<![CDATA[
+			select * from member_tbl where u_id = #{u_id}
+		]]>
+	</select>
+	
 	<!-- 회원탈퇴 -->
 	<delete id="delete">
 		<![CDATA[
 			delete member_tbl where pw = #{pw}
 		]]>
 	</delete>
+	
+	
+	<!-- 일일 로그인 포인트 지급 2024 10 02 -->
+	<update id="updateLastVisitAndPoint" >
+    	update member_tbl 
+    	set point = #{point}, lastVisitDate = #{lastVisitDate}
+    	where id = #{id}
+	</update>
+	
+	<!-- 유저 책 요청 전체 데이터 수 2024 10 03 -->
+	<select id="getTotalMyRequest" resultType="int">
+		<![CDATA[
+		select count(*) from tbl_requestBook where		
+		r_bookBno > 0 and r_bookUserId = #{r_bookUserId} 
+		]]>
+		
+	</select>
+	
+	<!-- 관리자 책 요청 전체 데이터 수 2024 10 03 -->
+	<select id="getTotalAdminRequest" resultType="int">
+		<![CDATA[
+		select count(*) from tbl_requestBook
+		]]>
+		
+	</select>
 
+	<!-- 유저 포인트 내역 전체 데이터 수 2024 10 03 -->
+	<select id="getTotalMyPoint" resultType="int">
+		<![CDATA[
+		select count(*) from tbl_bookPoint where		
+		bookPointNo > 0 and bookPointUserId = #{bookPointUserId} 
+		]]>
+		
+	</select>
+	
+	<!-- 관리자 포인트 내역 전체 데이터 수 2024 10 03 -->
+	<select id="getTotalAdminPoint" resultType="int">
+		<![CDATA[
+		select count(*) from tbl_bookPoint
+		]]>
+		
+	</select>
+	
+	<!-- 비밀번호 업데이트 -->
+	<update id="updateLastVisitDate">
+		<![CDATA[
+			update member_tbl set lastVisitDate = #{lastVisitDate}
+		]]>
+	</update>
+	
 	
 	
 </mapper>

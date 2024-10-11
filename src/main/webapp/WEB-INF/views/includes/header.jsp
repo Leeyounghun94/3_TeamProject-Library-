@@ -17,6 +17,30 @@
 <link rel="stylesheet" type="text/css" href="/resources/plugins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" type="text/css" href="/resources/styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="/resources/styles/responsive.css">
+
+<style>/* 2024 09 28 게시판 드롭다운 메뉴 */
+.dropdown{
+  position : relative;
+  display : inline-block;
+}
+
+.dropdown-content{
+  display : none;
+  position : absolute;
+  z-index : 1; /*다른 요소들보다 앞에 배치*/
+}
+
+.dropdown-content a{
+  display : block;
+  background-color:white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+</style>
+
+
 </head>
 <body>
 
@@ -39,14 +63,21 @@
 				<div class="main_nav">
 					<ul class="main_nav_list">
 						<li class="main_nav_item"><a href="/library/home">HOME</a></li>
-						<li class="main_nav_item"><a href="#">국내도서</a></li>
-						<li class="main_nav_item"><a href="courses.html">베스트</a></li>
-						<li class="main_nav_item"><a href="elements.html">신상품</a></li>
-						<li class="main_nav_item"><a href="news.html">도서대여</a></li>
-						<li class="main_nav_item"><a href="/library/list">게시판</a></li>	
-						<c:if test="${user.authority == 1 }">
-            			<li class="main_nav_item"><a href="/library/admin/main">어드민페이지</a></li>
-         				</c:if>
+						<li class="main_nav_item"><a href="/library/booklist">도서 목록</a></li>
+						<li class="main_nav_item"><a href="/library/reservation/ReservationMain">예약</a></li>
+						<li class="main_nav_item"><a href="/library/cart/cart">장바구니</a></li>
+						
+						<!-- 메뉴 네비게이터 변경 2024 09 28 -->
+					    <div class="dropdown">
+						<li class="main_nav_item"><a>게시판</a></li>	
+						<div class="dropdown-content"><br>
+					        <a href="/library/listReview">리뷰 게시판</a><br>
+					        <a href="/library/listFree">자유 게시판</a><br>
+					        <a href="/library/listQnA">Q&A 게시판</a><br>
+					        <a href="/library/listRequest">도서 요청</a><br>
+					      </div>
+					    </div> <!-- 메뉴 네비게이터 변경 2024 09 28 -->
+						
 					</ul>
 				</div>
 			</nav>
@@ -66,9 +97,13 @@
 				<div class ="logout_button" >
 					<a href="/library/logout" id="logout_button">로그아웃</a>
 				</div>
+				<div class ="userPoint_button" > <!-- 포인트 출력 2024 10 02 -->
+					<a href="#" id="userPoint_button">${userPoint}</a>
+				</div>
 			</c:if>
-			
-			
+			<c:if test="${user.authority == 1 }">
+				<div><a href="/library/admin/main">어드민페이지</a></div>
+			</c:if>
 		</span>
 		</div>
 
@@ -110,11 +145,13 @@
 						<li class="menu_social_item menu_mm"><a href="#"><i class="fab fa-twitter"></i></a></li>
 					</ul>
 				</div>
-
 				<div class="menu_copyright menu_mm">Colorlib All rights reserved</div>
 			</div>
-
 		</div>
-
+		</div>
 	</div>
-	
+</body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+</script>

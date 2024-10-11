@@ -13,6 +13,7 @@ public class PageDTO {
 
   private int total;
   private Criteria cri;
+  private String category; // 게시글 분류 2024 09 28
 
   public PageDTO(Criteria cri, int total) {
 

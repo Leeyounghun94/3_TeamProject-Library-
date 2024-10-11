@@ -33,7 +33,7 @@ public class DataValidationAspect {
     }
   }
 
-  // 유효성 검사 예외 발생 시 로그 처리
+  // 유효성 검사 예외 발생 시 로그 처리 (사용되지 못함)
   private void logValidationError(String alertMessage, JoinPoint joinPoint, String input) {
     String location = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
     String argsDetails = loggingAspect.formatArgs(joinPoint.getArgs());

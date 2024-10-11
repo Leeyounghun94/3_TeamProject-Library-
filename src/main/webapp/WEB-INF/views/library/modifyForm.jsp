@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<form action="<c:url value='/library/modifyForm'/>"  name="modifyForm" method="post">
+<form action="<c:url value='../library/modifyForm'/>"  name="modifyForm" method="post">
 	<input type="hidden" name="u_id" value="${user.u_id }" readonly = "readonly">
 	
 	<input type="text" name="id" value="${user.id }" readonly="readonly" >

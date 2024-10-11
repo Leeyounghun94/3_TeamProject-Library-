@@ -126,7 +126,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		</div>
 	</footer>
 
-</div>
 
 
 <script src="/resources/js/jquery-3.2.1.min.js"></script>

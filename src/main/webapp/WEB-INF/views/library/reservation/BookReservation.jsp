@@ -98,7 +98,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star-fill" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M8.16 4.1a.178.178 0 0 0-.32 0l-.634 1.285a.18.18 0 0 1-.134.098l-1.42.206a.178.178 0 0 0-.098.303L6.58 6.993c.042.041.061.1.051.158L6.39 8.565a.178.178 0 0 0 .258.187l1.27-.668a.18.18 0 0 1 .165 0l1.27.668a.178.178 0 0 0 .257-.187L9.368 7.15a.18.18 0 0 1 .05-.158l1.028-1.001a.178.178 0 0 0-.098-.303l-1.42-.206a.18.18 0 0 1-.134-.098z"/>
 </svg>
-					<strong>예약/대출 안내</strong>
+					<strong>예약/대여 안내</strong>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star-fill" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M8.16 4.1a.178.178 0 0 0-.32 0l-.634 1.285a.18.18 0 0 1-.134.098l-1.42.206a.178.178 0 0 0-.098.303L6.58 6.993c.042.041.061.1.051.158L6.39 8.565a.178.178 0 0 0 .258.187l1.27-.668a.18.18 0 0 1 .165 0l1.27.668a.178.178 0 0 0 .257-.187L9.368 7.15a.18.18 0 0 1 .05-.158l1.028-1.001a.178.178 0 0 0-.098-.303l-1.42-.206a.18.18 0 0 1-.134-.098z"/>
 </svg>
@@ -107,11 +107,11 @@
 				
 
 				
-* 본인이 대출하려는 도서가 다른 회원이 대출 중일 경우, 예약하여 해당 도서 반납 시 우선 대출하는 서비스입니다.
+* 본인이 대여하려는 도서가 다른 회원이 대여 중일 경우, 예약하여 해당 도서 반납 시 우선 대여하는 서비스입니다.
 <br>
-* 예약하신 도서가 반납되면 입력되어 있는 회원정보를 토대로 대출안내 SMS가 발송되며, <strong>공지 드린 해당 일까지 대출하지 않은 책은 예약이 자동 취소됩니다.</strong>
+* 예약하신 도서가 반납되면 입력되어 있는 회원정보를 토대로 대여 안내 SMS가 발송되며, <strong>공지 드린 해당 일까지 대여하지 않은 책은 예약이 자동 취소됩니다.</strong>
 <br>
-<strong>* SMS 통보 후 3일 이내에 대출을 하지 않을 경우 예약이 자동 취소됩니다.</strong>
+<strong>* SMS 통보 후 3일 이내에 대여를 하지 않을 경우 예약이 자동 취소됩니다.</strong>
 <br>
 * 예약 내역 조회와 예약 취소는 마이페이지에서 확인할 수 있습니다.
 <br>
@@ -172,92 +172,29 @@
 
 
 
-			<!--  검색 창 -->
+			
 				<div id="content">
 					<div class="container">
 						<div id="contents">
-							<div id="bbs_search" style="margin: auto; text-align: center;">
-								<form name="frm" method="post"
-									action="/admin/rsv/rsvSelectList.do">
-									<fieldset>
-										<select name="searchCondition" id="ftext">
-											<option value="0"
-												<c:if test="${searchVO.searchCondition eq '0'}">selected = "selected" </c:if>>선택</option>
-											<option value="1"
-												<c:if test="${searchVO.searchCondition eq '1'}">sekected = "selected" </c:if>>도서명</option>
-											<option value="2"
-												<c:if test="${searchVO.searchCondition eq '2'}">sekected = "selected" </c:if>>저자</option>
-											<option value="3"
-												<c:if test="${searchVO.searchCondition eq '3'}">sekected = "selected" </c:if>>출판사</option>
-
-										</select> <input name="searchKeyword"
-											value="<c:out value = "${searchVO.searchKeyword}"/>"
-											type="text" class="inp_s" id="inp_text" /> <span
-											class="bbtn_s"><input type="submit" value="검색"
-											title="검색" /> </span>
-									</fieldset>
-								</form>
-							</div>
-
-							<div id="bbs_wrap">
-								<!-- 게시물 건수 -->
-								<div class=total">
-									(ex) 총 게시물 <strong><c:out
-											value="${paginationInfo.totalRecordCount}" /></strong>800건 | 현재페이지<strong><c:out
-											value="${paginationInfo.currentPageNo}" /></strong> 1
-									<c:out value="${paginationInfo.totalPageCount}" />
-								</div>
-
-
-
-								<!-- 테이블(BookList) -->
-								<table class="table" style="margin: auto; text-align: center;">
-									<thead>
-										<tr>
-											
-											<th>isbn13</th>
-											<th>도서 사진</th>
-											<th>도서명</th>
-											<th>저자</th>
-											<th>출판사</th>
-											<th>가격</th>
-											<th>상세보기(개발 예정)</th>
-										
-										</tr>
-									</thead>
-									
-									<c:forEach  items="${bookList}" var="vo">
-										
-										<tr>											
-											<td>${vo.isbn13}</td>
-											<td><img src="${vo.photo}" alt="" style="max-height: 300px"></td>											
-											<td>${vo.book}</td>
-										 	<td>${vo.author}</td>
-										 	<td>${vo.publisher}</td>
-										 	<td>${vo.price}</td>										 									 	
-										 	<td><button type="button" class="btn btn-outline-warning btn" onclick="location.href='/library/read/${isbn13}'">자세히</button>	
-										
-										</tr>
-									
-									</c:forEach>
-
-								</table><!-- 테이블 종료 -->
-								<br>
-								<div>
-									<nav class="pagination-sm"">
-										<ul class="pagination">
-											<li class="page-item"><a class="page-link" href="#">이전</a>
-											</li>
-											<li class="page-item"><a class="page-link" href="#">1</a>
-											<li class="page-item"><a class="page-link" href="#">다음</a>
-											</li>
-										</ul>
-									</nav>
-								</div>
-								<br>
-
-
-							</div>
+							
+	
+	
+	<div class="col-md-5" style="border:1px solid white; float:left; margin-right:100px;">
+					<img class="card-img-top" src="/resources/images/Book.png" alt="https://unsplash.com/@kellybrito">
+                       <div class="section_title text-center">                         
+                            <div class="featurs-content text-center" style="border:1px gray; color:gray;">
+                               <a href="#" onclick="location.href='BookReservation'" id=bookBtn ><h1>도서 예약/대여</h1></a>
+                            </div>
+                        </div>
+                    </div>
+					
+					
+					
+					
+					
+					
+					
+					
 						</div>
 					
 					</div>
@@ -268,16 +205,10 @@
 
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><!-- JQuery 사용 -->
 
 <script type="text/javascript">
-	 $(document).ready(
-          function () {
-          
-          }
-
-
-
-
+	
 
 </script>
 	<%@ include file="../../includes/footer.jsp"%>
