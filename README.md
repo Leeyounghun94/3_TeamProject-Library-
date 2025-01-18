@@ -2,13 +2,15 @@
 
 <p align="center"><img src="https://github.com/user-attachments/assets/0fd814dd-2ae7-4704-ad24-37018b4d9f57"></p>
 
-# 🍀프로젝트 소개
+## 🍀프로젝트 소개
 Spring FrameWork를 이용하여 도서 관리 시스템 서버를 구축하였습니다.
 
 <br>
 
-## 프로젝트 발표 자료
-[팀 프로젝트 PPT 보기](https://docs.google.com/presentation/d/1TezkiI3AhShWSWmneqX58Weni_j6ZANU/edit?usp=drive_link&ouid=101645614848612860586&rtpof=true&sd=true)
+## 📰프로젝트 발표 자료
+![image](https://github.com/user-attachments/assets/18dfb409-aa75-4cf9-99e2-0305259fe8e4)
+
+[Booklipse 프로젝트 PPT 보기](https://docs.google.com/presentation/d/11OZAAbvi6z55JPcAh51OzdFcscSN5Aum/edit?usp=drive_link&ouid=101645614848612860586&rtpof=true&sd=true)
 
 
 ## 📜 사용된 기술
