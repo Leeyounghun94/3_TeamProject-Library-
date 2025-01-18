@@ -7,6 +7,10 @@ Spring FrameWork를 이용하여 도서 관리 시스템 서버를 구축하였�
 
 <br>
 
+## 프로젝트 발표 자료
+[팀 프로젝트 PPT 보기](파일명.pptx)
+
+
 ## 📜 사용된 기술
 
 ### ![free-icon-success-5839078](https://github.com/user-attachments/assets/e20a676d-d5f7-4e6e-8504-8f629effaf66) JAVA 11
