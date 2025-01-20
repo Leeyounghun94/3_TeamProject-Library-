@@ -42,6 +42,10 @@ Spring FrameWork를 이용하여 도서 관리 시스템 서버를 구축하였�
 
 관리자 등록
 
+회원 요청 도서 관리
+
+회원 포인트 내역 관리
+
 기타 등 관리자 기능 구현 예정
 
 <br>
@@ -64,8 +68,11 @@ Spring FrameWork를 이용하여 도서 관리 시스템 서버를 구축하였�
 
 ### ![free-icon-noticeboard-17374893](https://github.com/user-attachments/assets/49fe9e71-c0d2-40ed-a64a-83d27d2e1208) 게시판 
  
-#### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) Q&A
-#### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) 희망 도서 요청
+#### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) 리뷰 - 책의 후기를 작성
+#### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) Q&A - 질문, 답변 작성
+#### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) 자유 - 자유 글 게시
+#### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) 도서 요청 - 필요 도서 요청
+#### ![free-icon-check-390923](https://github.com/user-attachments/assets/ea2f0c08-91f5-4bf4-8332-1446341df80b) 좋아요 및 포인트 기능
 
 <br>
 
